@@ -1,0 +1,15 @@
+/* Sayfa düzeyinde yatay kaydırma */
+.page-container {
+    overflow-x: auto;
+    width: 100%;
+  }
+  
+  .user-page-table {
+    min-width: 800px; /* Bu değeri ihtiyacınıza göre ayarlayabilirsiniz */
+  }
+  
+  @media (max-width: 768px) {
+    .user-page-table {
+      width: 100%;
+    }
+  }

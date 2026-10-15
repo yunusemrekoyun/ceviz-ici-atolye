@@ -1,0 +1,64 @@
+/* src/layouts/MainLayout.css */
+
+/* ----------------- Sabit Yükseklik Değişkenleri ----------------- */
+:root {
+  --header-height: 100px; /* Gerçek Header yüksekliği */
+  --header-bottom-height: 80px; /* Gerçek HeaderBottom yüksekliği */
+}
+
+/* ----------------- Desktop (≥769px) ----------------- */
+@media (min-width: 769px) {
+  /* İçeriğin üst boşluğu: Header + HeaderBottom */
+  .main-layout {
+    padding-top: calc(var(--header-height) + var(--header-bottom-height));
+    transition: padding-top 0.3s ease-in-out;
+  }
+
+  /* Gizli header durumunda sadece HeaderBottom kadar boşluk */
+  .main-layout.header-hidden {
+    padding-top: var(--header-bottom-height);
+  }
+
+  /* Header saracı, yukarı kaydırıldığında gizlemek için */
+  .main-layout > .header-wrapper {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: var(--header-height);
+    overflow: hidden;
+    z-index: 1001;
+    transition: transform 0.3s ease-in-out;
+  }
+  /* header-hidden sınıfı eklenince yukarı taşı */
+  .main-layout.header-hidden > .header-wrapper {
+    transform: translateY(-100%);
+  }
+
+  /* HeaderBottom saracı, header’ın altına sabit */
+  .main-layout > .header-bottom {
+    position: fixed;
+    top: var(--header-height);
+    left: 0;
+    right: 0;
+    z-index: 1000;
+    transition: top 0.3s ease-in-out;
+  }
+  /* header gizliyken yukarı kaydır */
+  .main-layout.header-hidden > .header-bottom {
+    top: 0;
+  }
+}
+
+/* ----------------- Mobile (≤768px) ----------------- */
+@media (max-width: 768px) {
+  /* Mobilde akış normale dönsün */
+  .main-layout {
+    padding-top: 0;
+  }
+  .header-wrapper,
+  .header-bottom {
+    position: static !important;
+    transform: none !important;
+  }
+}

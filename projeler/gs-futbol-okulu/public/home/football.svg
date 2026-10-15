@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="320" height="320" viewBox="0 0 320 320" fill="none">
+<defs>
+<radialGradient id="leather" cx=".3" cy=".2" r=".85"><stop stop-color="#fff"/><stop offset=".5" stop-color="#faf9f7"/><stop offset=".8" stop-color="#dedce0"/><stop offset="1" stop-color="#9e9ba4"/></radialGradient>
+<linearGradient id="red" x1="60" y1="20" x2="260" y2="280" gradientUnits="userSpaceOnUse"><stop stop-color="#c3264a"/><stop offset="1" stop-color="#720f2c"/></linearGradient>
+<radialGradient id="light" cx=".28" cy=".18" r=".82"><stop stop-color="#fff" stop-opacity=".5"/><stop offset=".45" stop-color="#fff" stop-opacity="0"/><stop offset="1" stop-color="#1e1025" stop-opacity=".27"/></radialGradient>
+<clipPath id="sphere"><circle cx="160" cy="160" r="150"/></clipPath>
+</defs>
+<circle cx="160" cy="160" r="150" fill="url(#leather)"/>
+<g clip-path="url(#sphere)" stroke-linejoin="round">
+<path d="m126 105 61-7 40 52-28 61-70-3-27-54Z" fill="url(#red)" stroke="#680a26" stroke-width="2"/>
+<path d="m126 105-23-55 37-39 56 8 23 48-32 31M227 150l59-21 35 39-9 63-51 21-62-41M129 208l-25 64-55-3-33-48 21-52 65-15M140 11l-32-30M103 50l-54-5-33 49 21 75M219 67l58-18 35 39-26 41M104 272l36 43 61-10 16-50-18-44M261 252l-6 51" fill="none" stroke="#9a949e" stroke-width="2"/>
+<path d="m25 96 15-37 41-3 21 19-13 41-46 17ZM257 68l-35 8 11 38 46 8 24-23ZM134 284l18-25 33-3 22 31-10 19-41 5Z" fill="#f4b719"/>
+<path d="m-8 156 40-9 16 57-34 43M315 206l-36-11-9 46 23 33" fill="url(#red)"/>
+<path d="m120 107 64-7 40 48M107 155l25 50 64 4" stroke="#efbdca" stroke-opacity=".45" stroke-width="1.5"/>
+<circle cx="160" cy="160" r="150" fill="url(#light)"/>
+<path d="M37 103A135 135 0 0 1 138 29" stroke="#fff" stroke-opacity=".7" stroke-width="2" stroke-linecap="round"/>
+</g>
+<circle cx="160" cy="160" r="149.5" stroke="#a7a0a8" stroke-opacity=".3"/>
+</svg>

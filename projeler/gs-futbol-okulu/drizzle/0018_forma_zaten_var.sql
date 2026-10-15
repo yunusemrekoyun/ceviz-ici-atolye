@@ -1,0 +1,1 @@
+ALTER TABLE `equipment_orders` ADD `owned` integer DEFAULT false NOT NULL;

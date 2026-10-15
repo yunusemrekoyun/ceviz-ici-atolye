@@ -1,0 +1,226 @@
+/* src/components/Layout/Header/HeaderBottom.css */
+:root {
+  --accent-color: #d4a017;
+  --accent-light: #fef6e5;
+  --glass-color: rgba(255, 255, 255, 0.08);
+  --glass-border: rgba(255, 255, 255, 0.3);
+  --glass-text: #111;
+  --content-padding: 24px;
+  /* --bottom-nav-h: 72px; */
+}
+
+/* Genel Header Yapısı */
+.header-bottom {
+  position: sticky;
+  top: 100px;
+  z-index: 999;
+  padding: 12px 0;
+  background: transparent;
+  overscroll-behavior-y: none;
+}
+
+/* Liquid Glass Panel */
+.liquid-glass-panel {
+  display: flex;
+  align-items: center;
+  backdrop-filter: blur(20px);
+  background: var(--glass-color);
+  border: 1px solid var(--glass-border);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+  border-radius: 32px;
+  padding: 14px 28px;
+  margin: 0 auto;
+  gap: 32px;
+  color: var(--glass-text);
+  overflow: hidden;
+  transform-origin: left center;
+  transform: translateX(0) scale(1);
+  opacity: 1;
+  width: 360px; /* sabit collapsed width */
+  max-width: 360px; /* fit-content yerine */
+  transition: width 0.9s cubic-bezier(0.25, 1, 0.5, 1),
+    border-radius 0.9s cubic-bezier(0.25, 1, 0.5, 1), transform 0.6s ease-out,
+    opacity 0.6s ease-out;
+}
+
+.liquid-glass-panel.expanded {
+  width: 95%;
+  max-width: 1300px;
+  justify-content: flex-start;
+  border-radius: 20px;
+  gap: 48px;
+  transform: translateX(0) scale(1);
+  opacity: 1;
+}
+
+.liquid-glass-panel.animating {
+  transform: translateX(-20px) scale(0.98);
+  opacity: 0.8;
+}
+
+/* Menü İkonları */
+.icon-container {
+  display: flex;
+  gap: 32px;
+  transition: transform 0.3s ease;
+}
+
+.icon-container button {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 4px 6px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  color: var(--glass-text);
+  font-weight: 500;
+  min-width: 80px;
+  transition: color 0.3s ease, transform 0.3s ease;
+}
+
+.icon-container button span {
+  font-size: 13px;
+  white-space: nowrap;
+}
+
+.icon-container button:hover,
+.icon-container button.active {
+  color: var(--accent-color);
+  transform: scale(1.05);
+}
+
+/* İçerik Alanı */
+.liquid-content-area {
+  display: flex;
+  gap: 32px;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  scroll-behavior: smooth;
+  opacity: 0;
+  transform: translateY(12px);
+  pointer-events: none;
+  transition: opacity 0.4s ease, transform 0.4s ease;
+  cursor: grab;
+}
+
+.liquid-content-area.active {
+  opacity: 1;
+  transform: translateY(0);
+  pointer-events: auto;
+}
+
+.liquid-content-area:active {
+  cursor: grabbing;
+}
+
+.liquid-content-area::-webkit-scrollbar {
+  height: 0;
+}
+
+/* Menü Öğeleri */
+.menu-item,
+.blog-link {
+  flex-shrink: 0;
+  scroll-snap-align: start;
+  opacity: 0;
+  transform: translateY(10px);
+  animation: slideIn 0.3s ease forwards;
+  animation-delay: 0.5s;
+}
+
+.menu-link-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.menu-link {
+  font-size: 14px;
+  font-weight: 600;
+  text-transform: uppercase;
+  color: var(--glass-text);
+  text-decoration: none;
+  transition: color 0.3s ease;
+}
+
+.menu-link:hover {
+  color: var(--accent-color);
+}
+
+.submenu-toggle {
+  background: none;
+  border: none;
+  cursor: pointer;
+  margin-left: 4px;
+  display: flex;
+  align-items: center;
+  color: var(--glass-text);
+}
+
+/* Animasyon Keyframes */
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+@media (max-width: 768px) {
+  .mobile-bottom-nav {
+    position: fixed;
+    bottom: 12px; /* sayfanın en altından biraz yukarı */
+    left: 50%;
+    transform: translateX(-50%);
+    width: 95%;
+    max-width: 360px;
+    padding: 14px 28px; /* liquid-glass-panel ile uyumlu */
+    display: flex;
+    justify-content: space-around;
+    backdrop-filter: blur(20px);
+    background: var(--glass-color);
+    border: 1px solid var(--glass-border);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+    border-radius: 32px;
+    gap: 32px;
+    color: var(--glass-text);
+    z-index: 1502; /* overlay’ın üstünde */
+  }
+  .mobile-bottom-nav button {
+    background: none;
+    border: none;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    color: var(--glass-text);
+    font-size: 12px;
+  }
+  .mobile-bottom-nav button span {
+    margin-top: 4px;
+  }
+}
+
+/* Mobil */
+/* @media (max-width: 768px) {
+  .liquid-glass-panel {
+    flex-direction: column;
+    gap: 16px;
+    padding: 16px;
+    align-items: flex-start;
+  }
+
+  .liquid-glass-panel.expanded {
+    width: 100%;
+    max-width: 100%;
+  }
+
+  .liquid-content-area {
+    flex-direction: column;
+    gap: 16px;
+  }
+  
+} */

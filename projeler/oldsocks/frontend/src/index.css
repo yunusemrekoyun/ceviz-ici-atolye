@@ -1,0 +1,274 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Sayfa zemini açıkça beyaz: bazı uygulama içi tarayıcılar tanımsız zemini koyu gösterir. */
+html {
+  background-color: #fff;
+}
+
+.storefront-font-classic {
+  --storefront-body-font: Arial, Helvetica, sans-serif;
+  --storefront-heading-font: "Playfair Display", Georgia, serif;
+}
+
+.storefront-font-modern {
+  --storefront-body-font: "Manrope Variable", "Manrope", Arial, sans-serif;
+  --storefront-heading-font: "Manrope Variable", "Manrope", Arial, sans-serif;
+}
+
+.storefront-font-fashion {
+  --storefront-body-font: "Manrope Variable", "Manrope", Arial, sans-serif;
+  --storefront-heading-font: "Bodoni Moda Variable", "Bodoni Moda", Georgia, serif;
+}
+
+.storefront-theme {
+  font-family: var(--storefront-body-font);
+}
+
+.storefront-theme h1,
+.storefront-theme h2,
+.storefront-theme h3,
+.storefront-theme .font-playfair {
+  font-family: var(--storefront-heading-font);
+}
+
+.hero-cta,
+.campaign-cta {
+  background-color: rgb(0 0 0 / var(--button-opacity, 0.3));
+}
+
+.hero-cta:hover,
+.campaign-cta:hover {
+  background-color: #fff;
+  color: #000;
+}
+
+/* Ana sayfa ürün şeridi: kartlar eşit boyda */
+.home-rail .swiper-slide {
+  height: auto;
+}
+.home-rail .swiper-slide > * {
+  height: 100%;
+}
+
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+/* --- AnnouncementBar --- */
+.announcement-bar {
+  overflow: hidden;
+  position: relative;
+  white-space: nowrap;
+}
+
+.marquee__track {
+  display: inline-block;
+  will-change: transform;
+  animation: marquee-jump var(--dur, 12s) linear infinite;
+}
+
+/* Mesaj tek kopya */
+.marquee__msg {
+  display: inline-block;
+  padding: 0 1rem;
+}
+
+/* Başlangıç: sağ dış (container genişliği kadar), Bitiş: sol dış (mesaj genişliği kadar) */
+@keyframes marquee-jump {
+  0% {
+    transform: translateX(var(--cw, 100vw));
+  }
+  100% {
+    transform: translateX(calc(-1 * var(--mw, 100%)));
+  }
+}
+
+/* Telefonda tek duyuruyu hareket ettirmek metni uzun süre kısmen görünür
+   bırakıyordu. Küçük ekranlarda mesajı sabit ve gerektiğinde iki satır göster. */
+@media (max-width: 640px) {
+  .announcement-bar {
+    white-space: normal;
+  }
+
+  .marquee__track {
+    display: block;
+    width: 100%;
+    animation: none;
+    transform: none;
+  }
+
+  .marquee__msg {
+    display: block;
+    padding: 0 0.75rem;
+    text-align: center;
+    font-size: 0.75rem;
+    line-height: 1.25rem;
+  }
+}
+
+/* --- Range slider thumb/track --- */
+.range-thumb::-webkit-slider-runnable-track {
+  height: 8px;
+  background: transparent;
+}
+.range-thumb::-moz-range-track {
+  height: 8px;
+  background: transparent;
+}
+
+.range-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  height: 32px; /* etkileşim alanı (geniş tut) */
+  background: transparent;
+}
+
+.range-thumb::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 18px;
+  height: 18px;
+  border-radius: 9999px;
+  background: #111;
+  border: 2px solid #fff;
+  box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.15);
+  margin-top: 0; /* <<< ÖNEMLİ: -5px yerine 0, tam ortaya oturur */
+  cursor: pointer;
+}
+
+.range-thumb::-moz-range-thumb {
+  width: 18px;
+  height: 18px;
+  border-radius: 9999px;
+  background: #111;
+  border: 2px solid #fff;
+  box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.15);
+  cursor: pointer;
+}
+.range-thumb {
+  pointer-events: none;
+}
+.range-thumb::-webkit-slider-thumb {
+  pointer-events: auto;
+}
+.range-thumb::-moz-range-thumb {
+  pointer-events: auto;
+}
+
+@media (max-width: 768px) and (pointer: coarse) {
+  .admin-shell input:not([type="checkbox"]):not([type="radio"]):not([type="range"]):not([type="file"]),
+  .admin-shell select,
+  .admin-shell textarea {
+    font-size: 16px !important;
+    line-height: 1.5;
+  }
+
+  .admin-shell {
+    -webkit-text-size-adjust: 100%;
+    text-size-adjust: 100%;
+  }
+}
+
+/* Admin kenar çubuğu: ince, sadece gerektiğinde belirginleşen kaydırma çubuğu.
+   Sınıf AdminLayout içinde kullanılıyordu ama karşılığı tanımlı değildi. */
+.custom-scrollbar {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(0, 0, 0, 0.12) transparent;
+}
+.custom-scrollbar::-webkit-scrollbar {
+  width: 8px;
+}
+.custom-scrollbar::-webkit-scrollbar-track {
+  background: transparent;
+}
+.custom-scrollbar::-webkit-scrollbar-thumb {
+  background-color: rgba(0, 0, 0, 0.12);
+  border-radius: 9999px;
+}
+.custom-scrollbar:hover::-webkit-scrollbar-thumb {
+  background-color: rgba(0, 0, 0, 0.22);
+}
+
+/* Giriş / kayıt formları açılırken hafif kayarak belirir (framer-motion yerine). */
+@keyframes authEnter {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+.auth-enter {
+  animation: authEnter 0.4s ease-out both;
+}
+@media (prefers-reduced-motion: reduce) {
+  .auth-enter {
+    animation: none;
+  }
+}
+
+/* Header markası: krom (gümüş) yazı. Açık zeminde okunsun diye ince koyu kontur ve gölge. */
+.brand-chrome {
+  background-image: linear-gradient(
+    176deg,
+    #fdfdfd 0%,
+    #b9b9b9 28%,
+    #ffffff 46%,
+    #5d5d5d 54%,
+    #9b9b9b 72%,
+    #e9e9e9 100%
+  );
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  -webkit-text-stroke: 0.7px #2b2b2b;
+  filter: drop-shadow(0 1px 0.5px rgba(0, 0, 0, 0.35));
+}
+@supports not ((-webkit-background-clip: text) or (background-clip: text)) {
+  .brand-chrome {
+    color: #2b2b2b;
+    -webkit-text-stroke: 0;
+  }
+}
+.brand-wordmark {
+  letter-spacing: 0.02em;
+  padding-bottom: 0.06em;
+}
+
+/* Açılır başlıklarda tarayıcının üçgen işaretini gizle (Safari dahil). */
+.details-summary::-webkit-details-marker {
+  display: none;
+}
+
+/* Ürün sayfası (telefon): detay kartı parmağı izler. --sheet-p sayfa kaydırmasından hesaplanır
+   (0: görsel açık, 1: detaylar açık). Kart yarıda bırakılırsa en yakın duruma oturur. */
+@media (max-width: 1023.98px) {
+  html.product-sheet-snap {
+    scroll-snap-type: y proximity;
+  }
+  .product-snap-top,
+  .product-sheet {
+    scroll-snap-align: start;
+    scroll-margin-top: 65px;
+  }
+  .product-gallery {
+    transform: scale(calc(1 - 0.06 * var(--sheet-p, 0)));
+    transform-origin: 50% 0;
+  }
+  .product-gallery-dim {
+    opacity: calc(0.35 * var(--sheet-p, 0));
+  }
+}
+@media (max-width: 1023.98px) and (prefers-reduced-motion: reduce) {
+  .product-gallery {
+    transform: none;
+  }
+}

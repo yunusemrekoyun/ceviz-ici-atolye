@@ -1,0 +1,53 @@
+.campaigns .campaign-item {
+  padding: 70px 35px;
+  background-size: cover;
+  background-position: center;
+  flex: 1;
+  color: white;
+}
+.campaign-item .btn {
+  background-color: #f5e9c5; /* açık sarı zemin */
+  color: #5a4100; /* koyu sıcak yazı */
+  border-color: #f5e9c5;
+}
+
+.campaign-item .btn:hover {
+  background-color: #e8d49a; /* hover’da hafif koyulaşma */
+  color: #000; /* netlik için siyah yazı */
+  border-color: #e8d49a;
+}
+.campaigns .campaign-item .campaign-title {
+  font-size: 26px;
+  font-weight: 600;
+  line-height: 30px;
+}
+
+.campaigns .campaign-item .campaign-desc {
+  margin: 40px 0;
+  font-size: 14px;
+}
+
+.campaigns-wrapper:nth-child(1) .campaign-item:nth-child(1) {
+  background-image: url(../../img/campaigns/banner1.png);
+}
+
+.campaigns-wrapper:nth-child(1) .campaign-item:nth-child(2) {
+  background-image: url(../../img/campaigns/banner2.png);
+}
+
+.campaigns-wrapper:nth-child(2) .campaign-item:nth-child(1) {
+  background-image: url(../../img/campaigns/banner3.png);
+  flex: 5;
+}
+
+.campaigns-wrapper:nth-child(2) .campaign-item:nth-child(2) {
+  background-image: url(../../img/campaigns/banner4.png);
+  flex: 3;
+}
+
+@media (max-width: 768px) {
+  .campaigns .campaign-item {
+    width: 100%;
+    flex: unset !important;
+  }
+}

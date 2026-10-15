@@ -1,0 +1,39 @@
+# Node modules
+node_modules/
+
+# Logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# Environment variables
+.env
+.env.*.local
+
+# System files (Mac / Windows)
+.DS_Store
+Thumbs.db
+
+# IDE configs (VSCode, JetBrains vs)
+.vscode/
+.idea/
+
+# Cache / temp
+.cache/
+tmp/
+temp/
+
+# Uploads (genelde local dosya uploads klasörünü git'e atmak istemeyiz)
+uploads/
+
+# Coverage (test çıktısı varsa)
+coverage/
+
+# Optional: yarn/pnpm lock dosyaları
+# package-lock.json
+# yarn.lock
+# pnpm-lock.yaml
+
+# MacOS icon files
+Icon?

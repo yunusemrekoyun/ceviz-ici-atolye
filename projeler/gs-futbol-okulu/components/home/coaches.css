@@ -1,0 +1,31 @@
+.coach-scroll { position:absolute; inset:112px 5% 15px; overflow:auto; overscroll-behavior:contain; scrollbar-width:thin; scrollbar-color:#a88994 transparent; scroll-snap-type:y proximity; }
+.coach-profile { display:grid; grid-template-columns:1fr 1fr; align-items:center; gap:7%; min-height:100%; scroll-snap-align:start; padding:20px 8% 35px; }
+.coach-art { position:relative; height:320px; display:flex; justify-content:center; align-items:end; }
+.coach-art-circle { position:absolute; width:290px; max-width:100%; aspect-ratio:1; bottom:0; border-radius:50%; background:#941d3b; }
+.coach-profile:nth-of-type(even) .coach-art-circle { background:#fdb912; }
+.coach-sticker { position:relative; height:100%; width:100%; transform:rotate(-5deg); transform-origin:50% 90%; transition:transform 650ms cubic-bezier(.22,1,.36,1),opacity 400ms ease-out; }
+.coach-profile:nth-of-type(even) .coach-sticker { transform:rotate(5deg); }
+.coach-profile[data-visible="false"] .coach-sticker { opacity:.25; transform:translateY(28px) rotate(-10deg) scale(.96); }
+.coach-sticker img,.coach-sticker svg { display:block; width:100%; height:100%; object-fit:contain; object-position:bottom; }
+.coach-sticker img { filter:drop-shadow(4px 0 0 #fff) drop-shadow(-4px 0 0 #fff) drop-shadow(0 4px 0 #fff) drop-shadow(0 -4px 0 #fff) drop-shadow(0 9px 7px #40142124); }
+.coach-role { color:#941d3b; font-size:14px; margin-bottom:12px!important; }
+.coach-demo-label { display:inline-block; margin-bottom:14px; border:1px solid #ded5d9; border-radius:4px; padding:4px 7px; color:#746970; font-size:10px; }
+.coach-copy h3 { font:500 clamp(38px,4vw,62px)/1.05 'GS Teko',sans-serif; color:#252328; margin-bottom:16px; }
+.coach-bio { max-width:38ch; color:#625c62; font-size:15px; line-height:1.8; }
+.coach-next { display:flex; align-items:center; gap:8px; font-size:11px; color:#713849; margin-top:24px!important; }
+.pulse-layer--coaches { padding:0!important; overflow:hidden; }
+.football-scene[data-section="-1"] { visibility:hidden; opacity:0; }
+@media (max-width:900px) {
+  .pulse-layer--coaches { inset:58px 0 0!important; }
+  .coach-scroll { inset:0 14px 10px; }
+  .coach-profile { grid-template-columns:1fr; gap:20px; padding:18px 8px 28px; min-height:100%; }
+  .coach-art { height:210px; }
+  .coach-art-circle { width:190px; }
+  .coach-copy { padding:0 12px; }
+  .coach-copy h3 { font-size:40px; margin-bottom:10px; }
+  .coach-role { font-size:12px; margin-bottom:8px!important; }
+  .coach-bio { font-size:13px; line-height:1.7; }
+  .coach-next { font-size:10px; margin-top:17px!important; }
+}
+@media (max-height:650px) and (min-width:901px) { .coach-art { height:240px; } .coach-art-circle { width:220px; } }
+@media (prefers-reduced-motion:reduce) { .coach-sticker { transition:none; } .coach-profile[data-visible="false"] .coach-sticker { opacity:1; transform:none; } }

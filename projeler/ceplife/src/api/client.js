@@ -1,0 +1,282 @@
+const BASE_URL = (process.env.NEXT_PUBLIC_API_URL || "/api").replace(/\/$/, "");
+
+const ACCESS_KEY = "accessToken";
+const USER_KEY = "authUser";
+let accessTokenMemory = null;
+let legacyAccessTokenCleared = false;
+let userCacheMemory = null;
+let legacyUserCacheCleared = false;
+let sessionRestoreAttempted = false;
+
+const canUseLocalStorage = () =>
+  typeof window !== "undefined" && typeof window.localStorage !== "undefined";
+
+const canUseSessionStorage = () =>
+  typeof window !== "undefined" && typeof window.sessionStorage !== "undefined";
+
+const getLocalStorage = () =>
+  canUseLocalStorage() ? window.localStorage : null;
+
+const getUserStorage = () =>
+  canUseSessionStorage() ? window.sessionStorage : null;
+
+const clearLegacyAccessToken = () => {
+  if (legacyAccessTokenCleared) return;
+  const storage = getLocalStorage();
+  if (!storage) return;
+  try {
+    storage.removeItem(ACCESS_KEY);
+    legacyAccessTokenCleared = true;
+  } catch {
+    // ignore storage cleanup failures
+  }
+};
+
+const clearLegacyUserCache = () => {
+  if (legacyUserCacheCleared) return;
+  const storage = getLocalStorage();
+  if (!storage) return;
+  try {
+    storage.removeItem(USER_KEY);
+    legacyUserCacheCleared = true;
+  } catch {
+    // ignore storage cleanup failures
+  }
+};
+
+export const getAccessToken = () => {
+  clearLegacyAccessToken();
+  return accessTokenMemory;
+};
+
+export const setAccessToken = (token) => {
+  accessTokenMemory = token ? String(token) : null;
+  if (accessTokenMemory) {
+    sessionRestoreAttempted = false;
+  }
+  clearLegacyAccessToken();
+};
+
+export const getUser = () => {
+  if (userCacheMemory) return userCacheMemory;
+  clearLegacyUserCache();
+  const storage = getUserStorage();
+  if (!storage) return null;
+  try {
+    const parsed = JSON.parse(storage.getItem(USER_KEY) || "null");
+    userCacheMemory = parsed;
+    return parsed;
+  } catch {
+    return null;
+  }
+};
+
+export const setUser = (user) => {
+  const storage = getUserStorage();
+  userCacheMemory = user || null;
+  clearLegacyUserCache();
+  if (!storage) return;
+  if (user) {
+    storage.setItem(USER_KEY, JSON.stringify(user));
+  } else {
+    storage.removeItem(USER_KEY);
+  }
+};
+
+export const clearAuthState = () => {
+  sessionRestoreAttempted = false;
+  setAccessToken(null);
+  setUser(null);
+};
+
+export const hasAuthSession = () => Boolean(getAccessToken() || getUser());
+export const hasAttemptedSessionRestore = () => sessionRestoreAttempted;
+export const markSessionRestoreAttempted = () => {
+  sessionRestoreAttempted = true;
+};
+
+function buildHeaders({ body, headers = {}, auth }) {
+  const isFormData =
+    typeof FormData !== "undefined" && body instanceof FormData;
+  return {
+    ...(!isFormData && body ? { "Content-Type": "application/json" } : {}),
+    ...(auth && getAccessToken()
+      ? { Authorization: `Bearer ${getAccessToken()}` }
+      : {}),
+    ...headers,
+  };
+}
+
+const emitAdminAction = (type, detail) => {
+  if (typeof window === "undefined") return;
+  try {
+    window.dispatchEvent(
+      new CustomEvent("admin-action", { detail: { type, ...detail } })
+    );
+  } catch {
+    // ignore dispatch failures
+  }
+};
+
+const emitUiLoading = (type, detail) => {
+  if (typeof window === "undefined") return;
+  try {
+    window.dispatchEvent(
+      new CustomEvent("ui-loading", { detail: { type, ...detail } })
+    );
+  } catch {
+    // ignore dispatch failures
+  }
+};
+
+async function request(
+  path,
+  { method = "GET", body, headers, auth = false, ui = "auto", cache } = {}
+) {
+  const resolvedHeaders = buildHeaders({ body, headers, auth });
+  const methodUpper = String(method || "GET").toUpperCase();
+  const isMutating = !["GET", "HEAD", "OPTIONS"].includes(methodUpper);
+  const adminActionEnabled = auth && isMutating && ui !== false;
+  const actionId =
+    adminActionEnabled
+      ? `${Date.now()}-${Math.random().toString(36).slice(2)}`
+      : null;
+  const uiEnabled = ui === true || (ui !== false && isMutating);
+  const uiId = uiEnabled
+    ? `${Date.now()}-${Math.random().toString(36).slice(2)}`
+    : null;
+
+  if (actionId) {
+    emitAdminAction("start", { id: actionId, method: methodUpper, path });
+  }
+  if (uiId) {
+    emitUiLoading("start", { id: uiId, method: methodUpper, path });
+  }
+
+  try {
+    const response = await fetch(BASE_URL + path, {
+      method,
+      headers: resolvedHeaders,
+      body: body
+        ? body instanceof FormData
+          ? body
+          : JSON.stringify(body)
+        : undefined,
+      credentials: "include",
+      ...(cache ? { cache } : {}),
+    });
+    return response;
+  } finally {
+    if (actionId) {
+      emitAdminAction("end", { id: actionId });
+    }
+    if (uiId) {
+      emitUiLoading("end", { id: uiId });
+    }
+  }
+}
+
+let refreshPromise = null;
+
+export function refreshAccessToken() {
+  if (!refreshPromise) {
+    refreshPromise = (async () => {
+      try {
+        const response = await request("/auth/refresh", {
+          method: "POST",
+          ui: false,
+        });
+        if (!response.ok) return false;
+        const data = await response.json();
+        if (data?.accessToken) {
+          setAccessToken(data.accessToken);
+          return true;
+        }
+        return false;
+      } catch {
+        return false;
+      } finally {
+        refreshPromise = null;
+      }
+    })();
+  }
+  return refreshPromise;
+}
+
+export async function http(
+  path,
+  {
+    method = "GET",
+    body,
+    headers = {},
+    auth = false,
+    retry = true,
+    ui = "auto",
+    cache,
+  } = {}
+) {
+  const response = await request(path, {
+    method,
+    body,
+    headers,
+    auth,
+    ui,
+    cache,
+  });
+
+  if (auth && response.status === 401 && retry) {
+    const ok = await refreshAccessToken();
+    if (ok) {
+      return http(path, {
+        method,
+        body,
+        headers,
+        auth,
+        retry: false,
+        ui,
+        cache,
+      });
+    }
+    clearAuthState();
+  }
+
+  if (auth && response.status === 401) {
+    clearAuthState();
+  }
+
+  if (auth && response.status === 403 && path.startsWith("/auth/me")) {
+    clearAuthState();
+  }
+
+  if (!response.ok) {
+    const text = await response.text().catch(() => "");
+    throw new Error(text || `HTTP ${response.status}`);
+  }
+
+  if (response.status === 204 || response.status === 205) return null;
+
+  const contentType = response.headers.get("content-type") || "";
+  const text = await response.text().catch(() => "");
+  if (!text) return null;
+
+  if (contentType.includes("application/json")) {
+    return JSON.parse(text);
+  }
+
+  try {
+    return JSON.parse(text);
+  } catch {
+    return text;
+  }
+}
+
+export const toQueryString = (params = {}) => {
+  const search = new URLSearchParams();
+  Object.entries(params).forEach(([key, value]) => {
+    if (value === undefined || value === null) return;
+    if (value === "") return;
+    search.append(key, value);
+  });
+  const qs = search.toString();
+  return qs ? `?${qs}` : "";
+};

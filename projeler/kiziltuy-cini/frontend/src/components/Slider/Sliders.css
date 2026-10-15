@@ -1,0 +1,174 @@
+:root {
+  --accent-color: #d4a017;
+  --accent-hover: #b38b00;
+  --accent-light: #fdf3d0;
+}
+
+.slider {
+  position: relative;
+}
+
+.slider-item {
+  position: relative;
+  height: calc((100vh - 137px) * 0.85);
+  width: 85vw;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 20px;
+  border-radius: 16px;
+  overflow: hidden;
+}
+
+.slider-item .slider-image img {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  object-fit: cover;
+  object-position: center bottom;
+  z-index: -1;
+}
+
+.slider-item .slider-title {
+  font-size: 18px;
+  font-weight: 500;
+  color: #222;
+}
+
+.slider-item .slider-heading {
+  font-size: 60px;
+  font-weight: 600;
+  color: var(--accent-color);
+}
+
+.slider-item a {
+  position: relative;
+  z-index: 1;
+  color: var(--accent-color);
+  transition: color 0.2s ease;
+}
+
+.slider-item a:hover {
+  color: var(--accent-hover);
+}
+
+.slider .slider-buttons {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 30px;
+}
+
+.slider-buttons button {
+  width: 60px;
+  height: 60px;
+  border-radius: 100%;
+  border: 1px solid #eee4c6;
+  background-color: white;
+  opacity: 0.5;
+  transition: 0.2s ease all;
+  color: var(--accent-color);
+}
+
+.slider-buttons button:hover {
+  background-color: var(--accent-color);
+  opacity: 1;
+  color: #fff;
+  border-color: var(--accent-color);
+}
+
+.slider-buttons button i {
+  font-size: 30px;
+}
+
+.fade {
+  animation-name: fade;
+  animation-duration: 1.5s;
+}
+
+@keyframes fade {
+  from {
+    opacity: 0.4;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@media (max-width: 768px) {
+  .slider-item {
+    flex: 0 0 100%;
+    scroll-snap-align: center;
+    height: 400px;
+    margin: 0;
+    border-radius: 12px;
+    position: relative;
+  }
+
+  .slider-elements {
+    display: flex;
+    overflow-x: hidden;
+    scroll-snap-type: x mandatory;
+    -webkit-overflow-scrolling: touch;
+    scroll-behavior: smooth;
+    flex-direction: column;
+  }
+
+  .slider-track {
+    display: flex;
+    width: 100%;
+    transition: transform 0.6s ease-in-out;
+  }
+
+  .slider-item .slider-image img {
+    object-position: center center;
+  }
+
+  .slider-buttons {
+    display: none !important;
+  }
+
+  .slider-progress-wrapper {
+    display: flex;
+    gap: 6px;
+    justify-content: center;
+    align-items: center;
+    margin-top: 14px;
+  }
+
+  .slider-progress-dot {
+    width: 28px;
+    height: 8px;
+    background-color: #ddd;
+    border-radius: 10px;
+    overflow: hidden;
+    position: relative;
+  }
+
+  .slider-progress-dot .fill {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    background-color: var(--accent-color);
+    animation: fillProgress 3s linear forwards;
+    width: 0%;
+    border-radius: 10px;
+  }
+
+  @keyframes fillProgress {
+    from {
+      width: 0%;
+    }
+    to {
+      width: 100%;
+    }
+  }
+}

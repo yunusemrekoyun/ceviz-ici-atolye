@@ -1,0 +1,77 @@
+# ===== Dependencies =====
+node_modules/
+
+# ===== Next.js Build =====
+.next/
+out/
+dist/
+*.tsbuildinfo
+
+# ===== Environment / Secrets (HEPSİ) =====
+.env
+.env.*
+.env.local
+.env.example
+.env.development
+.env.production
+.env.staging
+.env.test
+.env.*.local
+
+# ===== Database / Prisma Seed =====
+prisma/seed-reset.ts
+
+# ===== AI Tool Configs =====
+.claude/
+.gemini/
+.cursor/
+.copilot/
+.aider*
+.codeium/
+.tabnine/
+.windsurf/
+.augment/
+.continue/
+.sourcegraph/
+.cody/
+.supermaven/
+.idx/
+.devcontainer/
+
+# ===== OS Files =====
+.DS_Store
+Thumbs.db
+Desktop.ini
+*.swp
+*.swo
+*~
+
+# ===== Logs =====
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# ===== IDE =====
+.idea/
+.vscode/
+*.sublime-project
+*.sublime-workspace
+
+# ===== Misc =====
+*.tgz
+*.pid
+*.seed
+coverage/
+
+# ===== User Media =====
+public/uploads/
+.private/
+/.playwright-mcp
+/presentation
+
+# ===== Internal planning (not pushed) =====
+docs/ROADMAP.md
+/design-refs
+/docs
+TEST-PLAN.md

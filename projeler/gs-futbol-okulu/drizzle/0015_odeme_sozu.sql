@@ -1,0 +1,1 @@
+ALTER TABLE `access_overrides` ADD `fulfilled_at` text;

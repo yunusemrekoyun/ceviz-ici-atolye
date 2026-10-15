@@ -1,0 +1,63 @@
+import { Link } from "react-router-dom";
+import DiscountBadge from "../ui/DiscountBadge.jsx";
+import AppImage from "../ui/AppImage.jsx";
+
+const currency = new Intl.NumberFormat("tr-TR", {
+  style: "currency",
+  currency: "TRY",
+  minimumFractionDigits: 2,
+});
+
+export default function SimilarProductItem({
+  image,
+  title,
+  price,
+  finalPrice,
+  discount,
+  slug,
+}) {
+  const basePrice = Number(price ?? 0);
+  const computedFinal = Number(finalPrice ?? basePrice);
+  const showStrike = Number.isFinite(basePrice) && computedFinal < basePrice;
+
+  return (
+    <Link
+      to={slug ? `/product/${slug}` : "#"}
+      className="glass-surface block overflow-hidden rounded-xl bg-white ring-1 ring-border transition hover:shadow-sm"
+    >
+      <div className="relative aspect-[4/5] w-full overflow-hidden bg-surface-light/60">
+        <AppImage
+          src={image || "/shop-1.jpg"}
+          alt={title}
+          width={900}
+          height={1125}
+          sizes="(max-width: 768px) 50vw, 20vw"
+          className="h-full w-full object-contain p-2"
+          draggable="false"
+        />
+        {showStrike && (
+          <DiscountBadge
+            percentage={discount}
+            size="sm"
+            className="absolute left-3 top-3"
+          />
+        )}
+      </div>
+      <div className="p-3">
+        <h3 className="line-clamp-2 text-sm font-semibold text-primary">
+          {title}
+        </h3>
+        <div className="mt-1 flex items-baseline gap-2">
+          <span className="text-sm font-semibold text-accent">
+            {currency.format(computedFinal)}
+          </span>
+          {showStrike && (
+            <span className="text-xs text-secondary/60 line-through">
+              {currency.format(basePrice)}
+            </span>
+          )}
+        </div>
+      </div>
+    </Link>
+  );
+}

@@ -1,0 +1,152 @@
+.about-hero {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1.1fr);
+  gap: clamp(32px, 6vw, 88px);
+  align-items: center;
+  padding-block: clamp(32px, 5vw, 64px);
+}
+
+.about-copy .page-title {
+  margin-top: 12px;
+  font-size: clamp(34px, 4.4vw, 56px);
+  line-height: 1.05;
+}
+
+.about-copy p {
+  margin-top: 18px;
+  max-width: 52ch;
+  color: var(--ink-2);
+  font-size: 16px;
+  line-height: 1.75;
+}
+
+.about-actions {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 16px 28px;
+  margin-top: 32px;
+}
+
+.about-media {
+  position: relative;
+  padding-bottom: 12%;
+}
+
+.about-media-main {
+  width: 100%;
+  aspect-ratio: 4 / 3;
+  object-fit: cover;
+  border-radius: var(--radius-lg);
+}
+
+.about-media-inset {
+  position: absolute;
+  left: -8%;
+  bottom: 0;
+  width: 46%;
+  aspect-ratio: 1;
+  object-fit: cover;
+  border-radius: var(--radius);
+  border: 6px solid var(--bg);
+  box-shadow: var(--shadow-lg);
+}
+
+.about-values {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 16px;
+  padding-block: clamp(24px, 4vw, 48px);
+}
+
+.about-value {
+  padding: 28px;
+  border-radius: var(--radius-lg);
+  background: var(--surface);
+  border: 1px solid var(--line);
+}
+
+.about-value i {
+  display: grid;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  border-radius: 12px;
+  background: var(--accent-soft);
+  color: var(--accent);
+  font-size: 20px;
+}
+
+.about-value h2 {
+  margin-top: 18px;
+  font-family: var(--font-display);
+  font-size: 22px;
+  font-weight: 450;
+}
+
+.about-value p {
+  margin-top: 8px;
+  color: var(--ink-2);
+}
+
+/* ---------- Marka logoları ---------- */
+.brand-grid {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  border-top: 1px solid var(--line);
+  border-left: 1px solid var(--line);
+}
+
+.brand-cell {
+  display: grid;
+  place-items: center;
+  aspect-ratio: 3 / 2;
+  padding: 24px;
+  border-right: 1px solid var(--line);
+  border-bottom: 1px solid var(--line);
+  background: var(--surface);
+}
+
+.brand-cell img {
+  max-height: 72px;
+  object-fit: contain;
+  mix-blend-mode: multiply;
+  filter: grayscale(1);
+  opacity: 0.75;
+  transition: filter 0.3s var(--ease), opacity 0.3s var(--ease);
+}
+
+.brand-cell:hover img {
+  filter: none;
+  opacity: 1;
+}
+
+@media (max-width: 992px) {
+  .about-hero {
+    grid-template-columns: 1fr;
+  }
+
+  .about-media {
+    order: -1;
+  }
+
+  .about-media-inset {
+    left: auto;
+    right: 12px;
+    width: 36%;
+  }
+
+  .brand-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 576px) {
+  .about-values {
+    grid-template-columns: 1fr;
+  }
+
+  .brand-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}

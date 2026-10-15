@@ -1,0 +1,58 @@
+{
+  "name": "gs-kutahya-futbol-okulu-kayit",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Galatasaray Spor Okulları Kütahya Futbol Okulu – ön kayıt toplama uygulaması",
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start -H 127.0.0.1",
+    "lint": "eslint",
+    "typecheck": "tsc --noEmit",
+    "db:generate": "drizzle-kit generate",
+    "db:migrate": "tsx scripts/migrate.ts",
+    "db:backup": "tsx scripts/backup.ts",
+    "db:seed-demo": "tsx scripts/seed-demo.ts",
+    "import:list": "tsx scripts/import-list.ts",
+    "admin:seed": "tsx scripts/seed-admin.ts",
+    "smoke": "tsx scripts/smoke-test.ts",
+    "import:enrollments": "tsx scripts/import-enrollments.ts",
+    "reset:payments": "tsx scripts/reset-payments.ts",
+    "kit:sizes": "tsx scripts/split-kit-sizes.ts"
+  },
+  "dependencies": {
+    "better-sqlite3": "^13.0.3",
+    "drizzle-orm": "^0.45.2",
+    "exceljs": "^4.4.0",
+    "jsqr": "^1.4.0",
+    "lucide-react": "^1.48.0",
+    "next": "16.3.5",
+    "nodemailer": "^10.0.10",
+    "pdfmake": "^0.3.11",
+    "qrcode": "^1.5.4",
+    "react": "19.2.8",
+    "react-dom": "19.2.8",
+    "sharp": "^0.35.4",
+    "zod": "^4.6.5"
+  },
+  "devDependencies": {
+    "@tailwindcss/postcss": "^4",
+    "@types/better-sqlite3": "^9.6.0",
+    "@types/node": "^20",
+    "@types/nodemailer": "^8.0.2",
+    "@types/pngjs": "^6.0.5",
+    "@types/qrcode": "^1.5.6",
+    "@types/react": "^19",
+    "@types/react-dom": "^19",
+    "drizzle-kit": "^0.31.10",
+    "eslint": "^9",
+    "eslint-config-next": "16.3.5",
+    "pngjs": "^7.0.0",
+    "tailwindcss": "^4",
+    "tsx": "^4.23.13",
+    "typescript": "^5"
+  },
+  "engines": {
+    "node": ">=20.9"
+  }
+}

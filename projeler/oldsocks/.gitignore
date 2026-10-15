@@ -1,0 +1,57 @@
+# === Node Modules (Hem frontend hem backend) ===
+**/node_modules
+**/prod
+# === Build ve Output ===
+**/dist
+**/build
+/storage/media/
+/storage/dev-*/
+*.local
+
+# === Log dosyaları ===
+logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
+
+# === Sistem ve Editör Dosyaları ===
+.DS_Store
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+.idea
+.vscode/*
+!.vscode/extensions.json
+
+# === Çıkartılmış ya da geçici dosyalar ===
+*.env
+*.env.*.local
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# === Özelleştirilmiş ayarlar ===
+*.bak
+*.tmp
+maintenance-page/
+
+# === OS tarafından oluşturulan ===
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+
+# === Video önizleme thumbnail / cache gibi dosyalar (eğer varsa) ===
+*.avi
+*.mp4
+*.mov
+*.mkv
+*.webm
+
+# === Public dizininde özel yüklemeler varsa dışarıda tut ===
+!frontend/public/vite.svg

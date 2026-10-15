@@ -1,0 +1,54 @@
+# === Genel ===
+node_modules/
+.env
+.DS_Store
+Thumbs.db
+
+# === Log dosyaları ===
+logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# === OS/System dosyaları ===
+*.swp
+*.swo
+
+# === Editor/IDE ===
+.vscode/
+.idea/
+*.sublime-project
+*.sublime-workspace
+
+# === Git ===
+.git/
+
+# === Build/Cache ===
+dist/
+build/
+.cache/
+tmp/
+temp/
+
+# === Backend (Node.js) ===
+backend/node_modules/
+backend/.env
+backend/dist/
+backend/coverage/
+
+# === Frontend (React) ===
+frontend/node_modules/
+frontend/.env
+frontend/build/
+frontend/coverage/
+frontend/.next/
+frontend/.cache/
+frontend/.turbo/
+
+# === Test/CI/CD ===
+coverage/
+.nyc_output/
+jest-cache/
+jest-config.json
+jest-test-results.json

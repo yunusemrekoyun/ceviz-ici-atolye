@@ -1,0 +1,144 @@
+.footer {
+  background-color: #f4f1ea;
+  color: #2e2c28;
+  font-family: "Jost", sans-serif;
+  font-size: 14px;
+  padding: 60px 0;
+}
+
+.footer-content {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 40px;
+  align-items: start;
+}
+
+/* --- Subscribe Bölümü --- */
+.subscribe-title {
+  font-size: 20px;
+  margin-bottom: 12px;
+  font-weight: 600;
+}
+
+.subscribe-form {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin-bottom: 8px;
+}
+
+.subscribe-form input {
+  flex: 1;
+  min-width: 160px;
+  height: 40px;
+  padding: 0 12px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+.subscribe-btn {
+  background-color: #4e3b1f;
+  color: #fff;
+  border: none;
+  padding: 0 16px;
+  height: 40px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.subscribe-btn:hover {
+  background-color: #6c522f;
+}
+
+.privacy-text {
+  font-size: 12px;
+  color: #928d86;
+  margin: 0;
+}
+
+.footer-link {
+  color: #6c522f;
+  text-decoration: none;
+}
+
+.footer-link:hover {
+  text-decoration: underline;
+}
+
+/* --- Site Haritası --- */
+.sitemap-title {
+  font-size: 18px;
+  margin-bottom: 8px;
+  font-weight: 600;
+}
+
+.sitemap-list {
+  display: grid;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  /* İlk 5 maddeyi dikey, kalanlar yeni sütuna akacak */
+  grid-template-rows: repeat(5, auto);
+  grid-auto-flow: column;
+  row-gap: 4px;
+  column-gap: 12px;
+}
+
+.sitemap-list li {
+  margin: 0;
+}
+
+.sitemap-list a {
+  color: #2e2c28;
+  text-decoration: none;
+  font-size: 14px;
+}
+
+.sitemap-list a:hover {
+  text-decoration: underline;
+}
+
+/* --- İletişim --- */
+.contact-info {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.contact-title {
+  font-size: 18px;
+  margin: 0 0 4px;
+  font-weight: 600;
+}
+
+.contact-phone,
+.contact-hours,
+.contact-email,
+.contact-fax {
+  margin: 0;
+  line-height: 1.4;
+  font-size: 14px;
+}
+
+.footer-logo {
+  margin-left: auto;
+}
+.footer-section.contact {
+  display: flex;
+  justify-content: space-between; /* info solda, logo sağda */
+  align-items: flex-start;
+}
+.footer-logo img {
+  width: 80px; /* istersen 60–100 arası bir değer dene */
+  height: auto;
+}
+
+/* --- Responsive --- */
+@media (max-width: 768px) {
+  .footer-content {
+    grid-template-columns: 1fr;
+  }
+  .subscribe-form {
+    flex-direction: column;
+  }
+}

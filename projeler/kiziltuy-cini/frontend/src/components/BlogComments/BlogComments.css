@@ -1,0 +1,89 @@
+.comments-section {
+  margin-top: 30px;
+  background-color: #fefbf6;
+  border-radius: 16px;
+  padding: 24px;
+  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.04);
+}
+
+.comments-section h3 {
+  font-size: 22px;
+  color: #b45309;
+  margin-bottom: 20px;
+  font-weight: 600;
+}
+
+.no-comments {
+  background-color: #fcf0cd;
+  padding: 16px;
+  border-radius: 8px;
+  font-size: 14px;
+  color: #7a5e3a;
+  font-style: italic;
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.ant-comment-content {
+  background-color: #fffaf1;
+  border-radius: 12px;
+  padding: 14px 18px;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.03);
+}
+
+.ant-comment-content p {
+  margin: 0;
+  font-size: 15px;
+  color: #4a3b2c;
+}
+
+.ant-comment-actions {
+  display: none;
+}
+
+.ant-form-item {
+  margin-bottom: 12px;
+}
+
+.ant-input-textarea {
+  border-radius: 8px !important;
+}
+
+/* 🎯 Yorum butonu: pastel turuncu */
+.comments-section .ant-btn-primary {
+  background-color: #8c5b3f !important;
+  border-color: #8c5b3f !important;
+  color: #fff !important;
+  font-weight: 500;
+  padding: 6px 18px;
+  border-radius: 8px;
+}
+
+.comments-section .ant-btn-primary:hover {
+  background-color: #d98f37;
+  border-color: #d98f37;
+}
+.ant-btn-variant-solid {
+  background: #eaa44d;
+}
+.load-more-button {
+  padding: 10px 20px;
+  background-color: #d8363a;
+  color: white;
+  font-weight: 500;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.load-more-button:hover {
+  background-color: #b22222;
+}
+.comments-section .ant-btn-primary:hover,
+.comments-section .ant-btn-primary:focus,
+.comments-section .ant-btn-primary:active {
+  background-color: #6f4432 !important;
+  border-color: #6f4432 !important;
+  color: #fff !important;
+}

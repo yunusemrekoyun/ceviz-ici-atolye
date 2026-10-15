@@ -1,0 +1,19 @@
+# Bağımlılıklar ve build çıktıları
+node_modules/
+dist/
+build/
+
+# Ortam değişkenleri (örnekleri .env.example dosyalarında)
+.env
+.env.*
+!.env.example
+
+# Loglar
+*.log
+npm-debug.log*
+
+# Editör ve işletim sistemi dosyaları
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/

@@ -1,0 +1,419 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// ---------- better-auth çekirdek modelleri ----------
+// id alanlarına @default YOK — better-auth adapter id'yi kendisi üretip yazıyor.
+model User {
+  id            String    @id
+  name          String
+  email         String    @unique
+  emailVerified Boolean   @default(false)
+  image         String?
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+
+  // better-auth "admin" plugin alanları
+  role       String?   @default("user")
+  banned     Boolean?  @default(false)
+  banReason  String?
+  banExpires DateTime?
+
+  sessions      Session[]
+  accounts      Account[]
+  listings      Listing[]
+  buyerThreads  Conversation[] @relation("buyer")
+  sellerThreads Conversation[] @relation("seller")
+  messages      Message[]
+  complaints    Complaint[]
+  notifications Notification[]
+  favorites     Favorite[]
+  savedSearches SavedSearch[]
+
+  @@map("user")
+}
+
+model Session {
+  id             String   @id
+  expiresAt      DateTime
+  token          String   @unique
+  ipAddress      String?
+  userAgent      String?
+  impersonatedBy String?
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+  userId         String
+  user           User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("session")
+}
+
+model Account {
+  id                    String    @id
+  accountId             String
+  providerId            String
+  userId                String
+  user                  User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  accessToken           String?
+  refreshToken          String?
+  idToken               String?
+  accessTokenExpiresAt  DateTime?
+  refreshTokenExpiresAt DateTime?
+  scope                 String?
+  password              String?
+  createdAt             DateTime  @default(now())
+  updatedAt             DateTime  @updatedAt
+
+  @@map("account")
+}
+
+model Verification {
+  id         String    @id
+  identifier String
+  value      String
+  expiresAt  DateTime
+  createdAt  DateTime?
+  updatedAt  DateTime?
+
+  @@map("verification")
+}
+
+// ---------- PDD §6 iş varlıkları ----------
+
+enum ListingPurpose {
+  satilik
+  kiralik
+}
+
+enum ListingType {
+  tarla
+  arsa
+  bag_bahce
+  koy_ici
+}
+
+enum ImarDurumu {
+  imarsiz
+  koyYerlesik
+  konutImarli
+  sanayiTicari
+  diger
+}
+
+enum YolDurumu {
+  cepheli
+  yakin
+  yok
+}
+
+enum TapuDurumu {
+  mustakil
+  hisseli
+  tahsisli
+}
+
+enum ListingStatus {
+  taslak
+  incelemede
+  cekimBekliyor
+  aktif
+  kiralandi
+  satildi
+  pasif
+  reddedildi
+}
+
+enum PriceRequestStatus {
+  bekliyor
+  uygulandi
+  reddedildi
+}
+
+enum MediaType {
+  image
+  video
+}
+
+enum LeadStatus {
+  yeni
+  okundu
+  donuldu
+}
+
+enum BlogStatus {
+  taslak
+  yayinda
+}
+
+enum BlogSource {
+  ai
+  manuel
+}
+
+enum LegalDocKey {
+  kvkk
+  gizlilik
+  cerez
+  kosullar
+  iys
+}
+
+model Listing {
+  id             String         @id @default(cuid())
+  ownerId        String
+  owner          User           @relation(fields: [ownerId], references: [id])
+  slug           String         @unique
+  title          String
+  purpose        ListingPurpose @default(satilik)
+  type           ListingType
+  location       String
+  district       String
+  area           String
+  price          String
+  pricePerM2     String
+  currency       String         @default("TRY")
+  badge          String?
+  // Üye başvuruda koordinat girmez; admin yayına alırken zorunlu kılınır (zod).
+  lat            Float?
+  lng            Float?
+  // lat/lng'den bir DB trigger'ıyla senkron tutulur (bkz. migration
+  // faz6_harita_postgis) — Prisma Client bu alanı okuyup yazamaz, yalnızca
+  // $queryRaw. Bölge-çizme araması ST_Within ile buradan sorgulanır.
+  geom           Unsupported("geometry(Point, 4326)")?
+  tags           String[]
+  description    String         @db.Text
+  highlights     String[]
+  specs          Json           @default("[]")
+  status         ListingStatus  @default(taslak)
+  droneRequested Boolean        @default(false)
+  // Reddedilen başvuruda üyeye gösterilen neden; yeniden gönderimde temizlenir.
+  rejectReason   String?        @db.Text
+  publishedAt    DateTime?
+  viewCount      Int            @default(0)
+  // v0.5: yapısal filtre alanları — yayına almak için imar/yol/tapu zorunlu
+  // (zod); serbest "Etiket | Değer" satırları ayrıntı için specs'te kalır.
+  imarDurumu     ImarDurumu?
+  yolDurumu      YolDurumu?
+  tapuDurumu     TapuDurumu?
+  suVar          Boolean        @default(false)
+  elektrikVar    Boolean        @default(false)
+  // Aralık filtresi/sıralama kaynağı — string gösterim alanları korunur
+  priceValue     BigInt?
+  areaM2         Int?
+  favorites      Favorite[]
+  media          Media[]
+  conversations  Conversation[]
+  priceRequests  ListingPriceRequest[]
+  createdAt      DateTime       @default(now())
+  updatedAt      DateTime       @updatedAt
+
+  @@index([status])
+  @@index([district])
+  @@index([purpose])
+  @@index([status, publishedAt])
+  @@index([priceValue])
+  @@index([areaM2])
+  @@index([geom], type: Gist)
+}
+
+// Yayındaki ilan için üyenin fiyat güncelleme talebi — admin uygular/reddeder;
+// tarihçe kalır ("doğrulanmış fiyat" vaadinin kaydı).
+model ListingPriceRequest {
+  id             String             @id @default(cuid())
+  listingId      String
+  listing        Listing            @relation(fields: [listingId], references: [id], onDelete: Cascade)
+  requestedPrice String
+  note           String?            @db.Text
+  status         PriceRequestStatus @default(bekliyor)
+  createdAt      DateTime           @default(now())
+  resolvedAt     DateTime?
+
+  @@index([listingId])
+  @@index([status])
+}
+
+model Media {
+  id              String    @id @default(cuid())
+  listingId       String
+  listing         Listing   @relation(fields: [listingId], references: [id], onDelete: Cascade)
+  type            MediaType
+  originalDeleted Boolean   @default(false)
+  variants        Json
+  poster          String?
+  // Galeri sırası — admin serbestçe sıralar (PDD şartı)
+  position        Int       @default(0)
+  createdAt       DateTime  @default(now())
+
+  @@index([listingId])
+}
+
+model Lead {
+  id          String     @id @default(cuid())
+  name        String
+  phone       String
+  email       String?
+  budget      String?
+  district    String?
+  purpose     String?
+  note        String?    @db.Text
+  status      LeadStatus @default(yeni)
+  kvkkConsent Boolean    @default(false)
+  createdAt   DateTime   @default(now())
+
+  @@index([status])
+}
+
+// Alıcı↔satıcı basit platform-içi mesajlaşma (PDD §5.2 kilitli karar)
+model Conversation {
+  id        String    @id @default(cuid())
+  listingId String?
+  listing   Listing?  @relation(fields: [listingId], references: [id])
+  buyerId   String
+  buyer     User      @relation("buyer", fields: [buyerId], references: [id])
+  sellerId  String
+  seller    User      @relation("seller", fields: [sellerId], references: [id])
+  messages  Message[]
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+
+  @@index([buyerId])
+  @@index([sellerId])
+}
+
+model Message {
+  id             String       @id @default(cuid())
+  conversationId String
+  conversation   Conversation @relation(fields: [conversationId], references: [id], onDelete: Cascade)
+  senderId       String
+  sender         User         @relation(fields: [senderId], references: [id])
+  body           String       @db.Text
+  readAt         DateTime?
+  createdAt      DateTime     @default(now())
+
+  @@index([conversationId])
+}
+
+enum ComplaintStatus {
+  acik
+  kapatildi
+}
+
+// Şikayet: admin yazışmayı OKUYAMAZ (v0.5 kararı) — kullanıcı gerekçe +
+// ekran görüntüleriyle bildirir, admin yalnızca bunları görür.
+model Complaint {
+  id             String          @id @default(cuid())
+  reporterId     String
+  reporter       User            @relation(fields: [reporterId], references: [id])
+  conversationId String?
+  listingId      String?
+  reason         String          @db.Text
+  // /m/sikayet/... altına yüklenen ekran görüntüsü URL'leri (en çok 3)
+  images         String[]
+  status         ComplaintStatus @default(acik)
+  createdAt      DateTime        @default(now())
+  resolvedAt     DateTime?
+
+  @@index([status])
+}
+
+model Favorite {
+  id        String   @id @default(cuid())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  listingId String
+  listing   Listing  @relation(fields: [listingId], references: [id], onDelete: Cascade)
+  createdAt DateTime @default(now())
+
+  @@unique([userId, listingId])
+  @@index([userId])
+}
+
+// Kayıtlı arama — her sabah 08:00'de yeni eşleşme varsa tek özet e-postası
+model SavedSearch {
+  id             String   @id @default(cuid())
+  userId         String
+  user           User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  name           String
+  // /ilanlar query paramları (ilce/tur/amac/imar/tapu/yol/su/elektrik/minFiyat/...)
+  params         Json
+  createdAt      DateTime @default(now())
+  lastNotifiedAt DateTime @default(now())
+
+  @@index([userId])
+}
+
+// Site içi zil bildirimi — e-postanın ikizi (mesaj, moderasyon, fiyat...)
+model Notification {
+  id        String    @id @default(cuid())
+  userId    String
+  user      User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  title     String
+  body      String?
+  href      String?
+  readAt    DateTime?
+  createdAt DateTime  @default(now())
+
+  @@index([userId, readAt])
+}
+
+model BlogPost {
+  id        String     @id @default(cuid())
+  title     String
+  slug      String     @unique
+  category  String
+  body      String     @db.Text
+  status    BlogStatus @default(taslak)
+  source    BlogSource @default(manuel)
+  createdAt DateTime   @default(now())
+  updatedAt DateTime   @updatedAt
+}
+
+model LegalDoc {
+  key       LegalDocKey @id
+  title     String
+  body      String      @db.Text
+  updatedAt DateTime    @updatedAt
+}
+
+// content.ts yapısı korunuyor — düz tablo (District/Feature/Stat), tekil satır (SiteContent)
+model SiteContent {
+  id              Int      @id
+  brand           String
+  heroBadge       String
+  heroTitleLine1  String
+  heroTitleAccent String
+  heroSubtitle    String
+  sections        Json
+  contactPhone    String
+  contactWhatsapp String
+  contactEmail    String
+  updatedAt       DateTime @updatedAt
+}
+
+model Stat {
+  id       String @id @default(cuid())
+  value    String
+  label    String
+  position Int    @default(0)
+}
+
+model District {
+  id       String @id @default(cuid())
+  name     String @unique
+  count    String
+  text     String
+  position Int    @default(0)
+}
+
+model Feature {
+  id       String @id @default(cuid())
+  iconKey  String
+  title    String
+  text     String
+  position Int    @default(0)
+}

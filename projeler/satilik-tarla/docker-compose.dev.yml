@@ -1,0 +1,55 @@
+# Lokal geliştirme altyapısı — VPS'teki docker-compose.yml'den tamamen izole
+# (farklı proje adı, farklı container adları, yalnızca loopback'e açık portlar).
+name: kutahyasatiliktarla-dev
+
+services:
+  postgres:
+    # postgis/postgis resmi imajı yalnızca amd64 yayınlıyor (Apple Silicon'da
+    # manifest bulunamıyor) — imresamu/postgis aynı imajın arm64+amd64 multi-arch
+    # build'i, aynı Postgres 16 + PostGIS 3.5 içeriğiyle.
+    image: imresamu/postgis:16-3.5-alpine
+    container_name: kst-dev-postgres
+    restart: unless-stopped
+    environment:
+      # Değerler proje kökündeki .env'den okunur (compose interpolation)
+      POSTGRES_USER: ${DEV_DB_USER:-kst_dev}
+      POSTGRES_PASSWORD: ${DEV_DB_PASSWORD:?DEV_DB_PASSWORD .env dosyasinda tanimli olmali}
+      POSTGRES_DB: ${DEV_DB_NAME:-kutahyasatiliktarla_dev}
+    # Host'ta 5432 başka bir lokal proje tarafından kullanılıyor -> 5433'e alındı.
+    ports:
+      - '127.0.0.1:5433:5432'
+    volumes:
+      - kst_dev_postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ['CMD-SHELL', 'pg_isready -U kst_dev -d kutahyasatiliktarla_dev']
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+  redis:
+    image: redis:8-alpine
+    container_name: kst-dev-redis
+    restart: unless-stopped
+    # Host'ta 6379 başka bir lokal proje tarafından kullanılıyor -> 6380'e alındı.
+    ports:
+      - '127.0.0.1:6380:6379'
+    volumes:
+      - kst_dev_redis_data:/data
+    healthcheck:
+      test: ['CMD', 'redis-cli', 'ping']
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+  mailpit:
+    image: axllent/mailpit:v1.30.3
+    container_name: kst-dev-mailpit
+    restart: unless-stopped
+    # Host'ta 1025/8025 başka bir lokal proje tarafından kullanılıyor -> 1026/8026'ya alındı.
+    ports:
+      - '127.0.0.1:1026:1025'
+      - '127.0.0.1:8026:8025'
+
+volumes:
+  kst_dev_postgres_data:
+  kst_dev_redis_data:

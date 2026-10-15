@@ -1,0 +1,78 @@
+@import "tailwindcss";
+
+/* Yardımcılar: global container ve section paddings */
+@layer utilities {
+  .container-x {
+    @apply mx-auto max-w-[1380px]; /* içerik genişliği */
+    padding-left: var(--spacing-page-x);
+    padding-right: var(--spacing-page-x);
+  }
+  .section-y {
+    padding-top: var(--spacing-section-y);
+    padding-bottom: var(--spacing-section-y);
+  }
+}
+
+/* Tema tokenları (renk, font, spacing, TYPOGRAPHY) */
+@theme {
+  /* Font ailesi */
+  --font-sans: "Inter", ui-sans-serif, system-ui, -apple-system, Segoe UI,
+    Roboto, Arial, "Apple Color Emoji", "Segoe UI Emoji";
+
+  /* Renk paleti */
+  --color-bg: #06162e; /* sayfa arka planı */
+  --color-surface: #0c1a32; /* kart/nav yüzeyi */
+  --color-surface-2: #0c1e2e; /* daha koyu panel */
+  --color-border: #25384c; /* ince sınırlar */
+  --color-foreground: #e9f0f7; /* ana metin */
+  --color-muted: #a6bacf; /* ikincil metin */
+
+  --color-accent: #e4bd63; /* altın */
+  --color-accent-600: #d6a744; /* altın koyu */
+  --color-accent-700: #c48f2e; /* altın daha koyu */
+
+  /* Altın ışıma */
+  --gradient-accent: linear-gradient(
+    135deg,
+    #f4d98a 0%,
+    #e4bd63 40%,
+    #d6a744 100%
+  );
+
+  /* Radius & gölge */
+  --radius-lg: 14px;
+  --radius-xl: 18px;
+  --radius-2xl: 24px;
+  --shadow-soft: 0 10px 30px rgba(0, 0, 0, 0.28);
+  --shadow-ring: 0 0 0 8px rgba(228, 189, 99, 0.12);
+
+  /* Global spacing (tek yerden kontrol) */
+  --spacing-page-x: clamp(1.25rem, 7vw, 4rem); /* sağ/sol gutter */
+  --spacing-section-y: clamp(2.5rem, 8vw, 5rem); /* bölüm üst/alt */
+
+  /* === TYPOGRAPHY (GLOBAL) === */
+  --text-xs: 12px; /* rozet/alt bilgi */
+  --text-sm: 14.5px; /* link, yardımcı metin */
+  --text-base: 13.5px; /* küçük başlık/strong */
+  --text-md: 15px; /* header adı/orta başlık */
+  --text-lg: 17px; /* vurgulu başlıklar */
+}
+@layer utilities {
+  .inp {
+    @apply w-full rounded-xl bg-white/[0.04] border border-white/10
+           px-4 py-3.5 text-[15px] text-foreground/95 placeholder:text-foreground/40
+           shadow-inner shadow-black/5 outline-none
+           focus:border-[rgba(228,189,99,.45)] focus:ring-2 focus:ring-accent/25;
+  }
+}
+/* Genel reset/arka plan */
+html,
+body,
+#root {
+  height: 100%;
+}
+body {
+  font-family: var(--font-sans);
+  background: var(--color-bg);
+  color: var(--color-foreground);
+}

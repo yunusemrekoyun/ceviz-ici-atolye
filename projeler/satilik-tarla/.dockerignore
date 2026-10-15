@@ -1,0 +1,14 @@
+.git
+node_modules
+.next
+out
+dist
+*.log
+.claude
+.agents
+.codex
+.impeccable
+reference
+PDD.md
+Dockerfile
+docker-compose.yml

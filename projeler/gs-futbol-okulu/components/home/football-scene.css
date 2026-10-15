@@ -1,0 +1,35 @@
+.football-scene { position:absolute; width:min(48%, 620px); height:calc(100% - 90px); max-height:470px; top:100px; left:50%; transform:translateX(-50%); pointer-events:none; contain:layout; }
+.football-scene-disc { position:absolute; width:78%; aspect-ratio:1; max-height:100%; left:50%; top:45%; transform:translate(-50%,-50%); border-radius:50%; background:#f5f3f3; border:1px solid #eae5e6; }
+.football-scene-city { position:absolute; inset:20px 0 auto; text-align:center; font:500 16px/1 'GS Teko',sans-serif; letter-spacing:.3em; color:#99646f; }
+.football-pitch { width:76%; position:absolute; left:50%; top:55%; transform:translate(-50%,-50%) perspective(900px) rotateX(52deg) rotateZ(-18deg) scale(1.08); transform-origin:center; }
+.football-pitch>svg { display:block; width:100%; height:auto; }
+.football-route { position:absolute; inset:0; opacity:0; transform-origin:center; }
+.football-route svg { width:100%; height:100%; }
+.football-ball { position:absolute; width:43%; max-width:230px; left:50%; top:41%; transform:translate(-50%,-50%) rotate(-16deg); }
+.football-ball img { display:block; width:100%; height:auto; }
+.football-shadow { position:absolute; width:35%; height:5%; left:50%; top:64%; border-radius:50%; background:radial-gradient(ellipse,#38091550,transparent 70%); transform:translate(-50%,-50%); }
+.football-crest { position:absolute; width:19%; max-width:100px; left:80%; top:22%; transform:translate(-50%,-50%) rotate(8deg); }
+.football-crest img { width:100%; height:auto; border:5px solid white; border-radius:50%; box-shadow:0 8px 20px #43102014; }
+.football-goal { position:absolute; width:40%; left:55%; top:30%; opacity:0; transform:translate(-50%,-50%); }
+.football-goal svg { display:block; width:100%; height:auto; }
+.football-pin { position:absolute; width:30%; max-width:160px; left:50%; top:42%; opacity:0; transform:translate(-50%,-50%); }
+.football-pin svg { display:block; width:100%; height:auto; }
+.football-pin img { position:absolute; width:44%; height:auto; left:28%; top:18%; border-radius:50%; }
+.football-caption { position:absolute; left:0; right:0; bottom:-5px; text-align:center; color:#713849; font:500 18px/1.3 'GS Teko',sans-serif; letter-spacing:.02em; animation:football-caption-in 300ms ease-out; }
+@keyframes football-caption-in { from { opacity:.4; } to { opacity:1; } }
+@media (max-width:900px) {
+  .football-scene { width:min(95%,380px); top:46px; height:var(--pulse-scene-height); max-height:none; }
+  .football-scene-disc { width:55%; }
+  .football-pitch { width:60%; top:60%; }
+  .football-ball { width:28%; top:40%; }
+  .football-crest { width:14%; left:77%; top:24%; }
+  .football-goal { width:28%; top:27%; }
+  .football-pin { width:23%; max-height:85%; }
+  .football-shadow { width:26%; }
+  .football-scene-city { display:none; }
+  /* Telefonda saha küçük: süs yazısı sahanın üstüne biniyordu */
+  .football-caption { display:none; }
+}
+/* Kısa ekranda (tablet yatay, küçük dizüstü) süs yazısı alt çizgiye biniyordu */
+@media (max-height:820px) { .football-caption { display:none; } }
+@media (prefers-reduced-motion:reduce) { .football-caption { animation:none; } }

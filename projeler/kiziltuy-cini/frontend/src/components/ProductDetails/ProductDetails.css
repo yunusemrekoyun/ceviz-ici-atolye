@@ -1,0 +1,55 @@
+/* ✅ ProductDetails.css - Güncel genişlik yapısı */
+
+.single-product {
+  margin-top: 40px;
+  background-color: #ffffff;
+  padding: 30px 0;
+  color: #3f362c;
+  font-family: "Segoe UI", sans-serif;
+}
+
+.single-content.column-layout {
+  display: flex;
+  flex-direction: column;
+  gap: 40px;
+  width: 100%;
+  align-items: center;
+}
+
+.single-tabs {
+  width: 100%;
+  max-width: 1100px;
+  margin: 0 auto; /* tam ortalansın */
+}
+/* Daha geniş container */
+.container {
+  width: 100%;
+  max-width: 1400px;
+  padding: 0 20px;
+  margin: 0 auto;
+}
+
+.single-product-wrapper {
+  width: 100%;
+}
+
+.single-content.column-layout {
+  display: flex;
+  flex-direction: column;
+  gap: 40px;
+  width: 100%;
+}
+
+/* Mobil uyumlu */
+@media (max-width: 768px) {
+  .single-content.column-layout {
+    padding: 0 16px;
+  }
+}
+
+/* Slider image overflow düzeltme */
+/* .product-description {
+  word-break: break-word;
+  overflow-wrap: break-word;
+  white-space: normal;
+} */

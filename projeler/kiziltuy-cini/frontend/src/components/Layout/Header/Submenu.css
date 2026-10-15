@@ -1,0 +1,80 @@
+/* src/components/Layout/Header/Submenu.css */
+:root {
+  --accent-color: #d4a017;
+  --accent-light: #fef6e5;
+  --glass-color: rgba(255, 255, 255, 0.08);
+  --glass-border: rgba(255, 255, 255, 0.3);
+  --glass-text: #111;
+}
+
+.submenu-container {
+  position: fixed;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: 4px 0;
+
+  /* Liquid glass efektini buraya alın */
+  backdrop-filter: blur(20px);
+  background: var(--glass-color);
+  border: 1px solid var(--glass-border);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  border-radius: 12px;
+
+  /* Ölçüleri net kısıtlayın */
+  width: auto; /* içerik kadar */
+  min-width: 120px; /* en dar */
+  max-width: 160px; /* en geniş */
+  box-sizing: border-box;
+  z-index: 9999;
+
+  /* Açılma animasyonu */
+  opacity: 0;
+  transform: translateY(-10px);
+  animation: fadeInSubmenu 0.2s forwards ease-in-out;
+}
+
+.submenu-item {
+  text-decoration: none;
+  color: var(--glass-text);
+  padding: 8px 12px;
+  font-size: 14px;
+  transform: none;
+  white-space: nowrap;
+  border-radius: 8px;
+  transition: background-color 0.2s ease, color 0.2s ease, transform 0.2s ease;
+}
+
+.submenu-item:hover {
+  background-color: var(--accent-light);
+  color: var(--accent-color);
+  transform: translateX(4px);
+}
+
+@keyframes fadeInSubmenu {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@media (max-width: 768px) {
+  .submenu-container.submenu-mobile {
+    position: static;
+    display: flex;
+    flex-direction: column;
+    padding: 8px 0;
+    background: var(--glass-color);
+    box-shadow: none;
+    border: 1px solid var(--glass-border);
+    border-radius: 8px;
+    margin-top: 6px;
+    max-width: 90vw;
+    animation: none;
+  }
+
+  .submenu-container.submenu-mobile .submenu-item {
+    padding: 8px 16px;
+    font-size: 13px;
+  }
+}

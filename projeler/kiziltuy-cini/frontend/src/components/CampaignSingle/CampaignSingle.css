@@ -1,0 +1,52 @@
+/* CampaignSingle.css */
+.campaign-single {
+  background-image: url(../../img/single-campaign.png);
+  background-size: cover; /* Görsel alanı kaplasın */
+  background-repeat: no-repeat; /* Görsel tekrar etmesin */
+  background-position: center center; /* Ortalanmış şekilde hizalansın */
+  padding: 140px 15px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 30px;
+}
+
+.campaign-single .campaign-wrapper {
+  color: white;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.campaign-single .campaign-wrapper h2 {
+  font-size: 25px;
+}
+
+.campaign-single .campaign-wrapper strong {
+  font-size: 55px;
+  font-weight: 600;
+  margin: 20px 0;
+}
+
+.campaign-single .campaign-wrapper span {
+  display: inline-block;
+  width: 50px;
+  height: 5px;
+  background-color: white;
+}
+
+/* 🔶 Buton başlangıçta beyaz, hover’da sarımtırak */
+.campaign-single .campaign-wrapper > a {
+  background-color: #fff;
+  border: 2px solid #fff;
+  color: #2e2e2e;
+  margin-top: 60px;
+  transition: background-color 0.2s ease, border-color 0.2s ease,
+    color 0.2s ease;
+}
+
+.campaign-single .campaign-wrapper > a:hover {
+  background-color: #f5c542; /* açık sarımtırak */
+  border-color: #f5c542;
+  color: #2e2e2e;
+}

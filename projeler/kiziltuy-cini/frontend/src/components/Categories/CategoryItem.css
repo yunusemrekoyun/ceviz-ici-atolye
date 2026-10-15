@@ -1,0 +1,39 @@
+.categories .category-item {
+  background-color: #f5f5f552;
+  border-radius: 4px;
+  flex: 1;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+}
+
+.categories .category-item a {
+  display: inline-block;
+  padding: 10px;
+  text-align: center;
+  margin: 5px 0;
+  font-size: 14px;
+  font-weight: 500;
+}
+
+/* Kare kuralı, object-fit: cover ile crop */
+.categories .category-item .category-image {
+  width: 100%;
+  /* Kare için aspect-ratio */
+  aspect-ratio: 1 / 1;
+  /* Boyut bozulmadan, taşan kısımları gizleyerek kapla */
+  object-fit: cover;
+  object-position: center;
+  border-radius: 12px; /* köşe yumuşatma */
+  transition: transform 0.2s ease;
+}
+
+.categories .category-item .category-image:hover {
+  transform: scale(1.05);
+}
+
+.categories .category-item .category-title {
+  display: block;
+  margin-top: 8px;
+  color: #333;
+}

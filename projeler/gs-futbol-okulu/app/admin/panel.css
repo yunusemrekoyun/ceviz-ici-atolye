@@ -1,0 +1,84 @@
+/*
+ * Yönetim paneli teması. Sitedeki yazı ailesi (Plus Jakarta Sans) burada da kullanılır;
+ * renk değişkenleri yalnız `.admin-theme` altında sıcak nötrlere çekilir, genel site etkilenmez.
+ */
+@font-face {
+  font-family: "Plus Jakarta Sans";
+  font-style: normal;
+  font-weight: 300 800;
+  font-display: swap;
+  src: url("/fonts/plus-jakarta-sans-latin-ext.woff2") format("woff2");
+  unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329,
+    U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+@font-face {
+  font-family: "Plus Jakarta Sans";
+  font-style: normal;
+  font-weight: 300 800;
+  font-display: swap;
+  src: url("/fonts/plus-jakarta-sans-latin.woff2") format("woff2");
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329,
+    U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+
+.admin-theme {
+  --color-surface: #f4f2ef;
+  --color-line: #e6e2dc;
+  --color-control: #d7d1c9;
+  --color-muted: #686159;
+  --color-ink: #1c1715;
+  --color-gs-red-soft: #fbeef1;
+  --font-sans: "Plus Jakarta Sans", ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
+  font-family: var(--font-sans);
+  color: var(--color-ink);
+  background: var(--color-surface);
+}
+
+.admin-theme ::selection {
+  background: rgb(169 4 50 / 0.16);
+}
+
+.admin-theme :where(a, button, [role="button"], summary, [tabindex]:not([tabindex="-1"])):focus-visible {
+  outline: 2px solid rgb(169 4 50 / 0.55);
+  outline-offset: 2px;
+  border-radius: 10px;
+}
+
+/* Kenar menüde ince kaydırma çubuğu */
+.panel-scroll {
+  scrollbar-width: thin;
+  scrollbar-color: rgb(255 255 255 / 0.14) transparent;
+}
+
+/* Sayfa girişinde yumuşak belirme (yalnız konum ve saydamlık) */
+@keyframes panel-rise {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+}
+.panel-rise {
+  animation: panel-rise 220ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+@keyframes panel-pop {
+  from {
+    opacity: 0;
+    transform: translateY(-4px) scale(0.98);
+  }
+}
+.panel-pop {
+  animation: panel-pop 160ms cubic-bezier(0.16, 1, 0.3, 1);
+  transform-origin: top;
+}
+@media (prefers-reduced-motion: reduce) {
+  .panel-rise,
+  .panel-pop {
+    animation: none;
+  }
+}
+
+/* Tarayıcının arama kutusuna eklediği mavi silme işareti: Esc ile temizlenir */
+.admin-theme input[type="search"]::-webkit-search-cancel-button {
+  -webkit-appearance: none;
+  appearance: none;
+}

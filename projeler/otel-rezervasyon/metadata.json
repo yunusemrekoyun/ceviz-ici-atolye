@@ -1,0 +1,6 @@
+{
+  "name": "Kütahya Garden Otel",
+  "description": "Kütahya Garden Otel — rezervasyon ve otel yönetim sistemi.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

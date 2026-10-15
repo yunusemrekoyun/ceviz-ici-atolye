@@ -1,0 +1,115 @@
+.desc-section {
+  display: flex;
+  flex-direction: column;
+  gap: 60px;
+  padding: 80px 20px;
+  max-width: 1100px;
+  margin: 0 auto;
+}
+.slider-arrow {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  background: rgba(255, 255, 255, 0.85);
+  border: none;
+  border-radius: 50%;
+  padding: 8px 12px;
+  cursor: pointer;
+  font-size: 20px;
+  z-index: 2;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+  transition: background 0.2s ease;
+}
+
+.slider-arrow:hover {
+  background: #fff;
+}
+
+.slider-arrow.left {
+  left: -12px;
+}
+
+.slider-arrow.right {
+  right: -12px;
+}
+/* Her blok için zemin rengi farklılaştırıldı */
+.desc-block {
+  display: flex;
+  flex-wrap: nowrap; /* ❗ resim ve metin yan yana kalsın */
+  gap: 40px;
+  align-items: center;
+  opacity: 0;
+  transform: translateY(40px);
+  transition: all 0.8s ease;
+  padding: 40px;
+  border-radius: 20px;
+  overflow: hidden;
+}
+.desc-block:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 12px 24px rgba(0, 0, 0, 0.1);
+}
+/* Animasyon görünürlük */
+.desc-block.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.desc-block:nth-child(4n + 1) {
+  background-color: #e4e1c893;
+}
+.desc-block:nth-child(4n + 2) {
+  background-color: #efe4cf5e;
+}
+.desc-block:nth-child(4n + 3) {
+  background-color: #e4e1c893;
+}
+.desc-block:nth-child(4n + 4) {
+  background-color: #efe4cf5e;
+}
+
+.desc-block:nth-child(even) {
+  flex-direction: row-reverse;
+}
+.desc-image {
+  flex: 0 0 300px; /* sabit genişlik */
+  max-width: 300px;
+}
+
+.desc-image img {
+  width: 100%;
+  border-radius: 12px;
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.15);
+}
+.desc-content {
+  flex: 1;
+  min-width: 0; /* text overflow olmasın */
+}
+.desc-content h3 {
+  font-size: 24px;
+  margin-bottom: 12px;
+  color: #8c5b3f;
+}
+
+.desc-content p {
+  font-size: 16px;
+  color: #a67d32;
+  line-height: 1.6;
+}
+@media (max-width: 768px) {
+  .desc-block {
+    flex-direction: column !important;
+    flex-wrap: wrap; /* küçük ekranda tekrar sarsın */
+    text-align: center;
+  }
+  .desc-image {
+    flex: unset;
+    max-width: 100%;
+  }
+  .desc-content h3 {
+    font-size: 20px;
+  }
+  .desc-content p {
+    font-size: 14px;
+  }
+}

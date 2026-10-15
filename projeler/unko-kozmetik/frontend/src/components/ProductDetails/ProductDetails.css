@@ -1,0 +1,31 @@
+.single-product {
+  padding-block: clamp(20px, 3vw, 32px) clamp(48px, 7vw, 88px);
+}
+
+.single-content {
+  display: grid;
+  grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr);
+  gap: clamp(28px, 5vw, 72px);
+  align-items: start;
+  margin-top: 24px;
+}
+
+/* Hızlı bakış penceresi */
+.single-product.is-compact {
+  padding: 8px 0 0;
+}
+
+.single-product.is-compact .container {
+  padding-inline: 0;
+}
+
+.single-product.is-compact .single-content {
+  margin-top: 0;
+  gap: 32px;
+}
+
+@media (max-width: 992px) {
+  .single-content {
+    grid-template-columns: 1fr;
+  }
+}

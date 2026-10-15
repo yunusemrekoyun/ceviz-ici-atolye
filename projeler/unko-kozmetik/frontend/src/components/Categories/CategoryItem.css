@@ -1,0 +1,30 @@
+.category-item {
+  flex: none;
+}
+
+.category-link {
+  display: inline-flex;
+  align-items: center;
+  height: 40px;
+  padding: 0 18px;
+  border: 1px solid var(--line-strong);
+  border-radius: 999px;
+  background: var(--surface);
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--ink-2);
+  white-space: nowrap;
+  transition: background-color 0.2s var(--ease), border-color 0.2s var(--ease),
+    color 0.2s var(--ease);
+}
+
+.category-link:hover {
+  border-color: var(--ink);
+  color: var(--ink);
+}
+
+.category-link.active {
+  background: var(--ink);
+  border-color: var(--ink);
+  color: #fff;
+}

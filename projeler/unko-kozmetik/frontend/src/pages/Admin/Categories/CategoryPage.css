@@ -1,0 +1,30 @@
+/* Sayfa genel container */
+.page-container {
+  width: 100%;
+  padding: 16px;
+  box-sizing: border-box;
+}
+
+/* Antd tabloyu saran scrollable container */
+.category-page-table .ant-table-container {
+  min-width: 700px; /* Tablonun genişliğini zorla */
+}
+
+/* Antd tablo içeriğini sağa kaydırılabilir yap */
+.category-page-table .ant-table-content {
+  overflow-x: auto !important;
+  -webkit-overflow-scrolling: touch; /* iOS uyumu */
+}
+
+/* Gerekiyorsa tabloya minimum genişlik uygula */
+.category-page-table {
+  width: 100%;
+  overflow-x: auto;
+}
+
+/* Mobilde responsive davranış */
+@media (max-width: 768px) {
+  .category-page-table .ant-table-container {
+    min-width: 600px;
+  }
+}

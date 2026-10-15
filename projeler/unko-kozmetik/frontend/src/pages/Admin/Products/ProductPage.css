@@ -1,0 +1,24 @@
+/* Sayfanın tamamını kaydırılabilir yapalım */
+body {
+    overflow-y: auto; /* Yalnızca dikey kaydırma aktif olacak */
+    overflow-x: hidden; /* Yatay kaydırmayı kapatalım */
+  }
+  
+  /* Tabloyu kaydırılabilir yapmamız gerekirse, o zaman sadece tabloyu sarmalayan div'e kaydırma ekleyelim */
+  .table-container {
+    width: 100%; /* Tabloyu genişletmek için */
+    max-width: 100%;
+    overflow-x: auto; /* Yalnızca yatay kaydırma ekleyelim */
+    padding: 0 10px; /* Biraz boşluk ekleyelim */
+  }
+  
+  /* Tabloyu daha uyumlu hale getirmek için */
+  .ant-table {
+    table-layout: fixed; /* Tabloyu sabitleyelim */
+  }
+  
+  /* Gereksiz yatay kaydırma çubuğunu engellemek için */
+  .ant-table-container {
+    max-width: 100%;
+    overflow-x: hidden;
+  }

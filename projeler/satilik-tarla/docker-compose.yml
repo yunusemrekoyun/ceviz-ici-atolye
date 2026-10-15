@@ -1,0 +1,105 @@
+# Benzersiz proje adı: /var/www/*/app dizinlerinin ortak "app" proje adıyla
+# çakışıp başka sitelerin container'larını devralmasını engeller.
+name: kutahyasatiliktarla
+
+services:
+  app:
+    build:
+      context: .
+      target: runner
+      args:
+        NEXT_PUBLIC_BETTER_AUTH_URL: ${NEXT_PUBLIC_BETTER_AUTH_URL}
+    image: kutahyasatiliktarla-app
+    container_name: kutahyasatiliktarla-app
+    restart: unless-stopped
+    env_file: .env
+    environment:
+      UPLOAD_DIR: /app/uploads
+    # Yüklenen medya — app yazar/servis eder, worker varyant üretir
+    volumes:
+      - uploads:/app/uploads
+    # Yalnızca loopback'e açılır; dış dünyaya nginx proxy'ler
+    ports:
+      - '127.0.0.1:3010:3000'
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    healthcheck:
+      test: ['CMD', 'wget', '-qO-', 'http://127.0.0.1:3000/api/health']
+      interval: 30s
+      timeout: 5s
+      retries: 5
+      start_period: 20s
+
+  worker:
+    build:
+      context: .
+      target: worker
+    image: kutahyasatiliktarla-worker
+    container_name: kutahyasatiliktarla-worker
+    restart: unless-stopped
+    env_file: .env
+    environment:
+      UPLOAD_DIR: /app/uploads
+      # Medya işlenince hedefli cache tazeleme — app'e iç ağdan ulaşır
+      INTERNAL_APP_URL: http://app:3000
+    volumes:
+      - uploads:/app/uploads
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+
+  postgres:
+    # PostGIS'li imaj — Faz 3 harita sorguları için hazır; multi-arch
+    image: imresamu/postgis:16-3.5-alpine
+    container_name: kutahyasatiliktarla-postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DB: ${POSTGRES_DB}
+    # Host portu YOK — yalnızca compose iç ağından erişilir
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ['CMD-SHELL', 'pg_isready -U $${POSTGRES_USER} -d $${POSTGRES_DB}']
+      interval: 10s
+      timeout: 5s
+      retries: 10
+
+  redis:
+    image: redis:7-alpine
+    container_name: kutahyasatiliktarla-redis
+    restart: unless-stopped
+    command: ['redis-server', '--appendonly', 'yes']
+    volumes:
+      - redisdata:/data
+    healthcheck:
+      test: ['CMD', 'redis-cli', 'ping']
+      interval: 10s
+      timeout: 5s
+      retries: 10
+
+  mailpit:
+    # Demo SMTP yakalayıcı — prod'a gerçek SMTP gelince bu servis kalkar,
+    # yalnızca .env'deki SMTP_* değerleri değişir.
+    image: axllent/mailpit
+    container_name: kutahyasatiliktarla-mailpit
+    restart: unless-stopped
+    environment:
+      # TEST DÖNEMİ: UI, sitenin /mail yolu altında yayınlanır (nginx proxy).
+      # Gerçek lansmandan önce nginx'teki /mail bloğuyla birlikte kaldırılacak.
+      MP_WEBROOT: /mail
+    # SMTP (1025) yalnız iç ağda; UI loopback'te — SSH tüneliyle bakılır.
+    # Host portu 8026: VPS'te 8025'i zumra-demo kullanıyor.
+    ports:
+      - '127.0.0.1:8026:8025'
+
+volumes:
+  pgdata:
+  redisdata:
+  uploads:

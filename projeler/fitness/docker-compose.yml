@@ -1,0 +1,24 @@
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: fitnesspaneli-app
+    container_name: fitnesspaneli-app
+    restart: unless-stopped
+    ports:
+      - "127.0.0.1:3002:3000"
+    env_file:
+      - .env.production
+    environment:
+      # Cron'un gün sınırları yerel saate göre hesaplanıyor — UTC'de kalırsa
+      # yenileme hatırlatmaları yanlış güne kayar.
+      - TZ=Europe/Istanbul
+    volumes:
+      - /var/www/fitnesspaneli.com/uploads:/var/www/fitnesspaneli.com/uploads
+    networks:
+      - fitness-network
+
+networks:
+  fitness-network:
+    driver: bridge

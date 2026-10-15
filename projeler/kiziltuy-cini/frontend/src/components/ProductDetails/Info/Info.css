@@ -1,0 +1,81 @@
+/* ✅ Info.css */
+
+.product-info {
+  padding: 20px;
+  background-color: #fff;
+  border: 1px solid #eee;
+  border-radius: 8px;
+  margin-top: 30px;
+}
+
+/* .product-title {
+  font-size: 24px;
+  font-weight: 700;
+  margin-bottom: 10px;
+  color: #333;
+} */
+
+.product-review {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 14px;
+  color: #888;
+  margin-bottom: 15px;
+}
+
+.product-price {
+  margin-bottom: 15px;
+  font-size: 18px;
+}
+
+.old-price {
+  color: #999;
+  margin-right: 10px;
+  text-decoration: line-through;
+}
+
+.new-price {
+  color: #d8363a;
+  font-weight: bold;
+  font-size: 20px;
+}
+
+/* .product-description {
+  color: #444;
+  font-size: 15px;
+  line-height: 1.6;
+  word-break: break-word;
+  white-space: pre-line;
+} */
+
+.product-extra-buttons {
+  margin-top: 20px;
+  display: flex;
+  gap: 15px;
+}
+
+.product-extra-buttons button {
+  background: transparent;
+  border: 1px solid #ddd;
+  padding: 8px 14px;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: 0.3s;
+  color: #555;
+  font-weight: 500;
+}
+
+.product-extra-buttons button:hover {
+  background-color: #f3f3f3;
+  border-color: #aaa;
+}
+
+.product-extra-buttons .wishlist-btn {
+  color: #d8363a;
+  border-color: #d8363a;
+}
+
+.product-extra-buttons .wishlist-btn:hover {
+  background-color: #fff0f0;
+}

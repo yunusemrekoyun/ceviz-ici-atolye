@@ -1,0 +1,907 @@
+// src/components/layout/AdminLayout.jsx
+"use client";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { NavLink, Link, useLocation, useNavigate } from "react-router-dom";
+import {
+  Menu,
+  X,
+  ChevronLeft,
+  ChevronRight,
+  ChevronDown,
+  LayoutDashboard,
+  BarChart3,
+  Package,
+  Tags,
+  Layers,
+  Image,
+  ShoppingCart,
+  Users,
+  Percent,
+  TicketPercent,
+  Boxes,
+  Wrench,
+  // Megaphone,
+  // MessageSquare,
+  Settings,
+  Bell,
+  AlertTriangle,
+  Loader2,
+  Search,
+  Home,
+  LogOut,
+  Sparkles,
+  MessageSquare,
+  Star,
+  // SlidersHorizontal,
+} from "lucide-react";
+import { authApi } from "../../api/auth";
+import { getUser as getUserCache } from "../../api/client";
+import { adminNotificationsApi } from "../../api/adminNotifications";
+
+function getNotificationHref(item) {
+  if (item?.type === "review_pending") {
+    return "/admin/settings/reviews";
+  }
+  return "/admin/stocks";
+}
+
+function getNotificationTitle(item) {
+  if (item?.type === "review_pending") {
+    return item?.data?.targetName || item?.title || "Yeni yorum";
+  }
+  return item?.data?.productName || item?.title || "Bildirim";
+}
+
+function getNotificationMeta(item) {
+  if (item?.type === "review_pending") {
+    return item?.data?.reviewerName || item?.data?.reviewerEmail || "Müşteri";
+  }
+  return item?.data?.variantLabel || "Tüm varyant";
+}
+
+function getNotificationBadge(item) {
+  if (item?.type === "review_pending") {
+    return {
+      text: item?.data?.rating ? String(item.data.rating) : "Yeni",
+      Icon: item?.data?.rating ? Star : MessageSquare,
+    };
+  }
+  return {
+    text: String(item?.data?.qtyOnHand ?? 0),
+    Icon: null,
+  };
+}
+
+export default function AdminLayout({ children, title, subtitle, actions }) {
+  const [sidebarOpen, setSidebarOpen] = useState(false);
+  const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
+  const [me, setMe] = useState(getUserCache());
+  const [busyCount, setBusyCount] = useState(0);
+  const busySetRef = useRef(new Set());
+  const bodyOverflow = useRef(null);
+  const navigate = useNavigate();
+  const location = useLocation();
+
+  useEffect(() => {
+    let mounted = true;
+    (async () => {
+      try {
+        const res = await authApi.me();
+        if (mounted && res) setMe(res);
+      } catch {
+        /* layout guard yönlendirecek */
+      }
+    })();
+    return () => {
+      mounted = false;
+    };
+  }, []);
+
+  useEffect(() => {
+    if (bodyOverflow.current === null) {
+      bodyOverflow.current = document?.body?.style?.overflow || "";
+    }
+    if (sidebarOpen) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = bodyOverflow.current || "";
+    }
+    return () => {
+      document.body.style.overflow = bodyOverflow.current || "";
+    };
+  }, [sidebarOpen]);
+
+  useEffect(() => {
+    const handler = (event) => {
+      const detail = event?.detail || {};
+      const id = detail.id;
+      if (!id) return;
+      const set = busySetRef.current;
+      if (detail.type === "start") {
+        set.add(id);
+      } else if (detail.type === "end") {
+        set.delete(id);
+      }
+      setBusyCount(set.size);
+    };
+    window.addEventListener("admin-action", handler);
+    return () => {
+      window.removeEventListener("admin-action", handler);
+    };
+  }, []);
+
+  const breadcrumbs = useMemo(() => {
+    const parts = location.pathname.replace(/^\/+|\/+$/g, "").split("/");
+    if (!parts[0]) return [];
+    return parts.map((part, index) => ({
+      label: pretty(part),
+      href: "/" + parts.slice(0, index + 1).join("/"),
+    }));
+  }, [location.pathname]);
+
+  const menu = useMemo(
+    () => [
+      {
+        label: "Genel Bakış",
+        items: [
+          {
+            to: "/admin/dashboard",
+            label: "Kontrol Paneli",
+            Icon: LayoutDashboard,
+          },
+          { to: "/admin/analytics", label: "Analitik", Icon: BarChart3 },
+        ],
+      },
+      {
+        label: "Katalog",
+        items: [
+          { to: "/admin/products", label: "Ürünler", Icon: Package },
+          { to: "/admin/categories", label: "Kategoriler", Icon: Tags },
+          { to: "/admin/sets", label: "Setler", Icon: Layers },
+          { to: "/admin/media", label: "Medya Kütüphanesi", Icon: Image },
+          { to: "/admin/discounts", label: "İndirimler", Icon: Percent },
+          { to: "/admin/coupons", label: "Kuponlar", Icon: TicketPercent },
+          { to: "/admin/stocks", label: "Stok Yönetimi", Icon: Boxes },
+          {
+            to: "/admin/service-records",
+            label: "Servis Kayıtları",
+            Icon: Wrench,
+          },
+        ],
+      },
+      {
+        label: "Ticaret",
+        items: [
+          { to: "/admin/orders", label: "Siparişler", Icon: ShoppingCart },
+          { to: "/admin/customers", label: "Müşteriler", Icon: Users },
+        ],
+      },
+      {
+        label: "Sistem",
+        items: [{ to: "/admin/settings", label: "Ayarlar", Icon: Settings }],
+      },
+    ],
+    [],
+  );
+
+  async function handleLogout() {
+    await authApi.logout();
+    navigate("/account?view=login", { replace: true });
+  }
+
+  return (
+    <div className="flex min-h-screen bg-[var(--color-bg-admin)] text-[var(--color-text-admin)]">
+      {busyCount > 0 && (
+        <div className="fixed inset-0 z-[1200] flex items-center justify-center bg-black/30">
+          <div className="flex items-center gap-3 rounded-full bg-white px-5 py-3 text-sm font-semibold text-[var(--color-text-admin)] shadow-lg">
+            <span className="h-2.5 w-2.5 animate-pulse rounded-full bg-[var(--color-accent)]" />
+            İşlem yapılıyor…
+          </div>
+        </div>
+      )}
+      {/* Masaüstü yan menü */}
+      <aside
+        className={`hidden md:flex md:flex-col border-r border-[var(--color-border-admin)]/30 bg-[var(--color-bg-sidebar)] text-[var(--color-text-sidebar)] transition-[width] duration-300
+        ${
+          sidebarCollapsed ? "md:w-20" : "md:w-72"
+        } md:sticky md:top-0 md:h-screen`}
+      >
+        <SidebarHeader
+          collapsed={sidebarCollapsed}
+          onToggle={() => setSidebarCollapsed((prev) => !prev)}
+        />
+
+        {/* nav kendi içinde scrollable */}
+        <nav className="flex-1 overflow-y-auto [&::-webkit-scrollbar]:hidden px-3 py-6 space-y-6">
+          {menu.map((section) => (
+            <SidebarSection
+              key={section.label}
+              section={section}
+              collapsed={sidebarCollapsed}
+            />
+          ))}
+        </nav>
+
+        <SidebarFooter collapsed={sidebarCollapsed} me={me} />
+      </aside>
+
+      <MobileDrawer
+        open={sidebarOpen}
+        onClose={() => setSidebarOpen(false)}
+        menu={menu}
+        me={me}
+        onLogout={handleLogout}
+      />
+
+      <div className="flex min-w-0 flex-1 flex-col">
+        <TopBar
+          breadcrumbs={breadcrumbs}
+          onMenuToggle={() => setSidebarOpen(true)}
+          me={me}
+          onLogout={handleLogout}
+        />
+
+        <PageHeader
+          title={title || pageTitleFromBreadcrumb(breadcrumbs) || "Genel Bakış"}
+          subtitle={subtitle}
+          actions={actions}
+        />
+
+        {/* body scroll'u: tüm sayfa scroll, kolonu iç scroll yapmıyoruz */}
+        <main className="flex-1">
+          <div className="mx-auto w-full max-w-none px-4 pb-8 pt-6 sm:px-6 lg:px-8">
+            {children}
+          </div>
+        </main>
+      </div>
+    </div>
+  );
+}
+
+/* ---------------- Sidebar ---------------- */
+
+function SidebarHeader({ collapsed, onToggle }) {
+  return (
+    <div className="flex items-center justify-between gap-3 border-b border-[var(--color-border-admin)]/30 px-4 py-4">
+      <Link to="/admin/dashboard" className="flex items-center gap-3">
+        <div className="grid h-10 w-10 place-items-center rounded-2xl bg-white/15 text-white">
+          <Sparkles className="h-5 w-5" />
+        </div>
+        {!collapsed && (
+          <div className="flex flex-col leading-tight">
+            <span className="text-base font-semibold tracking-tight">
+              Berkay GSM
+            </span>
+            <span className="text-xs text-white/70">Yönetim Konsolu</span>
+          </div>
+        )}
+      </Link>
+      <button
+        onClick={onToggle}
+        className="hidden md:inline-flex rounded-lg p-2.5 text-white/80 hover:bg-white/10"
+        aria-label={collapsed ? "Menüyü genişlet" : "Menüyü daralt"}
+      >
+        {collapsed ? (
+          <ChevronRight className="h-5 w-5" />
+        ) : (
+          <ChevronLeft className="h-5 w-5" />
+        )}
+      </button>
+    </div>
+  );
+}
+
+function SidebarSection({ section, collapsed, onNavigate }) {
+  if (!section?.items?.length) return null;
+  return (
+    <div>
+      {!collapsed && (
+        <p className="px-3 pb-2 text-xs font-semibold uppercase tracking-wider text-white/60">
+          {section.label}
+        </p>
+      )}
+      <ul className="space-y-1">
+        {section.items.map((item) => (
+          <li key={item.to}>
+            <NavItem {...item} collapsed={collapsed} onNavigate={onNavigate} />
+          </li>
+        ))}
+      </ul>
+    </div>
+  );
+}
+
+function SidebarFooter({ collapsed, me }) {
+  return (
+    <div className="border-t border-[var(--color-border-admin)]/30 px-3 py-4">
+      <div className="flex items-center gap-3 rounded-2xl bg-white/10 p-3">
+        <div className="grid h-9 w-9 place-items-center rounded-full bg-white/20 text-sm font-semibold text-white">
+          {getInitials(me)}
+        </div>
+        {!collapsed && (
+          <div className="min-w-0">
+            <div className="truncate text-sm font-medium text-white">
+              {me?.firstName
+                ? `${me.firstName} ${me.lastName || ""}`.trim()
+                : "Yönetici"}
+            </div>
+            <div className="truncate text-xs text-white/70">
+              {me?.email || ""}
+            </div>
+          </div>
+        )}
+      </div>
+      <Link
+        to="/"
+        className="mt-3 flex items-center gap-3 rounded-2xl border border-white/10 px-3 py-2 text-sm text-white transition hover:bg-white/10"
+        title="Mağazayı Görüntüle"
+      >
+        <Home className="h-4 w-4" />
+        {!collapsed && <span>Mağazayı Görüntüle</span>}
+      </Link>
+    </div>
+  );
+}
+
+/* ---------------- Main content ---------------- */
+
+function TopBar({ breadcrumbs, onMenuToggle, me, onLogout }) {
+  return (
+    <header className="sticky top-0 z-40 border-b border-[var(--color-border-admin)]/40 bg-[var(--color-bg-card)]/95 backdrop-blur">
+      <div className="mx-auto flex h-16 w-full max-w-none items-center justify-between gap-3 px-4 sm:px-6 lg:px-8">
+        <div className="flex min-w-0 flex-1 items-center gap-3">
+          <button
+            onClick={onMenuToggle}
+            className="flex rounded-lg p-2.5 text-[var(--color-text-admin)] hover:bg-[var(--color-bg-hover)] md:hidden"
+            aria-label="Menüyü Aç"
+          >
+            <Menu className="h-6 w-6" />
+          </button>
+          <Breadcrumbs items={breadcrumbs} />
+        </div>
+
+        <div className="flex shrink-0 items-center gap-2 sm:gap-3">
+          <div className="hidden lg:flex items-center gap-2 rounded-full border border-[var(--color-border-admin)] bg-[var(--color-bg-card)] px-3 py-1.5">
+            <Search className="h-4 w-4 text-[var(--color-text-admin-muted)]" />
+            <input
+              placeholder="Yönetim panelinde ara…"
+              className="w-48 border-0 bg-transparent text-sm outline-none placeholder:text-[var(--color-text-admin-muted)]"
+            />
+          </div>
+          <AdminNotificationMenu />
+          <UserMenu me={me} onLogout={onLogout} />
+        </div>
+      </div>
+    </header>
+  );
+}
+
+function PageHeader({ title, subtitle, actions }) {
+  return (
+    <div className="border-b border-[var(--color-border-admin)]/40 bg-[var(--color-bg-admin)]/60">
+      <div className="mx-auto flex w-full max-w-none flex-col gap-4 px-4 py-6 sm:px-6 lg:px-8 lg:flex-row lg:items-center lg:justify-between">
+        <div>
+          <h1 className="text-2xl font-semibold text-[var(--color-text-admin)]">
+            {title}
+          </h1>
+          {subtitle && (
+            <p className="mt-1 text-sm text-[var(--color-text-admin-muted)]">
+              {subtitle}
+            </p>
+          )}
+        </div>
+        {actions && (
+          <div className="flex w-full flex-wrap items-stretch gap-2 lg:w-auto lg:items-center lg:justify-end">
+            {actions}
+          </div>
+        )}
+      </div>
+    </div>
+  );
+} /* ---------------- Navigation item ---------------- */
+
+// eslint-disable-next-line no-unused-vars
+function NavItem({ to, label, Icon, collapsed, onNavigate }) {
+  const location = useLocation();
+  const linkRef = useRef(null);
+
+  // Aktif change olduğunda menü öğesini görünür alana getir
+  useEffect(() => {
+    const isActive =
+      location.pathname === to || location.pathname.startsWith(to + "/");
+    if (isActive && linkRef.current) {
+      try {
+        linkRef.current.scrollIntoView({ block: "nearest", inline: "nearest" });
+      } catch {
+        // ignore
+      }
+    }
+  }, [location.pathname, to]);
+
+  return (
+    <NavLink
+      ref={linkRef}
+      to={to}
+      title={label}
+      onClick={() => {
+        if (onNavigate) onNavigate();
+      }}
+      className={({ isActive }) =>
+        [
+          "relative flex items-center gap-3 rounded-xl px-3 py-2 text-sm transition-colors",
+          collapsed ? "justify-center" : "justify-start",
+          isActive
+            ? "bg-[var(--color-bg-card)] text-[var(--color-text-admin)] shadow-sm ring-1 ring-[var(--color-border-admin)]/40"
+            : "text-[var(--color-text-sidebar)]/80 hover:bg-white/10 hover:text-[var(--color-text-sidebar)]",
+        ].join(" ")
+      }
+    >
+      <Icon className="h-5 w-5 shrink-0" />
+      {!collapsed && <span className="truncate">{label}</span>}
+    </NavLink>
+  );
+}
+
+/* ---------------- Mobile drawer ---------------- */
+
+function MobileDrawer({ open, onClose, menu, me, onLogout }) {
+  return (
+    <div
+      className={`md:hidden fixed inset-0 z-50 ${
+        open ? "" : "pointer-events-none"
+      }`}
+    >
+      <div
+        className={`absolute inset-0 bg-black/50 transition-opacity ${
+          open ? "opacity-100" : "opacity-0"
+        }`}
+        onClick={onClose}
+      />
+      <div
+        className={`absolute left-0 top-0 h-full w-[86%] max-w-80 transform bg-[var(--color-bg-sidebar)] text-[var(--color-text-sidebar)] shadow-xl transition-transform duration-300 ${
+          open ? "translate-x-0" : "-translate-x-full"
+        }`}
+      >
+        <div className="flex items-center justify-between border-b border-white/10 px-4 py-4">
+          <Link
+            to="/admin/dashboard"
+            className="flex items-center gap-3"
+            onClick={onClose}
+          >
+            <div className="grid h-10 w-10 place-items-center rounded-2xl bg-white/15 text-white">
+              <Sparkles className="h-5 w-5" />
+            </div>
+            <span className="text-lg font-semibold">Yönetim Konsolu</span>
+          </Link>
+          <button
+            onClick={onClose}
+            className="rounded-lg p-2.5 text-white hover:bg-white/10"
+            aria-label="Menüyü Kapat"
+          >
+            <X className="h-6 w-6" />
+          </button>
+        </div>
+
+        <div className="flex h-[calc(100dvh-4rem)] min-h-0 flex-col justify-between">
+          <div className="min-h-0 overflow-y-auto px-3 pb-6 pt-4 space-y-6">
+            {menu.map((section) => (
+              <SidebarSection
+                key={section.label}
+                section={section}
+                collapsed={false}
+                onNavigate={onClose}
+              />
+            ))}
+          </div>
+
+          <div className="border-t border-white/10 px-4 py-4 space-y-3">
+            <div className="flex items-center gap-3 rounded-2xl bg-white/10 p-3 text-white">
+              <div className="grid h-9 w-9 place-items-center rounded-full bg-white/20 text-sm font-semibold">
+                {getInitials(me)}
+              </div>
+              <div className="min-w-0">
+                <div className="truncate text-sm font-medium">
+                  {me?.firstName
+                    ? `${me.firstName} ${me.lastName || ""}`.trim()
+                    : "Yönetici"}
+                </div>
+                <div className="truncate text-xs text-white/70">
+                  {me?.email || ""}
+                </div>
+              </div>
+            </div>
+            <button
+              onClick={() => {
+                onClose();
+                onLogout();
+              }}
+              className="flex w-full items-center gap-2 rounded-2xl border border-white/10 px-3 py-2 text-sm text-white transition hover:bg-white/10"
+            >
+              <LogOut className="h-4 w-4" />
+              <span>Çıkış Yap</span>
+            </button>
+            <Link
+              to="/"
+              onClick={onClose}
+              className="flex items-center gap-2 rounded-2xl border border-white/10 px-3 py-2 text-sm text-white transition hover:bg-white/10"
+            >
+              <Home className="h-4 w-4" />
+              <span>Mağazayı Görüntüle</span>
+            </Link>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+/* ---------------- User menu ---------------- */
+
+function UserMenu({ me, onLogout }) {
+  const [open, setOpen] = useState(false);
+
+  useEffect(() => {
+    const close = (event) => {
+      if (!(event.target instanceof Node)) return;
+      setOpen(false);
+    };
+    if (open) document.addEventListener("click", close, { once: true });
+    return () => document.removeEventListener("click", close);
+  }, [open]);
+
+  return (
+    <div className="relative">
+      <button
+        onClick={(event) => {
+          event.stopPropagation();
+          setOpen((prev) => !prev);
+        }}
+        className="flex items-center gap-2 rounded-full border border-[var(--color-border-admin)] bg-[var(--color-bg-card)] px-2 py-1.5 text-sm hover:bg-[var(--color-bg-hover)]"
+      >
+        <div className="grid h-7 w-7 place-items-center rounded-full bg-[var(--color-bg-admin)] text-xs font-semibold text-[var(--color-text-admin)]">
+          {getInitials(me)}
+        </div>
+        <span className="hidden sm:block text-[var(--color-text-admin)]">
+          {me?.firstName || "Yönetici"}
+        </span>
+        <ChevronDown className="h-4 w-4 text-[var(--color-text-admin-muted)]" />
+      </button>
+
+      {open && (
+        <div className="absolute right-0 mt-2 w-56 max-w-[calc(100vw-1rem)] overflow-hidden rounded-xl border border-[var(--color-border-admin)] bg-[var(--color-bg-card)] shadow-xl">
+          <div className="px-4 py-3">
+            <div className="text-sm font-semibold text-[var(--color-text-admin)]">
+              {me?.firstName
+                ? `${me.firstName} ${me.lastName || ""}`.trim()
+                : "Yönetici"}
+            </div>
+            <div className="truncate text-xs text-[var(--color-text-admin-muted)]">
+              {me?.email || ""}
+            </div>
+          </div>
+          <div className="h-px bg-[var(--color-border-admin)]/60" />
+          <MenuLink to="/admin/settings">Profil ve Ayarlar</MenuLink>
+          <MenuLink to="/admin/dashboard">Kontrol Paneli</MenuLink>
+          <button
+            onClick={onLogout}
+            className="flex w-full items-center gap-2 px-4 py-2.5 text-left text-sm text-red-600 hover:bg-[var(--color-bg-hover)]"
+          >
+            <LogOut className="h-4 w-4" />
+            Çıkış Yap
+          </button>
+        </div>
+      )}
+    </div>
+  );
+}
+
+function AdminNotificationMenu() {
+  const [open, setOpen] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [items, setItems] = useState([]);
+  const [unreadCount, setUnreadCount] = useState(0);
+  const [permission, setPermission] = useState(() => {
+    if (typeof window === "undefined" || typeof Notification === "undefined") {
+      return "unsupported";
+    }
+    return Notification.permission;
+  });
+  const rootRef = useRef(null);
+  const seededUnreadRef = useRef(false);
+  const notifiedIdsRef = useRef(new Set());
+
+  const fetchNotifications = useCallback(
+    async ({
+      markRead = false,
+      showLoader = false,
+      suppressBrowserAlert = false,
+    } = {}) => {
+      if (showLoader) setLoading(true);
+      try {
+        const data = await adminNotificationsApi.list({ limit: 10 });
+        const nextItems = Array.isArray(data?.items) ? data.items : [];
+        const nextUnreadCount = Number(data?.unreadCount || 0) || 0;
+        const unreadItems = nextItems.filter((item) => !item.read);
+        const unreadIds = unreadItems.map((item) => item.id);
+
+        if (!seededUnreadRef.current) {
+          unreadIds.forEach((id) => notifiedIdsRef.current.add(id));
+          seededUnreadRef.current = true;
+        } else if (!open && !suppressBrowserAlert && permission === "granted") {
+          unreadItems
+            .filter((item) => !notifiedIdsRef.current.has(item.id))
+            .forEach((item) => {
+              try {
+                const browserNotification = new Notification(item.title, {
+                  body: item.message,
+                  tag: `admin-notification-${item.id}`,
+                });
+                browserNotification.onclick = () => {
+                  try {
+                    window.focus();
+                  } catch {
+                    // ignore focus failures
+                  }
+                  window.location.assign(getNotificationHref(item));
+                  browserNotification.close();
+                };
+              } catch {
+                // ignore browser notification failures
+              }
+              notifiedIdsRef.current.add(item.id);
+            });
+        }
+
+        if (markRead && unreadIds.length) {
+          await adminNotificationsApi.markRead(unreadIds);
+          const readAt = new Date().toISOString();
+          setItems(
+            nextItems.map((item) =>
+              unreadIds.includes(item.id)
+                ? { ...item, read: true, readAt }
+                : item,
+            ),
+          );
+          setUnreadCount(0);
+          unreadIds.forEach((id) => notifiedIdsRef.current.add(id));
+          return;
+        }
+
+        setItems(nextItems);
+        setUnreadCount(nextUnreadCount);
+      } catch {
+        // sessiz gec
+      } finally {
+        if (showLoader) setLoading(false);
+      }
+    },
+    [open, permission],
+  );
+
+  useEffect(() => {
+    fetchNotifications();
+    const intervalId = window.setInterval(() => {
+      fetchNotifications({ markRead: open, suppressBrowserAlert: open });
+    }, 20000);
+    return () => window.clearInterval(intervalId);
+  }, [fetchNotifications, open]);
+
+  useEffect(() => {
+    const handleOutsideClick = (event) => {
+      if (!(event.target instanceof Node)) return;
+      if (!rootRef.current?.contains(event.target)) {
+        setOpen(false);
+      }
+    };
+    if (open) {
+      document.addEventListener("mousedown", handleOutsideClick);
+    }
+    return () => {
+      document.removeEventListener("mousedown", handleOutsideClick);
+    };
+  }, [open]);
+
+  async function handleToggle(event) {
+    event.stopPropagation();
+    const nextOpen = !open;
+    setOpen(nextOpen);
+    if (!nextOpen) return;
+
+    if (typeof window !== "undefined" && typeof Notification !== "undefined") {
+      if (Notification.permission === "default") {
+        try {
+          const result = await Notification.requestPermission();
+          setPermission(result);
+        } catch {
+          setPermission(Notification.permission);
+        }
+      } else {
+        setPermission(Notification.permission);
+      }
+    }
+
+    await fetchNotifications({
+      markRead: true,
+      showLoader: true,
+      suppressBrowserAlert: true,
+    });
+  }
+
+  const badgeLabel = unreadCount > 99 ? "99+" : String(unreadCount);
+
+  return (
+    <div ref={rootRef} className="relative">
+      <button
+        onClick={handleToggle}
+        className="relative rounded-full p-2 text-[var(--color-text-admin-muted)] hover:bg-[var(--color-bg-hover)]"
+        aria-label="Bildirimleri aç"
+      >
+        <Bell className="h-5 w-5" />
+        {unreadCount > 0 && (
+          <span className="absolute -right-1 -top-1 inline-flex min-w-[1.1rem] items-center justify-center rounded-full bg-[var(--color-accent)] px-1 text-[10px] font-semibold leading-4 text-white">
+            {badgeLabel}
+          </span>
+        )}
+      </button>
+
+      {open && (
+        <div className="absolute right-0 z-50 mt-2 w-[min(22rem,calc(100vw-1rem))] max-w-[calc(100vw-1rem)] overflow-hidden rounded-2xl border border-[var(--color-border-admin)] bg-[var(--color-bg-card)] shadow-2xl">
+          <div className="flex items-center justify-between border-b border-[var(--color-border-admin)]/60 px-4 py-3">
+            <div>
+              <div className="text-sm font-semibold text-[var(--color-text-admin)]">
+                Bildirimler
+              </div>
+              <div className="text-xs text-[var(--color-text-admin-muted)]">
+                Stok ve yorum bildirimleri burada listelenir.
+              </div>
+            </div>
+            {loading && (
+              <Loader2 className="h-4 w-4 animate-spin text-[var(--color-text-admin-muted)]" />
+            )}
+          </div>
+
+          {permission === "default" && (
+            <div className="flex items-start gap-2 border-b border-[var(--color-border-admin)]/60 bg-[var(--color-bg-hover)]/60 px-4 py-3 text-xs text-[var(--color-text-admin-muted)]">
+              <AlertTriangle className="mt-0.5 h-4 w-4 shrink-0 text-[var(--color-accent)]" />
+              <span>
+                Tarayıcı bildirimi için izin penceresi bu simgeye tıkladığınızda
+                gösterilir.
+              </span>
+            </div>
+          )}
+
+          {permission === "denied" && (
+            <div className="flex items-start gap-2 border-b border-[var(--color-border-admin)]/60 bg-[var(--color-bg-hover)]/60 px-4 py-3 text-xs text-[var(--color-text-admin-muted)]">
+              <AlertTriangle className="mt-0.5 h-4 w-4 shrink-0 text-[var(--color-accent)]" />
+              <span>
+                Tarayıcı bildirimi kapalı. İsterseniz bunu tarayıcı ayarlarından
+                tekrar açabilirsiniz.
+              </span>
+            </div>
+          )}
+
+          <div className="max-h-[24rem] overflow-y-auto">
+            {!items.length ? (
+              <div className="px-4 py-6 text-sm text-[var(--color-text-admin-muted)]">
+                Henüz bildiriminiz yok.
+              </div>
+            ) : (
+              items.map((item) => (
+                <NotificationListItem
+                  key={item.id}
+                  item={item}
+                  onSelect={() => setOpen(false)}
+                />
+              ))
+            )}
+          </div>
+        </div>
+      )}
+    </div>
+  );
+}
+
+function NotificationListItem({ item, onSelect }) {
+  const badge = getNotificationBadge(item);
+
+  return (
+    <Link
+      to={getNotificationHref(item)}
+      onClick={onSelect}
+      className="block border-b border-[var(--color-border-admin)]/40 px-4 py-3 transition hover:bg-[var(--color-bg-hover)] last:border-b-0"
+    >
+      <div className="flex items-start justify-between gap-3">
+        <div className="min-w-0">
+          <div className="text-sm font-semibold text-[var(--color-text-admin)]">
+            {getNotificationTitle(item)}
+          </div>
+          <div className="mt-1 text-xs leading-5 text-[var(--color-text-admin-muted)]">
+            {item.message}
+          </div>
+        </div>
+        <div className="inline-flex shrink-0 items-center gap-1 rounded-full border border-[var(--color-border-admin)] px-2 py-1 text-xs font-semibold text-[var(--color-text-admin)]">
+          {badge.Icon ? <badge.Icon className="h-3.5 w-3.5" /> : null}
+          <span>{badge.text}</span>
+        </div>
+      </div>
+      <div className="mt-2 flex items-center justify-between gap-3 text-[11px] text-[var(--color-text-admin-muted)]">
+        <span className="truncate">{getNotificationMeta(item)}</span>
+        <span>
+          {item.createdAt
+            ? new Date(item.createdAt).toLocaleString("tr-TR")
+            : ""}
+        </span>
+      </div>
+    </Link>
+  );
+}
+
+function MenuLink({ to, children }) {
+  return (
+    <Link
+      to={to}
+      className="block px-4 py-2.5 text-sm text-[var(--color-text-admin)] hover:bg-[var(--color-bg-hover)]"
+    >
+      {children}
+    </Link>
+  );
+}
+
+/* ---------------- Breadcrumbs ---------------- */
+
+function Breadcrumbs({ items = [] }) {
+  if (!items.length) return null;
+  return (
+    <nav className="hidden min-w-0 items-center gap-1 overflow-x-auto whitespace-nowrap text-sm text-[var(--color-text-admin-muted)] sm:flex no-scrollbar">
+      {items.map((crumb, index) => {
+        const last = index === items.length - 1;
+        return (
+          <span key={crumb.href} className="flex items-center">
+            {last ? (
+              <span className="font-medium text-[var(--color-text-admin)]">
+                {crumb.label}
+              </span>
+            ) : (
+              <Link
+                to={crumb.href}
+                className="hover:text-[var(--color-text-admin)]"
+              >
+                {crumb.label}
+              </Link>
+            )}
+            {!last && (
+              <span className="mx-2 text-[var(--color-text-admin-muted)]">
+                /
+              </span>
+            )}
+          </span>
+        );
+      })}
+    </nav>
+  );
+}
+
+/* ---------------- Helpers ---------------- */
+
+function pretty(segment) {
+  return segment
+    .replace(/[-_]+/g, " ")
+    .replace(/\b\w/g, (m) => m.toUpperCase());
+}
+
+function pageTitleFromBreadcrumb(items = []) {
+  if (!items.length) return "";
+  return items[items.length - 1].label;
+}
+
+function getInitials(user) {
+  if (!user) return "AD";
+  const name = `${user.firstName || ""} ${user.lastName || ""}`.trim();
+  if (!name) return (user.email || "AD").slice(0, 2).toUpperCase();
+  return name
+    .split(" ")
+    .map((n) => n[0])
+    .join("")
+    .slice(0, 2)
+    .toUpperCase();
+}

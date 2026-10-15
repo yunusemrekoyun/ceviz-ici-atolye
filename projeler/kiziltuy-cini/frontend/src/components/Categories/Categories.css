@@ -1,0 +1,33 @@
+.categories {
+  margin: 40px 0;
+}
+
+.categories .category-list {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  gap: 16px;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  padding: 0 8px;
+  scroll-behavior: smooth;
+}
+
+.category-item {
+  scroll-snap-align: start;
+}
+
+@media (max-width: 1024px) {
+  .categories .category-list {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+@media (max-width: 576px) {
+  .categories .category-list {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+.categories .category-list::-webkit-scrollbar {
+  display: none;
+}

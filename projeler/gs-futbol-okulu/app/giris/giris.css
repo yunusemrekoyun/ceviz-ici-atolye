@@ -1,0 +1,31 @@
+@import "../../components/home/fonts.css";
+.gs-login { flex:1; min-height:100dvh; display:grid; place-items:center; padding:32px 20px; background:#edeaec; color:#252328; font:400 1rem/1.6 "GS Ubuntu",system-ui,sans-serif; color-scheme:light; }
+.gs-login-panel { position:relative; width:100%; max-width:480px; padding:36px; border:1px solid #dcd3d7; border-radius:12px; background:white; }
+.gs-login-panel::after { content:""; position:absolute; inset:auto 0 0; height:6px; border-radius:0 0 11px 11px; background:linear-gradient(90deg,#941d3b 0 50%,#fdb912 50%); }
+.gs-login-brand { display:flex; align-items:center; justify-content:center; gap:12px; padding-bottom:28px; border-bottom:1px solid #e4dce0; color:#941d3b; }
+.gs-login-brand img { width:48px; height:48px; border-radius:50%; }
+.gs-login-brand strong { display:block; font:600 27px/1.1 "GS Teko",sans-serif; letter-spacing:.025em; }
+.gs-login-brand small { font-size:12px; color:#625c62; }
+.gs-login-heading { margin:28px 0; }
+.gs-login-heading h1 { font:600 2.375rem/1.1 "GS Teko",sans-serif; color:#941d3b; text-wrap:balance; }
+.gs-login-heading p { margin-top:8px; color:#625c62; font-size:.9375rem; }
+.gs-login-form { display:grid; gap:18px; }
+.gs-login-label { display:block; margin-bottom:6px; font-size:.875rem; font-weight:500; }
+.gs-login-input { display:block; width:100%; min-height:48px; border:1px solid #cdbcc3; border-radius:4px; padding:10px 13px; background:white; color:#252328; font-size:1rem; outline:none; }
+.gs-login-input:focus { border-color:#941d3b; outline:2px solid #941d3b33; outline-offset:2px; }
+.gs-login-hint { margin-top:-8px; color:#625c62; font-size:.8125rem; }
+.gs-login-eye { position:absolute; inset:0 0 0 auto; width:48px; display:flex; align-items:center; justify-content:center; color:#625c62; cursor:pointer; }
+.gs-login-submit { display:flex; justify-content:center; align-items:center; min-height:48px; margin-top:6px; padding:12px 20px; border-radius:4px; background:#941d3b; color:white; font-weight:500; cursor:pointer; transition:background-color 160ms ease-out; }
+.gs-login-submit:disabled { opacity:.7; cursor:wait; }
+.gs-login-error { border:1px solid #e4cdd5; border-radius:4px; padding:12px; background:#fcf6f8; color:#941d3b; font-size:.875rem; }
+.gs-login-success { margin-bottom:20px; border:1px solid #bce2cf; border-radius:4px; padding:12px; background:#f0faf5; color:#17633d; font-size:.875rem; }
+.gs-login-security { color:#625c62; font-size:.75rem; }
+.gs-login-links { display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:12px; margin-top:24px; padding-bottom:8px; font-size:.875rem; color:#941d3b; }
+.gs-login-links a { display:inline-flex; align-items:center; gap:6px; min-height:44px; }
+.gs-login :focus-visible { outline:3px solid #df9300; outline-offset:4px; }
+@media (hover:hover) { .gs-login-submit:hover { background:#7a1630; } .gs-login-links a:hover { text-decoration:underline; text-underline-offset:4px; } }
+@media (max-width:479px) { .gs-login { padding:20px 16px; } .gs-login-panel { padding:28px 22px; } .gs-login-brand { gap:8px; } .gs-login-brand strong { font-size:24px; } .gs-login-brand img { width:40px; height:40px; } }
+@media (prefers-reduced-motion:reduce) { .gs-login * { transition:none; } }
+.gs-login-help { display:flex; flex-wrap:wrap; gap:8px; }
+.gs-login-help a { display:flex; flex:1 1 140px; align-items:center; justify-content:center; min-height:48px; padding:10px 12px; border:1px solid #d5c2c9; border-radius:4px; color:#941d3b; font-size:.875rem; }
+.gs-login-help a:last-child { background:#941d3b; color:white; }

@@ -1,0 +1,13 @@
+services:
+  mongo:
+    image: mongo:7
+    container_name: unko-mongo
+    restart: unless-stopped
+    ports:
+      - "127.0.0.1:27017:27017"
+    volumes:
+      - unko-mongo-data:/data/db
+
+volumes:
+  unko-mongo-data:
+    name: unko-mongo-data

@@ -1,0 +1,12 @@
+.shop-products-container {
+  padding: 20px;
+  max-width: 1200px; /* genişliği sınırlayıp ortalıyoruz */
+  margin: 0 auto; /* yatayda ortala */
+}
+
+.shop-products-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 20px;
+  justify-content: center; /* grid’leri container içinde ortala */
+}

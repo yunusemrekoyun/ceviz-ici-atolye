@@ -1,0 +1,186 @@
+.hero {
+  padding-block: clamp(24px, 4vw, 48px) clamp(40px, 6vw, 72px);
+}
+
+.hero-inner {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1.15fr);
+  align-items: center;
+  gap: clamp(32px, 5vw, 72px);
+}
+
+.hero-copy {
+  max-width: 540px;
+  animation: hero-copy-in 0.7s var(--ease) both;
+}
+
+@keyframes hero-copy-in {
+  from {
+    opacity: 0;
+    transform: translateY(14px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.hero-title {
+  margin-top: 16px;
+  font-family: var(--font-display);
+  font-size: clamp(40px, 5.6vw, 76px);
+  font-weight: 400;
+  line-height: 1.02;
+  letter-spacing: -0.035em;
+}
+
+.hero-text {
+  margin-top: 20px;
+  max-width: 42ch;
+  font-size: 17px;
+  color: var(--ink-2);
+}
+
+.hero-actions {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 16px 28px;
+  margin-top: 32px;
+}
+
+/* ---------- Görsel paneli ---------- */
+.hero-media {
+  position: relative;
+  aspect-ratio: 5 / 4;
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  background: var(--surface-2);
+  box-shadow: var(--shadow);
+}
+
+.hero-image {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  opacity: 0;
+  transform: scale(1.04);
+  transition: opacity 0.9s var(--ease), transform 6s linear;
+}
+
+.hero-image.is-active {
+  opacity: 1;
+  transform: scale(1);
+}
+
+.hero-image.is-packshot {
+  object-fit: contain;
+  padding: 6%;
+  mix-blend-mode: multiply;
+}
+
+.hero-controls {
+  position: absolute;
+  left: 20px;
+  right: 20px;
+  bottom: 18px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 10px 16px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.78);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+}
+
+.hero-counter {
+  font-size: 13px;
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+}
+
+.hero-counter span {
+  color: var(--muted);
+  font-weight: 500;
+}
+
+.hero-dots {
+  display: flex;
+  gap: 8px;
+}
+
+.hero-dot {
+  position: relative;
+  width: 44px;
+  height: 4px;
+  padding: 0;
+  border-radius: 999px;
+  background: rgba(36, 27, 30, 0.16);
+  overflow: hidden;
+}
+
+/* Tıklama alanını büyüt */
+.hero-dot::before {
+  content: "";
+  position: absolute;
+  inset: -10px 0;
+}
+
+.hero-dot span {
+  position: absolute;
+  inset: 0;
+  background: var(--ink);
+  transform: scaleX(0);
+  transform-origin: left;
+}
+
+.hero-dot.is-active span {
+  animation: hero-progress linear forwards;
+}
+
+.hero-dot.is-paused span {
+  animation-play-state: paused;
+}
+
+@keyframes hero-progress {
+  to {
+    transform: scaleX(1);
+  }
+}
+
+@media (max-width: 992px) {
+  .hero-inner {
+    grid-template-columns: 1fr;
+  }
+
+  .hero-media {
+    order: -1;
+    aspect-ratio: 4 / 3;
+  }
+
+  .hero-copy {
+    max-width: none;
+  }
+}
+
+@media (max-width: 576px) {
+  .hero-media {
+    margin-inline: calc(var(--gutter) * -1);
+    border-radius: 0;
+    box-shadow: none;
+  }
+
+  .hero-controls {
+    left: 12px;
+    right: 12px;
+    bottom: 12px;
+  }
+
+  .hero-text {
+    font-size: 16px;
+  }
+}

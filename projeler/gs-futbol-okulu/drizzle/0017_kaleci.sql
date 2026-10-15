@@ -1,0 +1,1 @@
+ALTER TABLE `registrations` ADD `is_goalkeeper` integer DEFAULT false NOT NULL;

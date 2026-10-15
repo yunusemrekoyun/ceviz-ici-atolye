@@ -1,0 +1,139 @@
+{
+  "collection": "Ceviz İçi Proje Arşivi",
+  "assembled_at": "2026-10-15T16:26:44.397531+03:00",
+  "copy_method": "Güncel kaynak commitlerinin izlenen dosyaları; içerikler ve dosya çalıştırma izinleri değiştirilmedi. Kaynak Git geçmişleri taşınmadı.",
+  "projects": [
+    {
+      "name": "Babil Yalıtım",
+      "directory": "projeler/babil-yalitim",
+      "description": "Kurumsal site ve içerik yönetimi",
+      "technology": "React / Express / MongoDB",
+      "source_repository": "https://github.com/yunusemrekoyun/babil-yalitim",
+      "source_branch": "master",
+      "source_commit": "6ab2c7da9bb2139760acd4eb175136b36dbab628",
+      "source_tree": "6baaab3af5558592b2d6538167a268e92261a4cc",
+      "file_count": 240
+    },
+    {
+      "name": "Oldsocks",
+      "directory": "projeler/oldsocks",
+      "description": "E-ticaret",
+      "technology": "React / Express / MongoDB",
+      "source_repository": "https://github.com/yunusemrekoyun/oldsocks",
+      "source_branch": "master",
+      "source_commit": "17cbf3d8cef705d8ece655c56ecb0b480c993304",
+      "source_tree": "e9b119b83d33aa1d6537781ef69081b81b907dbd",
+      "file_count": 448
+    },
+    {
+      "name": "Kızıltüy Çini",
+      "directory": "projeler/kiziltuy-cini",
+      "description": "Ürün vitrini ve blog",
+      "technology": "React / Express / MongoDB",
+      "source_repository": "https://github.com/yunusemrekoyun/MERN-Product-Showroom-Project",
+      "source_branch": "master",
+      "source_commit": "d1765452247ccd0047871f8c0a146fa4f8b866b0",
+      "source_tree": "03519569d6df80959cc8f33977e44d2cd559811c",
+      "file_count": 243
+    },
+    {
+      "name": "Ceplife",
+      "directory": "projeler/ceplife",
+      "description": "E-ticaret ve servis yönetimi",
+      "technology": "Next.js / MongoDB",
+      "source_repository": "https://github.com/yunusemrekoyun/berkaygsm-2",
+      "source_branch": "main",
+      "source_commit": "dd787bbe17c7514656778083fd85680451c7df2d",
+      "source_tree": "70131701e918ae843b30039b2e0c623420679041",
+      "file_count": 450
+    },
+    {
+      "name": "Otel Rezervasyon",
+      "directory": "projeler/otel-rezervasyon",
+      "description": "Rezervasyon ve otel yönetimi",
+      "technology": "Next.js / Prisma / PostgreSQL",
+      "source_repository": "https://github.com/yunusemrekoyun/Otel-Rezervasyon",
+      "source_branch": "main",
+      "source_commit": "e9e0f55abf575203f24b77ff69c91922fef444b9",
+      "source_tree": "5b6a74bb39ca91e9cddc951e0787e954aa2a3f09",
+      "file_count": 210
+    },
+    {
+      "name": "Kütahya Satılık Tarla",
+      "directory": "projeler/satilik-tarla",
+      "description": "Arazi ilan platformu",
+      "technology": "Next.js / Prisma / PostGIS / Redis",
+      "source_repository": "https://github.com/yunusemrekoyun/kutahyasatiliktarla",
+      "source_branch": "main",
+      "source_commit": "9e5305eba1a47949caa6855337cfabefe277dcc2",
+      "source_tree": "b91d87a407df9be1a8dca1a63f732c8fac296b6b",
+      "file_count": 213
+    },
+    {
+      "name": "Avukat Sitesi",
+      "directory": "projeler/avukat-sitesi",
+      "description": "Hizmet, makale ve karar yönetimi",
+      "technology": "React / Express / MongoDB",
+      "source_repository": "https://github.com/yunusemrekoyun/law-site",
+      "source_branch": "master",
+      "source_commit": "d987df94bf895fddfe12b29bbecf3e27b6ad86a2",
+      "source_tree": "c2cd22e1e0c9c88849420f4d1b3c1d12127d5861",
+      "file_count": 84
+    },
+    {
+      "name": "Baha Fitness",
+      "directory": "projeler/fitness",
+      "description": "Üyelik ve spor salonu yönetimi",
+      "technology": "Next.js / Prisma / PostgreSQL",
+      "source_repository": "https://github.com/yunusemrekoyun/Baha-Fitness-Yaz-l-m-",
+      "source_branch": "main",
+      "source_commit": "a40c3396bd74075b1deafcfa0369c4d2786d23c3",
+      "source_tree": "47641039b7ede4c5043c6322d946bf473eec06d2",
+      "file_count": 358
+    },
+    {
+      "name": "GS Futbol Okulu",
+      "directory": "projeler/gs-futbol-okulu",
+      "description": "Kayıt, aidat ve yoklama yönetimi",
+      "technology": "Next.js / Drizzle / SQLite",
+      "source_repository": "https://github.com/yunusemrekoyun/GS-Futbol-Okulu",
+      "source_branch": "main",
+      "source_commit": "5612e1a9401661b5ac90613fa24cfde62e44761a",
+      "source_tree": "0819b4222785c1874e22340ee11ec80275aaf60e",
+      "file_count": 647
+    },
+    {
+      "name": "macOS Portfolyo",
+      "directory": "projeler/macos-portfolyo",
+      "description": "Masaüstü benzeri portfolyo",
+      "technology": "Next.js / Zustand / MongoDB",
+      "source_repository": "https://github.com/yunusemrekoyun/portfolio_site_os",
+      "source_branch": "main",
+      "source_commit": "0c30f62c778a45cf02908502d3e86bf84ab35440",
+      "source_tree": "a7d45469baffea546f06ef5374b3872314d93f8b",
+      "file_count": 159
+    },
+    {
+      "name": "Kişisel Portfolyo",
+      "directory": "projeler/kisisel-portfolyo",
+      "description": "Proje vitrini ve blog",
+      "technology": "Next.js / MDX",
+      "source_repository": "https://github.com/yunusemrekoyun/Personal-website",
+      "source_branch": "master",
+      "source_commit": "02740753e712a9be748c7491e5529fbaaa91a686",
+      "source_tree": "f80dc2e4bbf7c3f463e2e1494d96715ec7e80dbf",
+      "file_count": 100
+    },
+    {
+      "name": "ÜnKo Kozmetik",
+      "directory": "projeler/unko-kozmetik",
+      "description": "E-ticaret ve yönetim paneli",
+      "technology": "React / Express / MongoDB",
+      "source_repository": "https://github.com/yunusemrekoyun/-nko-kozmetik",
+      "source_branch": "main",
+      "source_commit": "259dedf8d6a94ff465cb887fb1829899af9b932a",
+      "source_tree": "4cd33be3028d90d09787d125a3802483b04d877c",
+      "file_count": 264
+    }
+  ]
+}

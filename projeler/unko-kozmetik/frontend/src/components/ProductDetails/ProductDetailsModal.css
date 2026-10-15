@@ -1,0 +1,20 @@
+/* Hızlı bakış penceresi */
+.quick-view-modal .ant-modal-content {
+  padding: 28px;
+  border-radius: var(--radius-lg);
+  background: var(--bg);
+}
+
+.quick-view-modal .gallery-main {
+  aspect-ratio: 4 / 5;
+}
+
+.quick-view-modal .summary-title {
+  font-size: clamp(24px, 2.4vw, 32px);
+}
+
+@media (max-width: 576px) {
+  .quick-view-modal .ant-modal-content {
+    padding: 20px 16px;
+  }
+}

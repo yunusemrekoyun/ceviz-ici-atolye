@@ -1,0 +1,170 @@
+@import "../../components/home/fonts.css";
+
+@layer components {
+  .veli { --v-red:#941d3b; --v-red-dark:#7a1630; --v-yellow:#fdb912; --v-ink:#252328; --v-muted:#625c62; --v-line:#e4dce0; --v-soft:#f6f2f4; --color-gs-red:var(--v-red); --color-ink:var(--v-ink); --color-muted:var(--v-muted); --color-line:var(--v-line); --color-control:#cdbcc3; flex:1; padding:18px; background:#edeaec; color:var(--v-ink); font:400 1rem/1.6 "GS Ubuntu",system-ui,sans-serif; color-scheme:light; -webkit-font-smoothing:antialiased; }
+  .veli ::selection { background:var(--v-yellow); color:var(--v-ink); }
+  .veli h1,.veli h2,.veli h3 { text-wrap:balance; }
+  .veli p { text-wrap:pretty; }
+  .veli-frame { max-width:1160px; min-height:calc(100dvh - 36px); margin:auto; display:flex; flex-direction:column; border:1px solid #dcd3d7; border-radius:16px; background:white; }
+  .veli-title { font-family:"GS Teko",sans-serif; font-weight:600; line-height:1.05; letter-spacing:.01em; overflow-wrap:anywhere; }
+  .veli-header { position:sticky; top:0; z-index:40; border-radius:16px 16px 0 0; background:white; padding:env(safe-area-inset-top) 36px 0; }
+  .veli-header-inner { display:flex; align-items:center; justify-content:space-between; gap:16px; min-height:92px; border-bottom:1px solid var(--v-line); }
+  .veli-brand { display:flex; align-items:center; gap:11px; min-width:0; color:var(--v-red); }
+  .veli-brand img { width:44px; height:44px; flex-shrink:0; border-radius:50%; }
+  .veli-brand strong { display:block; font:600 30px/1 "GS Teko",sans-serif; letter-spacing:.035em; }
+  .veli-brand small { display:block; margin-top:4px; color:var(--v-muted); font-size:12px; }
+  .veli-header-actions { display:flex; align-items:center; gap:6px; flex-shrink:0; }
+  .veli-text-toggle,.veli-logout { min-height:44px; padding:0 13px; cursor:pointer; border-radius:4px; font-size:.875rem; font-weight:500; color:var(--v-red); }
+  .veli-text-toggle { min-width:44px; padding:0 8px; }
+  .veli-logout { border:1px solid #d5c2c9; }
+  .veli-nav { padding:0 36px; background:white; }
+  .veli-nav-inner { display:flex; gap:28px; border-bottom:1px solid var(--v-line); }
+  .veli-nav-link { position:relative; display:flex; align-items:center; justify-content:center; gap:9px; min-height:62px; color:var(--v-muted); font-size:.9375rem; font-weight:500; transition:color 160ms ease-out; }
+  .veli-nav-link svg { width:20px; height:20px; }
+  .veli-nav-link::after { content:""; position:absolute; inset:auto 0 0; height:3px; background:var(--v-red); transform:scaleX(0); transition:transform 180ms cubic-bezier(.22,1,.36,1); }
+  .veli-nav-link[aria-current] { color:var(--v-red); }
+  .veli-nav-link[aria-current]::after { transform:scaleX(1); }
+  .veli-main { flex:1; min-width:0; padding:32px 36px 40px; }
+  .veli-footer { display:flex; justify-content:space-between; gap:16px; margin:0 36px; padding:22px 0; border-top:1px solid var(--v-line); color:var(--v-muted); font-size:.75rem; }
+  .veli-frame-stripe,.veli-stripe { height:6px; flex-shrink:0; background:linear-gradient(90deg,#941d3b 0 50%,#fdb912 50%); }
+  .veli-frame-stripe { border-radius:0 0 15px 15px; }
+  .veli-card { border:1px solid var(--v-line); border-radius:6px; background:white; }
+  .veli-label { color:var(--v-muted); font-size:.8125rem; font-weight:400; }
+  .veli-btn { display:inline-flex; min-height:48px; align-items:center; justify-content:center; gap:9px; border-radius:4px; padding:10px 18px; font-size:.9375rem; font-weight:500; line-height:1.4; text-align:center; transition:transform 160ms cubic-bezier(.22,1,.36,1),background-color 160ms ease-out; touch-action:manipulation; cursor:pointer; }
+  .veli-btn:active { transform:scale(.98); }
+  .veli-btn:disabled { cursor:wait; }
+  .veli-btn--primary { background:var(--v-red); color:white; }
+  .veli-btn--line { border:1px solid #d5c2c9; background:white; color:var(--v-red); }
+  .veli :focus-visible { outline:3px solid #df9300; outline-offset:4px; }
+  .veli-skip { position:fixed; top:10px; left:20px; z-index:60; transform:translateY(-180%); padding:12px 18px; border-radius:4px; background:var(--v-yellow); }
+  .veli-skip:focus { transform:translateY(0); }
+  .veli-child-tabs { display:flex; flex-wrap:wrap; gap:8px; margin-bottom:24px; }
+  .veli-child-tabs a { display:inline-flex; align-items:center; min-height:44px; padding:8px 16px; border:1px solid var(--v-line); border-radius:4px; color:var(--v-muted); font-size:.9375rem; }
+  .veli-child-tabs a[aria-current] { border-color:var(--v-red); color:var(--v-red); background:var(--v-soft); font-weight:500; }
+  .veli-student { display:flex; align-items:center; gap:20px; margin:28px 0; }
+  .veli-avatar { display:flex; align-items:center; justify-content:center; width:86px; height:100px; flex-shrink:0; border-radius:6px; background:var(--v-soft); color:var(--v-red); object-fit:cover; font:500 42px/1 "GS Teko",sans-serif; }
+  .veli-student-copy { min-width:0; }
+  .veli-student h1 { margin:4px 0 8px; font-size:3.25rem; }
+  .veli-student-meta { display:flex; flex-wrap:wrap; gap:4px 16px; color:var(--v-muted); font-size:.9375rem; }
+  .veli-page-heading { display:flex; align-items:end; justify-content:space-between; gap:20px; margin-bottom:28px; }
+  .veli-page-heading h1 { color:var(--v-red); font-size:3rem; }
+  .veli-page-heading p { margin-top:6px; color:var(--v-muted); font-size:.9375rem; }
+  .veli-profile-layout { display:grid; grid-template-columns:minmax(0,340px) minmax(0,1fr); gap:36px; align-items:start; }
+  .veli-group { padding:26px; border-radius:6px; background:var(--v-red); color:white; }
+  .veli-group h2 { margin:5px 0 10px; font-size:2.375rem; }
+  .veli-group p { font-size:.9375rem; color:#f1dde3; }
+  .veli-group>span { display:block; font-size:.875rem; color:#ffdb77; }
+  .veli-schedule { margin-top:22px; border-top:1px solid #b65c75; }
+  .veli-schedule li { display:flex; align-items:baseline; justify-content:space-between; gap:12px; padding:14px 0; border-bottom:1px solid #b65c75; font-size:.9375rem; }
+  .veli-schedule li>span:last-child { text-align:right; font-variant-numeric:tabular-nums; }
+  .veli-schedule small { display:block; color:#f1dde3; font-size:.8125rem; }
+  .veli-next { margin-top:24px; padding-bottom:24px; border-bottom:1px solid var(--v-line); }
+  .veli-next-heading { display:flex; align-items:center; gap:9px; font-size:.875rem; color:var(--v-muted); }
+  .veli-next-heading svg { color:var(--v-red); }
+  .veli-next strong { display:block; margin:8px 0 3px; font-size:1.125rem; font-weight:500; }
+  .veli-next a { display:inline-flex; align-items:center; gap:5px; min-height:44px; color:var(--v-red); font-size:.9375rem; text-decoration:underline; text-underline-offset:4px; }
+  .veli-details-section { padding-bottom:24px; margin-bottom:24px; border-bottom:1px solid var(--v-line); }
+  .veli-details-section h2 { margin-bottom:18px; font-size:1.875rem; color:var(--v-red); }
+  .veli-facts { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:18px 24px; }
+  .veli-fact { min-width:0; }
+  .veli-fact dt { margin-bottom:3px; color:var(--v-muted); font-size:.8125rem; }
+  .veli-fact dd { font-size:.9375rem; overflow-wrap:anywhere; }
+  .veli-fact--wide { grid-column:1/-1; }
+  .veli-contact { margin-top:24px; }
+  .veli-contact h2 { margin-bottom:10px; font-size:1.625rem; }
+  .veli-contact-actions { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:8px; }
+  .veli-contact p { margin-top:10px; color:var(--v-muted); font-size:.8125rem; }
+  .veli-training-layout { display:grid; grid-template-columns:280px minmax(0,1fr); gap:36px; align-items:start; }
+  .veli-training-summary { border:1px solid var(--v-line); border-radius:6px; padding:8px 20px; }
+  .veli-training-stat { display:flex; align-items:center; justify-content:space-between; gap:12px; padding:16px 0; }
+  .veli-training-stat+.veli-training-stat { border-top:1px solid var(--v-line); }
+  .veli-training-stat strong { font-size:1.5rem; font-weight:500; color:var(--v-red); font-variant-numeric:tabular-nums; }
+  .veli-training-stat span { color:var(--v-muted); font-size:.9375rem; }
+  .veli-month { margin-bottom:28px; }
+  .veli-month-heading { display:flex; flex-wrap:wrap; align-items:baseline; justify-content:space-between; gap:8px; padding-bottom:12px; border-bottom:1px solid var(--v-line); }
+  .veli-month-heading h2 { font-size:1.875rem; }
+  .veli-month-heading span { font-size:.8125rem; color:var(--v-muted); }
+  .veli-training-row { display:flex; align-items:center; justify-content:space-between; gap:12px; padding:16px 0; border-bottom:1px solid var(--v-line); }
+  .veli-training-row small { display:block; color:var(--v-muted); font-size:.8125rem; }
+  .veli-training-status { display:inline-flex; align-items:center; gap:6px; flex-shrink:0; padding:5px 9px; border-radius:4px; font-size:.8125rem; }
+  .veli-card-layout { display:grid; grid-template-columns:minmax(0,480px) minmax(0,1fr); gap:48px; align-items:center; }
+  .veli-digital-card { border:1px solid var(--v-line); border-radius:8px; overflow:hidden; background:white; }
+  .veli-digital-card-header { display:flex; align-items:center; gap:12px; padding:20px 24px; background:var(--v-red); color:white; }
+  .veli-digital-card-header img { width:44px; height:44px; border-radius:50%; }
+  .veli-digital-card-header strong { display:block; font-size:1.625rem; }
+  .veli-digital-card-header small { color:#ffdb77; font-size:.75rem; }
+  .veli-digital-card-body { display:flex; flex-direction:column; align-items:center; padding:24px; text-align:center; }
+  .veli-digital-card-body>img { height:100px; width:80px; object-fit:cover; border-radius:4px; margin-bottom:14px; }
+  .veli-digital-card-body h2 { font-size:2.125rem; }
+  .veli-digital-card-body p { color:var(--v-muted); font-size:.9375rem; }
+  .veli-qr { width:min(100%,260px); padding:10px; margin:16px 0; background:white; border:1px solid var(--v-line); border-radius:6px; }
+  .veli-qr svg { display:block; width:100%; height:auto; }
+  .veli-student-number { color:var(--v-red); font-size:1.625rem; font-weight:500; font-variant-numeric:tabular-nums; }
+  .veli-card-help h2 { margin-bottom:12px; font-size:2.375rem; color:var(--v-red); }
+  .veli-card-help p { max-width:42ch; color:var(--v-muted); font-size:.9375rem; }
+  .veli-card-help .veli-btn { margin-top:24px; width:100%; max-width:320px; }
+  .veli-card-help ul { display:grid; gap:14px; margin-top:28px; }
+  .veli-card-help li { display:flex; align-items:start; gap:10px; font-size:.875rem; }
+  .veli-card-help li svg { flex-shrink:0; margin-top:2px; color:var(--v-red); }
+  .veli-notice { display:flex; align-items:start; gap:12px; margin-bottom:24px; padding:16px 18px; border:1px solid #e4cdd5; border-radius:6px; background:#fcf6f8; font-size:.9375rem; }
+  .veli-notice>svg { margin-top:2px; color:var(--v-red); flex-shrink:0; }
+  .veli-notice a { display:inline-flex; align-items:center; min-height:44px; font-weight:500; color:var(--v-red); text-decoration:underline; text-underline-offset:4px; }
+  .veli-notice p { color:var(--v-ink); }
+  .veli-dialog { width:min(100% - 32px,440px); max-height:calc(100dvh - 32px); overflow:auto; margin:auto; border:1px solid var(--v-line); border-radius:8px; padding:0; color:var(--v-ink); font-family:"GS Ubuntu",system-ui,sans-serif; }
+  .veli-dialog::backdrop { background:rgb(37 35 40/.55); }
+  .veli-dialog[open] { animation:veli-pop 180ms cubic-bezier(.22,1,.36,1); }
+  .veli-empty { padding:32px 24px; border:1px solid var(--v-line); border-radius:6px; text-align:center; }
+  .veli-empty h2 { margin-bottom:10px; font-size:1.875rem; color:var(--v-red); }
+  .veli-empty p { max-width:50ch; margin:auto; color:var(--v-muted); font-size:.9375rem; }
+  .veli-info { max-width:760px; }
+  @keyframes veli-pop { from { opacity:0; transform:translateY(8px) scale(.98); } }
+  @media (hover:hover) and (pointer:fine) { .veli-btn--primary:hover { background:var(--v-red-dark); } .veli-btn--line:hover,.veli-text-toggle:hover,.veli-logout:hover { background:var(--v-soft); } .veli-nav-link:hover { color:var(--v-red); } }
+  @media (max-width:767px) {
+    .veli { padding:0; background:white; }
+    .veli-frame { min-height:100dvh; border:0; border-radius:0; }
+    .veli-header { padding-inline:16px; border-radius:0; }
+    .veli-header-inner { min-height:76px; gap:8px; }
+    .veli-brand { gap:8px; }
+    .veli-brand img { width:34px; height:34px; }
+    .veli-brand strong { font-size:21px; letter-spacing:.01em; white-space:nowrap; }
+    .veli-brand small { font-size:10px; }
+    .veli-brand small span { display:none; }
+    .veli-header-actions { gap:0; }
+    .veli-logout { padding-inline:10px; font-size:.8125rem; }
+    .veli-main { padding:20px 20px calc(100px + env(safe-area-inset-bottom)); }
+    .veli-nav { position:fixed; z-index:50; inset:auto 0 0; padding:0 16px env(safe-area-inset-bottom); border-top:1px solid var(--v-line); }
+    .veli-nav-inner { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:0; border:0; }
+    .veli-nav-link { flex-direction:column; gap:5px; min-height:76px; font-size:.8125rem; }
+    .veli-nav-link svg { width:23px; height:23px; }
+    .veli-nav-link::after { inset:0 16px auto; height:3px; background:var(--v-yellow); }
+    .veli-footer,.veli-frame-stripe { display:none; }
+    .veli-student { margin:18px 0 24px; gap:14px; }
+    .veli-avatar { width:64px; height:78px; font-size:32px; }
+    .veli-student h1 { font-size:2.5rem; }
+    .veli-student-meta { gap:2px 10px; font-size:.8125rem; }
+    .veli-page-heading { margin-bottom:24px; }
+    .veli-page-heading h1 { font-size:2.5rem; }
+    .veli-profile-layout,.veli-training-layout,.veli-card-layout { grid-template-columns:minmax(0,1fr); gap:28px; }
+    .veli-group { padding:22px; }
+    .veli-group h2 { font-size:2.125rem; }
+    .veli-next { margin-top:20px; padding-bottom:20px; }
+    .veli-facts { gap:16px; }
+    .veli-training-summary { display:flex; justify-content:space-around; padding:16px 0; }
+    .veli-training-stat { flex:1; flex-direction:column-reverse; gap:3px; padding:0 8px; }
+    .veli-training-stat+.veli-training-stat { border-top:0; border-left:1px solid var(--v-line); }
+    .veli-training-stat span { font-size:.8125rem; }
+    .veli-digital-card-header { padding:18px; }
+    .veli-digital-card-header strong { font-size:1.375rem; }
+    .veli-card-help h2 { font-size:2rem; }
+    .veli-card-help .veli-btn { max-width:none; margin-top:18px; }
+    .veli-notice { padding:14px; gap:9px; }
+  }
+  @media (max-width:359px) { .veli-header,.veli-main { padding-inline:12px; } .veli-brand strong { font-size:19px; } .veli-brand img { width:30px; height:30px; } .veli-facts { grid-template-columns:minmax(0,1fr); } .veli-student h1 { font-size:2.125rem; } .veli-digital-card-header { gap:8px; padding:16px 12px; } }
+  @media (prefers-reduced-motion:reduce) { .veli-dialog[open] { animation:none; } .veli *,.veli *::after { transition:none; scroll-behavior:auto; } }
+  @media print { .veli { padding:0; background:white; } .veli-frame { border:0; } .veli-main { padding:0; } .veli-profile-layout,.veli-training-layout,.veli-card-layout { grid-template-columns:minmax(0,1fr); } }
+}
+
+/* Shared form controls carry utility classes; these overrides apply only inside the guardian form. */
+.veli .veli-info-form>section { border-color:var(--v-line); border-radius:6px; box-shadow:none; }
+.veli .veli-info-form>section>header h2 { font:600 1.75rem/1.1 "GS Teko",sans-serif; text-transform:none; letter-spacing:0; color:var(--v-red); }
+.veli .veli-info-form input,.veli .veli-info-form textarea,.veli .veli-info-form select { border-radius:4px; box-shadow:none; }

@@ -1,0 +1,443 @@
+/********************************************************
+ * frontend/src/index.css — tasarım token'ları ve temel stiller
+ * Fontlar index.html'de yüklenir (Fraunces + Geist).
+ ********************************************************/
+
+:root {
+  /* Renkler: sıcak fildişi zemin, mürdüm tonlu mürekkep, tek vurgu: gül kurusu */
+  --bg: #fbf8f6;
+  --surface: #ffffff;
+  --surface-2: #f5eeea;
+  --surface-3: #ede3de;
+  --ink: #241b1e;
+  --ink-2: #5a4d51;
+  --muted: #8d7f83;
+  --line: #e8ddd8;
+  --line-strong: #d6c8c2;
+  --accent: #9b4a5c;
+  --accent-hover: #833b4c;
+  --accent-soft: #f6e8eb;
+  --success: #3f7a5a;
+  --danger: #b3403a;
+
+  /* Tipografi */
+  --font-sans: "Geist", ui-sans-serif, system-ui, -apple-system, "Segoe UI",
+    sans-serif;
+  --font-display: "Fraunces", ui-serif, Georgia, "Times New Roman", serif;
+
+  /* Biçim */
+  --radius-sm: 6px;
+  --radius: 12px;
+  --radius-lg: 20px;
+  --shadow-sm: 0 1px 2px rgba(36, 27, 30, 0.06);
+  --shadow: 0 12px 32px -14px rgba(76, 42, 52, 0.22);
+  --shadow-lg: 0 24px 60px -20px rgba(76, 42, 52, 0.32);
+  --ease: cubic-bezier(0.22, 1, 0.36, 1);
+
+  /* Katmanlar */
+  --z-header: 100;
+  --z-drawer: 300;
+  --z-modal: 400;
+
+  --header-h: 72px;
+  --gutter: clamp(16px, 4vw, 40px);
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  scroll-behavior: smooth;
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  background-color: var(--bg);
+  color: var(--ink);
+  font-family: var(--font-sans);
+  font-size: 15px;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  overflow-x: hidden;
+}
+
+ul,
+ol {
+  list-style: none;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+  transition: color 0.2s var(--ease);
+}
+
+img {
+  display: block;
+  max-width: 100%;
+}
+
+h1,
+h2,
+h3,
+h4 {
+  font-weight: 500;
+  line-height: 1.15;
+  text-wrap: balance;
+}
+
+p {
+  text-wrap: pretty;
+}
+
+::selection {
+  background: var(--accent-soft);
+  color: var(--ink);
+}
+
+:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+/* ---------- Yerleşim ---------- */
+.container {
+  width: 100%;
+  max-width: 1280px;
+  margin-inline: auto;
+  padding-inline: var(--gutter);
+}
+
+.section {
+  padding-block: clamp(48px, 7vw, 96px) clamp(56px, 8vw, 104px);
+}
+
+.section-head {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: clamp(24px, 3vw, 36px);
+}
+
+.section-head h2,
+.section-title h2,
+.page-title {
+  font-family: var(--font-display);
+  font-size: clamp(28px, 3.4vw, 42px);
+  font-weight: 450;
+  letter-spacing: -0.02em;
+}
+
+.section-head p {
+  color: var(--ink-2);
+  margin-top: 6px;
+  max-width: 52ch;
+}
+
+.section-title {
+  text-align: center;
+  margin-bottom: 32px;
+}
+
+.section-title p {
+  color: var(--ink-2);
+  margin-top: 8px;
+}
+
+.eyebrow {
+  display: inline-block;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--accent);
+}
+
+.link-arrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-weight: 500;
+  color: var(--ink);
+  border-bottom: 1px solid currentColor;
+  padding-bottom: 2px;
+  white-space: nowrap;
+}
+
+.link-arrow:hover {
+  color: var(--accent);
+}
+
+.link-arrow i {
+  transition: transform 0.25s var(--ease);
+}
+
+.link-arrow:hover i {
+  transform: translateX(3px);
+}
+
+.skip-link {
+  position: absolute;
+  left: 16px;
+  top: -60px;
+  z-index: calc(var(--z-header) + 1);
+  background: var(--ink);
+  color: #fff;
+  padding: 10px 16px;
+  border-radius: var(--radius-sm);
+  transition: top 0.2s var(--ease);
+}
+
+.skip-link:focus {
+  top: 12px;
+}
+
+/* ---------- Butonlar ---------- */
+button {
+  font: inherit;
+  color: inherit;
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+
+button:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  min-height: 44px;
+  padding: 0 22px;
+  border: 1px solid var(--ink);
+  border-radius: 999px;
+  background: transparent;
+  color: var(--ink);
+  font-size: 14px;
+  font-weight: 500;
+  letter-spacing: 0.01em;
+  white-space: nowrap;
+  cursor: pointer;
+  transition: background-color 0.25s var(--ease), color 0.25s var(--ease),
+    border-color 0.25s var(--ease), transform 0.15s var(--ease);
+}
+
+.btn:hover {
+  background: var(--ink);
+  color: #fff;
+}
+
+.btn:active:not(:disabled) {
+  transform: translateY(1px) scale(0.99);
+}
+
+.btn-primary {
+  background: var(--ink);
+  border-color: var(--ink);
+  color: #fff;
+}
+
+.btn-primary:hover {
+  background: var(--accent);
+  border-color: var(--accent);
+}
+
+.btn-light {
+  background: #fff;
+  border-color: #fff;
+  color: var(--ink);
+}
+
+.btn-light:hover {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: #fff;
+}
+
+.btn-sm {
+  min-height: 36px;
+  padding: 0 16px;
+  font-size: 13px;
+}
+
+.btn-lg {
+  min-height: 52px;
+  padding: 0 30px;
+  font-size: 15px;
+}
+
+.btn-block {
+  width: 100%;
+}
+
+/* ---------- Form alanları ---------- */
+input[type="text"],
+input[type="password"],
+input[type="email"],
+input[type="number"],
+input[type="tel"],
+textarea,
+select {
+  width: 100%;
+  font: inherit;
+  color: var(--ink);
+  background: var(--surface);
+  border: 1px solid var(--line-strong);
+  border-radius: var(--radius-sm);
+  padding: 11px 14px;
+  outline: none;
+  transition: border-color 0.2s var(--ease), box-shadow 0.2s var(--ease);
+}
+
+input:focus,
+textarea:focus,
+select:focus {
+  border-color: var(--ink-2);
+  box-shadow: 0 0 0 3px var(--accent-soft);
+}
+
+textarea {
+  resize: vertical;
+  min-height: 120px;
+}
+
+.required {
+  color: var(--accent);
+}
+
+/* ---------- Ortak parçalar ---------- */
+.img-fluid {
+  width: 100%;
+}
+
+.price {
+  font-variant-numeric: tabular-nums;
+}
+
+.badge-sale {
+  display: inline-flex;
+  align-items: center;
+  padding: 4px 8px;
+  border-radius: var(--radius-sm);
+  background: var(--accent);
+  color: #fff;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+}
+
+.page-container {
+  width: 100%;
+  overflow-x: hidden;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* ---------- Sayfa konumu (breadcrumb) ---------- */
+.crumbs {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+  font-size: 13px;
+  color: var(--muted);
+}
+
+.crumbs a:hover {
+  color: var(--accent);
+}
+
+.crumbs-current {
+  color: var(--ink-2);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  max-width: 40ch;
+}
+
+.visually-hidden {
+  position: absolute !important;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+}
+
+.text-link {
+  padding: 0;
+  color: var(--accent);
+  font-size: 14px;
+  font-weight: 500;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.text-link:hover {
+  color: var(--accent-hover);
+}
+
+/* ---------- Adet seçici (ürün sayfası ve sepet) ---------- */
+.qty-stepper {
+  display: flex;
+  align-items: center;
+  flex: none;
+  height: 52px;
+  border: 1px solid var(--line-strong);
+  border-radius: 999px;
+  background: var(--surface);
+}
+
+.qty-stepper button {
+  display: grid;
+  place-items: center;
+  width: 44px;
+  height: 100%;
+  font-size: 18px;
+  color: var(--ink-2);
+  border-radius: 999px;
+}
+
+.qty-stepper button:hover:not(:disabled) {
+  color: var(--ink);
+}
+
+.qty-stepper input {
+  width: 40px;
+  padding: 0;
+  border: none;
+  background: transparent;
+  text-align: center;
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+  -moz-appearance: textfield;
+}
+
+.qty-stepper input:focus {
+  box-shadow: none;
+}
+
+.qty-stepper input::-webkit-inner-spin-button,
+.qty-stepper input::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+}

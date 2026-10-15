@@ -1,0 +1,13 @@
+User-agent: *
+Disallow: /admin
+Disallow: /cart
+Disallow: /checkout
+Disallow: /checkout-guest
+Disallow: /payment
+Disallow: /payment-result
+Disallow: /profile
+Disallow: /auth
+Disallow: /reset-password
+Disallow: /siparis-takip
+
+Sitemap: https://api.oldscks.com/sitemap.xml

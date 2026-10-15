@@ -1,0 +1,11 @@
+name: yunusemrekoyun
+
+services:
+  portfolio-app:
+    build: .
+    container_name: yunusemrekoyun-portfolio
+    restart: unless-stopped
+    env_file:
+      - .env
+    ports:
+      - "127.0.0.1:3001:3000"

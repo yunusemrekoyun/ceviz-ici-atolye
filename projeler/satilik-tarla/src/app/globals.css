@@ -1,0 +1,811 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    /* Editorial Estate — sıcak fildişi kanvas, derin çam yeşili, pirinç aksan */
+    --background: 43 33% 95%;
+    --foreground: 40 14% 13%;
+
+    --card: 0 0% 100%;
+    --card-foreground: 40 14% 13%;
+
+    --popover: 0 0% 100%;
+    --popover-foreground: 40 14% 13%;
+
+    /* Derin çam yeşili — marka, koyu bantlar, başlık/link */
+    --primary: 154 42% 15%;
+    --primary-foreground: 43 33% 96%;
+
+    /* Pirinç/bronz — birincil CTA, fiyat, aksan (sıcak enerji, rafine) */
+    --brass: 34 54% 45%;
+    --brass-foreground: 36 50% 10%;
+    /* Açık zeminde küçük metin için koyultulmuş pirinç (WCAG AA ≥4.5:1, muted zemin dahil) */
+    --brass-strong: 34 60% 34%;
+    /* Koyu/yeşil zeminde okunur açık pirinç (eyebrow, başlık aksanı) */
+    --brass-on-dark: 36 72% 64%;
+
+    --secondary: 150 16% 90%;
+    --secondary-foreground: 154 42% 16%;
+
+    --muted: 43 26% 92%;
+    --muted-foreground: 40 8% 38%;
+
+    --accent: 150 20% 92%;
+    --accent-foreground: 154 42% 16%;
+
+    --destructive: 4 64% 46%;
+    --destructive-foreground: 0 0% 100%;
+
+    --whatsapp: 173 77% 27%;
+
+    --border: 40 20% 86%;
+    --input: 40 20% 82%;
+    --ring: 154 42% 22%;
+
+    --radius: 4px;
+
+    --ease-out-quart: cubic-bezier(0.23, 1, 0.32, 1);
+    --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+    --ease-in-out-quint: cubic-bezier(0.77, 0, 0.175, 1);
+
+    /* Mobil sabit alt aksiyon barının yüksekliği (safe-area HARİÇ): 1px kenar
+       + 12px üst + 48px buton + 12px alt. Layout alt boşluğu ve bar bundan
+       beslenir — tek doğruluk kaynağı. */
+    --action-bar-h: 73px;
+  }
+
+  * {
+    @apply border-border;
+  }
+
+  html {
+    scroll-behavior: smooth;
+    -webkit-text-size-adjust: 100%;
+    /* Dekoratif taşmalar (marquee duvarı, sahne kaymaları) mobilde layout
+       viewport'u genişletip yatay kaydırma açmasın. clip (hidden değil):
+       scroll konteyneri oluşturmaz, sticky bozulmaz. body değil html:
+       viewport genişlemesi kök seviyede kesilmeli. */
+    overflow-x: clip;
+  }
+
+  body {
+    @apply bg-background text-foreground;
+    font-size: 1.0625rem; /* 17px */
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
+    /* html'dekiyle birlikte: body'nin kendi taşması viewport'a yayılmasın */
+    overflow-x: clip;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4 {
+    @apply font-heading;
+    font-weight: 600;
+    letter-spacing: -0.02em;
+  }
+
+  /* balance yalnızca bölüm başlıklarında; hero H1'de kırılımı biz kontrol ederiz */
+  h2,
+  h3,
+  h4 {
+    text-wrap: balance;
+  }
+
+  h1,
+  p {
+    text-wrap: pretty;
+  }
+
+  ::selection {
+    background: hsl(154 42% 15%);
+    color: hsl(43 33% 96%);
+  }
+
+  /* Sabit üst bar yüksekliğine göre çapa boşluğu (mobil h-16, masaüstü h-20) */
+  :where([id]) {
+    scroll-margin-top: 80px;
+  }
+  @media (min-width: 1024px) {
+    :where([id]) {
+      scroll-margin-top: 96px;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.001ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.001ms !important;
+      scroll-behavior: auto !important;
+    }
+  }
+}
+
+@layer utilities {
+  /* İmza: başlık altındaki kısa pirinç çizgi — tek spesifikasyon */
+  .rule-brass::after {
+    content: '';
+    display: block;
+    width: 40px;
+    height: 2px;
+    margin-top: 14px;
+    background: hsl(var(--brass));
+  }
+  /* Küçük başlıklar (footer) için daralan varyant */
+  .rule-brass-sm::after {
+    width: 28px;
+    margin-top: 10px;
+  }
+
+  /* Tabular figures — fiyat/rakam hizası */
+  .nums {
+    font-variant-numeric: tabular-nums;
+    font-feature-settings: 'tnum';
+  }
+
+  /* Scroll-reveal — içerik varsayılan görünür (SSR/JS-yok güvenli); yalnızca
+     ilk render'da ekran altındaki bloklar gizlenip animasyonlanır. */
+  .reveal {
+    opacity: 0;
+    transform: translateY(22px);
+    transition:
+      opacity 0.8s var(--ease-out-expo),
+      transform 0.8s var(--ease-out-expo);
+  }
+  /* will-change yalnızca animasyon beklerken; görününce compositor katmanı bırakılır */
+  .reveal:not([data-shown='true']) {
+    will-change: opacity, transform;
+  }
+  .reveal[data-shown='true'] {
+    opacity: 1;
+    transform: none;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .reveal {
+      opacity: 1;
+      transform: none;
+    }
+  }
+
+  /* Ken-burns — hero görselinde yavaş sinematik yakınlaşma */
+  .kenburns {
+    animation: kenburns 22s var(--ease-in-out-quint) infinite alternate both;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .kenburns {
+      animation: none;
+    }
+  }
+
+  /* ---- Scroll-sahne: hero'da kaydırmaya bağlı sinematik dönüşüm ----
+     Tümü tek bir --p (0→1) ilerleme değişkeninden sürülür; JS her karede
+     yalnızca --p'yi yazar, DOM/layout'a dokunmaz. Sadece transform/opacity
+     (GPU). --p tanımsızsa 0 kabul edilir → sabit hero (mobil/JS-yok güvenli).
+     Kaydırma ASLA ele geçirilmez; efekt sticky ile normal akış içinde çalışır. */
+  .scene-img {
+    transform: scale(calc(1 + var(--p, 0) * 0.16)) translate3d(0, calc(var(--p, 0) * -1.4%), 0);
+  }
+  /* Çok-sahneli hero: kaydırdıkça farklı arazi açıları birbirine geçer
+     (bir drone uçuşu gibi). Her sahne kendi yönünde hafifçe hareket eder;
+     opaklık --p aralıklarıyla in/out yapılır. */
+  .hz-a {
+    opacity: clamp(0, (0.46 - var(--p, 0)) / 0.12, 1);
+    transform: scale(calc(1.02 + var(--p, 0) * 0.14))
+      translate3d(calc(var(--p, 0) * -2%), calc(var(--p, 0) * -1%), 0);
+  }
+  .hz-b {
+    opacity: clamp(0, min((var(--p, 0) - 0.34) / 0.12, (0.74 - var(--p, 0)) / 0.12), 1);
+    transform: scale(calc(1.14 - var(--p, 0) * 0.06));
+    transform-origin: right center;
+  }
+  .hz-c {
+    opacity: clamp(0, (var(--p, 0) - 0.62) / 0.12, 1);
+    transform: scale(calc(1.04 + var(--p, 0) * 0.16));
+    transform-origin: left bottom;
+  }
+  /* ---- Açılış sekansı: hero → öne çıkan ilan tek akışta morph ----
+     Tek --p (0→1) ile koreografi: (1) hero, (2) görsel fildişi matte ile
+     çerçevelenip küçülür + ilan fotoğrafına geçer, (3) bilgi belirir + parsel
+     çizilir. box-shadow 100vmax = fildişi matte; pencere küçüldükçe çerçeveler.
+     Yalnızca transform/opacity; kaydırma kilitlenmez. */
+  /* İlan duvarı (hero arka planı) — kaydırınca hafifçe geri çekilir/bulanır */
+  .op-wall {
+    transform: scale(calc(1 - clamp(0, var(--p, 0) / 0.3, 1) * 0.06));
+    will-change: transform;
+  }
+  /* Fildişi veil: karo büyürken belirir, duvarı kapatıp sayfa zemini olur. */
+  .op-veil {
+    opacity: clamp(0, (var(--p, 0) - 0.2) / 0.26, 1);
+  }
+  /* Kart gölgesi: pencereyle birebir aynı ölçekte hareket eden ayrı katman.
+     Gölge STATİK (bir kez rasterlenir, sadece transform'la ölçeklenir);
+     yalnızca opacity --g ile belirir → her kaydırma karesinde repaint yok. */
+  .op-frame {
+    --g: clamp(0, (var(--p, 0) - 0.06) / 0.4, 1);
+    --s: clamp(0, (var(--p, 0) - 0.36) / 0.16, 1);
+    opacity: clamp(0, (var(--p, 0) - 0.12) / 0.22, 1);
+    border-radius: 12px;
+    transform: translate3d(calc((1 - var(--g)) * 21%), calc((1 - var(--g)) * 8% - var(--g) * 6%), 0)
+      scale(calc(0.2 + var(--g) * 0.4 - var(--s) * 0.1));
+    box-shadow: 0 52px 120px -40px hsl(154 30% 12% / 0.34);
+    will-change: transform, opacity;
+  }
+  /* Seçili karo: duvardaki bir konumdan öne YAKLAŞIP doğrudan kart boyutuna
+     yumuşakça büyür (tam ekranı kaplamaz); hafif bir taşma ile oturur.
+     --g büyüme, --s oturma. Matte yok; zemin veil. Yalnızca transform/opacity
+     animasyonu — gölge/köşe sabit, böylece her karede repaint olmaz. */
+  .op-window {
+    --g: clamp(0, (var(--p, 0) - 0.06) / 0.4, 1);
+    --s: clamp(0, (var(--p, 0) - 0.36) / 0.16, 1);
+    opacity: clamp(0, (var(--p, 0) - 0.02) / 0.05, 1);
+    border-radius: 12px;
+    transform: translate3d(calc((1 - var(--g)) * 21%), calc((1 - var(--g)) * 8% - var(--g) * 6%), 0)
+      scale(calc(0.2 + var(--g) * 0.4 - var(--s) * 0.1));
+    will-change: transform, opacity;
+  }
+  .op-hero {
+    opacity: clamp(0, (0.22 - var(--p, 0)) / 0.12, 1);
+    transform: translate3d(0, calc(clamp(0, (var(--p, 0) - 0.04) / 0.18, 1) * -36px), 0);
+  }
+  /* Metin scrim'i: duvar üstünde okunurluk; karo büyürken çıkar. */
+  .op-scrim {
+    opacity: clamp(0, (0.3 - var(--p, 0)) / 0.14, 1);
+  }
+  .op-caption {
+    opacity: clamp(0, (var(--p, 0) - 0.5) / 0.2, 1);
+    transform: translate3d(0, calc((1 - clamp(0, (var(--p, 0) - 0.5) / 0.2, 1)) * 26px), 0);
+  }
+  .op-img-a {
+    opacity: clamp(0, (0.4 - var(--p, 0)) / 0.14, 1);
+  }
+  .op-cue {
+    opacity: clamp(0, 1 - var(--p, 0) / 0.06, 1);
+  }
+  /* Slider okları — kart oluşunca (bilgiyle birlikte) belirir */
+  .op-arrows {
+    opacity: clamp(0, (var(--p, 0) - 0.56) / 0.2, 1);
+  }
+  /* Kontroller sahne evresine göre etkin: görünmezken tab/tık dışı kalır.
+     data-phase, kaydırma hook'u tarafından yazılır (hero | card). */
+  .op-caption,
+  .op-arrows {
+    visibility: hidden;
+    pointer-events: none;
+  }
+  [data-phase='card'] .op-caption,
+  [data-phase='card'] .op-arrows {
+    visibility: visible;
+    pointer-events: auto;
+  }
+  [data-phase='card'] .op-hero {
+    visibility: hidden;
+    pointer-events: none;
+  }
+  /* Kart evresinde duvar marquee'sini durdur (perf, gereksiz boyama yok) */
+  [data-phase='card'] .op-row-l,
+  [data-phase='card'] .op-row-r {
+    animation-play-state: paused;
+  }
+  [data-phase='card'] .op-wall,
+  [data-phase='card'] .op-row,
+  [data-phase='card'] .op-window,
+  [data-phase='card'] .op-frame {
+    will-change: auto;
+  }
+  /* İlan görseli yandan kayarak gelir (eski görselin üstüne biner) */
+  .op-slide-r {
+    animation: op-slide-r 0.62s var(--ease-out-expo) both;
+  }
+  .op-slide-l {
+    animation: op-slide-l 0.62s var(--ease-out-expo) both;
+  }
+  /* Bilgi içeriği geliş yönünde kayıp belirir (kart kabı sabit) */
+  .op-fade {
+    animation: op-fade-in 0.55s var(--ease-out-quart) both;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .op-slide-r,
+    .op-slide-l,
+    .op-fade {
+      animation: none;
+    }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .op-window,
+    .op-hero,
+    .op-caption {
+      transform: none !important;
+    }
+  }
+
+  .scene-lead {
+    transform: translate3d(0, calc(var(--p, 0) * -48px), 0);
+  }
+  .scene-mid {
+    transform: translate3d(0, calc(var(--p, 0) * -26px), 0);
+  }
+  .scene-stats {
+    transform: translate3d(0, calc(var(--p, 0) * -12px), 0);
+  }
+  /* Kadastro parseli: görsel çerçevelendikten sonra çizilir */
+  .scene-parcel {
+    stroke-dashoffset: calc(1 - clamp(0, (var(--p, 0) - 0.56) / 0.24, 1));
+  }
+  .scene-corner {
+    opacity: clamp(0, (var(--p, 0) - 0.78) / 0.12, 1);
+  }
+  /* İlan duvarı sıraları — yatay marquee, zıt yön + farklı hız */
+  .op-row {
+    display: flex;
+    width: max-content;
+    will-change: transform;
+  }
+  .op-row-l {
+    animation: op-marquee-l var(--dur, 72s) linear infinite;
+  }
+  .op-row-r {
+    animation: op-marquee-r var(--dur, 72s) linear infinite;
+  }
+  /* Mobil lite duvarı — aynı marquee, ama data-phase duraklatmasından ve
+     --p'den bağımsız (ana sayfa lite açılışı salt zaman tabanlı). */
+  .op-m-row-l {
+    animation: op-marquee-l var(--dur, 72s) linear infinite;
+  }
+  .op-m-row-r {
+    animation: op-marquee-r var(--dur, 72s) linear infinite;
+  }
+  /* Duvar ekran dışındayken marquee durur (IntersectionObserver data-wall yazar) */
+  [data-wall='off'] .op-m-row-l,
+  [data-wall='off'] .op-m-row-r {
+    animation-play-state: paused;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .op-row-l,
+    .op-row-r,
+    .op-m-row-l,
+    .op-m-row-r {
+      animation: none;
+    }
+  }
+  .scene-chip {
+    opacity: clamp(0, (var(--p, 0) - 0.9) / 0.1, 1);
+    transform: translate3d(0, calc((1 - clamp(0, (var(--p, 0) - 0.9) / 0.1, 1)) * 12px), 0);
+  }
+  /* "Kaydırın" ipucu: efekt başlar başlamaz solar */
+  .scene-cue {
+    opacity: clamp(0, 1 - var(--p, 0) / 0.1, 1);
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .scene-img,
+    .scene-lead,
+    .scene-mid,
+    .scene-stats,
+    .scene-chip {
+      transform: none !important;
+    }
+  }
+
+  /* ---- Sayfa geneli hareket dili (hero vizyonunun yayılımı) ---- */
+  /* Parallax yalnızca masaüstünde (>=1024) çalışır; ölçek/kaydırma sadece
+     orada uygulanır ki mobilde görseller kırpılmadan kompoze kalsın.
+     will-change kalıcı değil — parallax çalışırken (min-width) verilir. */
+  .parallax {
+    transform: none;
+  }
+  .parallax-cover {
+    transform: none;
+  }
+  @media (min-width: 1024px) {
+    .parallax {
+      transform: translate3d(0, var(--par, 0px), 0);
+      will-change: transform;
+    }
+    .parallax-cover {
+      transform: translate3d(0, var(--par, 0px), 0) scale(1.14);
+      will-change: transform;
+    }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .parallax,
+    .parallax-cover {
+      transform: none !important;
+      will-change: auto;
+    }
+  }
+  /* Çiz-on: eleman bir Reveal içinde; bölüm görününce tetiklenir */
+  .draw-line {
+    stroke-dashoffset: 1;
+    transition: stroke-dashoffset 1.1s var(--ease-out-expo);
+  }
+  [data-shown='true'] .draw-line {
+    stroke-dashoffset: 0;
+  }
+  .draw-dash {
+    transform: scaleX(0);
+    transform-origin: left center;
+    transition: transform 0.6s var(--ease-out-expo) 0.15s;
+  }
+  [data-shown='true'] .draw-dash {
+    transform: scaleX(1);
+  }
+  .draw-pop {
+    opacity: 0;
+    transform: translateY(8px) scale(0.85);
+    transition:
+      opacity 0.5s ease,
+      transform 0.5s var(--ease-out-quart);
+  }
+  [data-shown='true'] .draw-pop {
+    opacity: 1;
+    transform: none;
+  }
+  /* Galeri kapağı — küçük resme tıklayınca yeni kapak yumuşakça belirir */
+  .detail-cover-in {
+    animation: detail-cover-in 0.5s var(--ease-out-quart) both;
+  }
+  @keyframes detail-cover-in {
+    from {
+      opacity: 0.3;
+      transform: scale(1.05);
+    }
+    to {
+      opacity: 1;
+      transform: none;
+    }
+  }
+  /* İlan detay — sürekli kaydırma sahnesi: kapak arkada kalıp kaydırmaya tepki
+     verir (yaklaşır + hafif kayar), ilan detayları bölüm bölüm üstünde belirip
+     geçer. Tek --p; yalnızca transform/opacity (GPU). Masaüstü + hareket. */
+  .dh-cover {
+    transform: scale(calc(1 + var(--p, 0) * 0.2)) translate3d(calc(var(--p, 0) * -3%), 0, 0);
+    will-change: transform;
+  }
+  /* Bölüm paneli — [--a, --b] penceresinde belirir, uzun tutar, geçer. Pencere
+     (--a, --b) ve genişlik (--span) satır içi verilir; böylece kaç bölüm olursa
+     olsun --p ekseninde otomatik dağıtılır (Apple ürün sayfası gibi). */
+  .dh-chapter {
+    --fade: 0.015;
+    opacity: clamp(
+      0,
+      min((var(--p, 0) - var(--a, 0)) / var(--fade), (var(--b, 1) - var(--p, 0)) / var(--fade)),
+      1
+    );
+    /* Her bölüm kendi yönünden (--dx, --dy) kayarak girer, ortada durur, karşı
+       yöne süzülüp geçer. Yön satır içi verilir (sağ/sol/alt/üst). */
+    transform: translate3d(
+      calc((0.5 - (var(--p, 0) - var(--a, 0)) / var(--span, 1)) * var(--dx, 0px)),
+      calc((0.5 - (var(--p, 0) - var(--a, 0)) / var(--span, 1)) * var(--dy, 42px)),
+      0
+    );
+    will-change: transform, opacity;
+  }
+  /* Metni saran survey-eskiz dikdörtgeni: bölüm belirirken kendini çizer
+     (kutu içeriğe göre otomatik boyutlanır; rect %100). Sahne dışında (mobil)
+     çizgisiz kalmasın diye statik tam-çizili. */
+  .dh-frame {
+    stroke-dashoffset: clamp(0, 1 - (var(--p, 0) - max(var(--a, 0), 0)) / 0.07, 1);
+  }
+  /* Başlangıç daveti + sonda "devam" ipucu */
+  .dh-cue {
+    opacity: clamp(0, 1 - var(--p, 0) / 0.05, 1);
+  }
+  .dh-cue-end {
+    opacity: clamp(0, (var(--p, 0) - 0.9) / 0.05, 1);
+  }
+  /* İlk bölüm (A) sahneye girince tab/tık dışı — solmuş CTA'ları engelle */
+  [data-phase='card'] .dh-chA {
+    visibility: hidden;
+    pointer-events: none;
+  }
+  /* Sağ-altta biriken bilgi özeti kartı (double-bezel). Sahne boyunca görünür;
+     satırları --a eşiğinde tek tek alttan belirip kalır (Emil: yoktan belirmez,
+     alttan süzülür; ease-out hissi scroll ile gelir). */
+  .dh-summary {
+    opacity: clamp(0, min((var(--p, 0) - 0.13) / 0.04, (0.97 - var(--p, 0)) / 0.03), 1);
+    will-change: opacity;
+  }
+  .dh-sum {
+    --sg: clamp(0, (var(--p, 0) - var(--a, 0)) / 0.028, 1);
+    /* Satır geldikçe kart aşağı açılır (yeni satır basılıyormuş gibi); boş yer
+       kalmaz. max-height yalnızca bu küçük, mutlak-konumlu kartı etkiler. */
+    max-height: calc(var(--sg) * 2.75rem);
+    opacity: var(--sg);
+    overflow: hidden;
+  }
+  /* Mobil lite sahne (dh-m-*) — aynı --p mekaniği, kısaltılmış koreografi.
+     Kart yüksekliği baştan ayrılır; satırlar YALNIZCA opacity/transform ile
+     belirir (kaydırma sırasında layout hesaplaması yok). */
+  /* Yığın başta aşağıda durur (başlık masthead konumunda, kartın "Arazi özeti"
+     etiketi alt kenardan hafifçe görünür — kaydırma daveti); kaydırdıkça yukarı
+     süzülüp kartı açığa çıkarır. */
+  .dh-m-stack {
+    transform: translate3d(0, calc((1 - clamp(0, var(--p, 0) / 0.22, 1)) * 11rem), 0);
+    will-change: transform;
+  }
+  .dh-m-title {
+    transform: translate3d(0, calc(var(--p, 0) * -10px), 0);
+    will-change: transform;
+  }
+  .dh-m-card {
+    --cg: clamp(0, (var(--p, 0) - 0.08) / 0.07, 1);
+    opacity: var(--cg);
+    transform: translate3d(0, calc((1 - var(--cg)) * 24px), 0);
+    will-change: transform, opacity;
+  }
+  .dh-m-row {
+    --sg: clamp(0, (var(--p, 0) - var(--a, 0)) / 0.05, 1);
+    opacity: var(--sg);
+    transform: translate3d(0, calc((1 - var(--sg)) * 10px), 0);
+  }
+  /* İlk kart bir kez gösterildikten sonra sağ-üstte şeffaf çerçevede sabitlenen
+     kompakt bilgi — sahne boyunca (kaydırdıkça) görünür kalır, sonda solar. */
+  .dh-dock {
+    opacity: clamp(0, min((var(--p, 0) - 0.13) / 0.04, (0.97 - var(--p, 0)) / 0.03), 1);
+    transform: translate3d(
+      calc((1 - clamp(0, (var(--p, 0) - 0.13) / 0.05, 1)) * 22px),
+      calc((1 - clamp(0, (var(--p, 0) - 0.13) / 0.05, 1)) * -14px),
+      0
+    );
+    will-change: transform, opacity;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .detail-cover-in {
+      animation: none;
+    }
+    .parallax {
+      transform: none !important;
+    }
+    .draw-line {
+      stroke-dashoffset: 0 !important;
+      transition: none;
+    }
+    .draw-dash {
+      transform: none !important;
+      transition: none;
+    }
+    .draw-pop {
+      opacity: 1 !important;
+      transform: none !important;
+      transition: none;
+    }
+  }
+}
+
+@keyframes op-fade-in {
+  from {
+    opacity: 0.25;
+    transform: translateX(var(--sdir, 22px));
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+@keyframes op-marquee-l {
+  to {
+    transform: translateX(-50%);
+  }
+}
+@keyframes op-marquee-r {
+  from {
+    transform: translateX(-50%);
+  }
+  to {
+    transform: translateX(0);
+  }
+}
+@keyframes op-slide-r {
+  from {
+    transform: translateX(100%);
+  }
+  to {
+    transform: translateX(0);
+  }
+}
+@keyframes op-slide-l {
+  from {
+    transform: translateX(-100%);
+  }
+  to {
+    transform: translateX(0);
+  }
+}
+
+/* Kaydırma ipucu: bounce yerine yumuşak süzülme (rafine his) */
+@keyframes hint-float {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(5px);
+  }
+}
+.hint-float {
+  animation: hint-float 1.9s var(--ease-in-out-quint) infinite;
+}
+@media (prefers-reduced-motion: reduce) {
+  .hint-float {
+    animation: none;
+  }
+}
+
+@keyframes kenburns {
+  from {
+    transform: scale(1.02) translate3d(0, 0, 0);
+  }
+  to {
+    transform: scale(1.12) translate3d(-1.5%, -1.5%, 0);
+  }
+}
+
+/* ---- Leaflet harita teması ---- */
+.kst-pin-wrap {
+  background: transparent;
+  border: 0;
+}
+.kst-pin {
+  width: 30px;
+  height: 30px;
+  border-radius: 50% 50% 50% 0;
+  background: hsl(154 42% 15%);
+  border: 2px solid hsl(43 33% 96%);
+  transform: rotate(-45deg);
+  box-shadow: 0 4px 12px hsl(154 42% 10% / 0.4);
+  display: grid;
+  place-items: center;
+  transition:
+    transform 0.2s var(--ease-out-quart),
+    background 0.2s ease;
+}
+.kst-pin-wrap:hover .kst-pin {
+  background: hsl(154 44% 11%);
+}
+.kst-pin-inner {
+  width: 9px;
+  height: 9px;
+  border-radius: 9999px;
+  background: hsl(34 54% 50%);
+  transform: rotate(45deg);
+}
+.leaflet-container {
+  font-family: var(--font-sans), 'Helvetica Neue', Arial, sans-serif;
+  background: hsl(43 20% 90%);
+  isolation: isolate;
+  z-index: 0;
+}
+.leaflet-top,
+.leaflet-bottom {
+  z-index: 2 !important;
+}
+.leaflet-tooltip {
+  background: hsl(154 42% 15%);
+  color: hsl(43 33% 96%);
+  border: 0;
+  border-radius: 3px;
+  padding: 5px 12px;
+  font-size: 12px;
+  font-weight: 600;
+  box-shadow: 0 6px 18px hsl(154 30% 12% / 0.3);
+}
+.leaflet-tooltip-top::before {
+  border-top-color: hsl(154 42% 15%);
+}
+.leaflet-control-zoom a {
+  color: hsl(154 42% 15%);
+  border-color: hsl(40 20% 82%) !important;
+}
+/* Dokunmatikte zoom düğmeleri 44px hedefe büyür (Leaflet varsayılanı ~26px) */
+@media (pointer: coarse) {
+  .leaflet-control-zoom a {
+    width: 44px !important;
+    height: 44px !important;
+    line-height: 44px !important;
+    font-size: 20px;
+  }
+}
+
+/* --- Admin zengin editör (TipTap) + public zengin gövde tipografisi --- */
+.rich-editor-body .ProseMirror {
+  outline: none;
+  min-height: inherit;
+}
+.rich-editor-body .ProseMirror > * + * {
+  margin-top: 0.6em;
+}
+.rich-editor-body .ProseMirror h2,
+.rich-body h2 {
+  font-size: 1.35em;
+  font-weight: 700;
+  margin-top: 1.2em;
+}
+.rich-editor-body .ProseMirror h3,
+.rich-body h3 {
+  font-size: 1.15em;
+  font-weight: 700;
+  margin-top: 1.1em;
+}
+.rich-editor-body .ProseMirror h4,
+.rich-body h4 {
+  font-weight: 700;
+  margin-top: 1em;
+}
+.rich-editor-body .ProseMirror ul,
+.rich-body ul {
+  list-style: disc;
+  padding-left: 1.4em;
+}
+.rich-editor-body .ProseMirror ol,
+.rich-body ol {
+  list-style: decimal;
+  padding-left: 1.4em;
+}
+.rich-editor-body .ProseMirror blockquote,
+.rich-body blockquote {
+  border-left: 2px solid hsl(34 52% 46%);
+  padding-left: 1em;
+  color: hsl(150 12% 38%);
+}
+.rich-editor-body .ProseMirror a,
+.rich-body a {
+  color: hsl(34 52% 38%);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+.rich-editor-body .ProseMirror img,
+.rich-body img {
+  max-width: 100%;
+  border-radius: 0.5rem;
+  margin: 0.75em 0;
+}
+.rich-editor-body .ProseMirror hr,
+.rich-body hr {
+  border: 0;
+  border-top: 1px solid hsl(150 14% 88%);
+  margin: 1.2em 0;
+}
+.rich-body > * + * {
+  margin-top: 0.85em;
+}
+
+/* --- Harita işaretçileri: kadastro dilinde fiyat pili --- */
+.kst-pin-wrap {
+  background: none;
+  border: none;
+}
+.kst-pin {
+  display: inline-block;
+  transform: translate(-50%, -100%);
+  padding: 3px 9px;
+  border-radius: 999px;
+  background: hsl(154 46% 12%);
+  border: 1px solid hsl(34 52% 46%);
+  color: hsl(40 33% 96%);
+  font-size: 12px;
+  font-weight: 700;
+  white-space: nowrap;
+  box-shadow: 0 2px 8px hsl(154 46% 8% / 0.35);
+}
+.kst-pin::after {
+  content: '';
+  position: absolute;
+  left: 50%;
+  bottom: -5px;
+  width: 8px;
+  height: 8px;
+  transform: translateX(-50%) rotate(45deg);
+  background: hsl(154 46% 12%);
+  border-right: 1px solid hsl(34 52% 46%);
+  border-bottom: 1px solid hsl(34 52% 46%);
+}
+.leaflet-popup-content-wrapper {
+  border-radius: 10px;
+}

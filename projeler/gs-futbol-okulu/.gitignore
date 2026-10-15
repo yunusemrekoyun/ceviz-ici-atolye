@@ -1,0 +1,47 @@
+# dependencies
+/node_modules
+/.pnp
+.pnp.*
+
+# next.js
+/.next/
+/out/
+/build
+
+# env / secrets
+.env
+.env.local
+.env.*.local
+.env.production
+
+# sqlite database
+data/*.db
+data/*.db-*
+data/*.sqlite
+data/*.sqlite-*
+data/backups/
+
+# logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# misc
+.DS_Store
+*.pem
+*.tsbuildinfo
+next-env.d.ts
+
+# editor
+.vscode/
+.idea/
+
+# private material (specs, references, deployment notes)
+/private/
+/docs/
+*.pdf
+
+# uploaded files (photos, receipts)
+data/files/
+data/coach-photos/

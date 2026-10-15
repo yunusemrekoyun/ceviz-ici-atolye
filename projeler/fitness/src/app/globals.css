@@ -1,0 +1,373 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ─────────────────────────────────────────────
+   DESIGN TOKENS  (dark = default)
+───────────────────────────────────────────── */
+:root {
+  --font-sans:    "Inter", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --font-display: "Inter", system-ui, sans-serif;
+
+  /* Backgrounds */
+  --bg-base:        #06070A;
+  --bg-card:        #0B0D12;
+  --bg-input:       #11141B;
+  --bg-subtle:      rgb(255 255 255 / 0.05);
+  --bg-subtle-md:   rgb(255 255 255 / 0.10);
+  --bg-glass:       rgb(255 255 255 / 0.03);
+  --bg-glass-strong:rgb(255 255 255 / 0.06);
+  --bg-navbar:      rgb(11 13 18 / 0.60);
+
+  /* Borders */
+  --border-subtle:    rgb(255 255 255 / 0.05);
+  --border-subtle-md: rgb(255 255 255 / 0.10);
+
+  /* Text */
+  --text-primary: rgb(230 232 238);
+  --text-strong:  rgb(255 255 255 / 0.80);
+  --text-dim:     rgb(255 255 255 / 0.70);
+  --text-body:    rgb(255 255 255 / 0.55);
+  --text-label:   rgb(255 255 255 / 0.50);
+  --text-muted:   rgb(255 255 255 / 0.40);
+  --text-faint:   rgb(255 255 255 / 0.30);
+
+  /* Inputs */
+  --input-border:      rgb(255 255 255 / 0.08);
+  --input-placeholder: rgb(255 255 255 / 0.30);
+}
+
+/* ─────────────────────────────────────────────
+   LIGHT MODE OVERRIDES
+───────────────────────────────────────────── */
+html.light {
+  --bg-base:         #F1F5F9;
+  --bg-card:         #FFFFFF;
+  --bg-input:        #F8FAFC;
+  --bg-subtle:       rgb(0 0 0 / 0.04);
+  --bg-subtle-md:    rgb(0 0 0 / 0.08);
+  --bg-glass:        rgb(255 255 255 / 0.50);
+  --bg-glass-strong: rgb(255 255 255 / 0.75);
+  --bg-navbar:       rgb(248 250 252 / 0.85);
+
+  --border-subtle:    rgb(0 0 0 / 0.07);
+  --border-subtle-md: rgb(0 0 0 / 0.13);
+
+  --text-primary: #0F172A;
+  --text-strong:  rgb(15 23 42 / 0.85);
+  --text-dim:     rgb(15 23 42 / 0.75);
+  --text-body:    rgb(15 23 42 / 0.65);
+  --text-label:   rgb(15 23 42 / 0.60);
+  --text-muted:   rgb(15 23 42 / 0.50);
+  --text-faint:   rgb(15 23 42 / 0.35);
+
+  --input-border:      rgb(0 0 0 / 0.12);
+  --input-placeholder: rgb(15 23 42 / 0.35);
+}
+
+/* ─────────────────────────────────────────────
+   BASE
+───────────────────────────────────────────── */
+html, body {
+  background: var(--bg-base);
+  color: var(--text-primary);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+* {
+  border-color: var(--border-subtle);
+}
+
+::selection {
+  background: rgba(198, 255, 61, 0.35);
+  color: #06070A;
+}
+
+/* Scrollbar */
+::-webkit-scrollbar { width: 10px; height: 10px; }
+::-webkit-scrollbar-track { background: var(--bg-card); }
+::-webkit-scrollbar-thumb {
+  background: var(--bg-subtle-md);
+  border-radius: 8px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--border-subtle-md);
+}
+
+/* ─────────────────────────────────────────────
+   COMPONENTS
+───────────────────────────────────────────── */
+@layer components {
+  .container-app {
+    @apply mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8;
+  }
+
+  .glass {
+    @apply backdrop-blur-xl;
+    background: var(--bg-glass);
+    border: 1px solid var(--border-subtle-md);
+  }
+
+  .glass-strong {
+    @apply backdrop-blur-2xl;
+    background: var(--bg-glass-strong);
+    border: 1px solid var(--border-subtle-md);
+  }
+
+  .card-surface {
+    @apply rounded-2xl shadow-card;
+    background: var(--bg-card);
+    border: 1px solid var(--border-subtle);
+  }
+
+  /* ── Buttons ── */
+  .btn {
+    @apply inline-flex items-center justify-center gap-2 font-medium rounded-xl
+           transition-all duration-200 select-none whitespace-nowrap
+           focus:outline-none focus-visible:ring-2 focus-visible:ring-neon/60
+           disabled:opacity-50 disabled:pointer-events-none;
+  }
+  .btn-primary {
+    @apply btn bg-neon text-ink-950 hover:bg-neon-400 shadow-glow
+           hover:shadow-[0_0_60px_-8px_rgba(198,255,61,0.7)];
+  }
+  .btn-secondary {
+    @apply btn border;
+    background: var(--bg-subtle-md);
+    color: var(--text-primary);
+    border-color: var(--border-subtle-md);
+  }
+  .btn-secondary:hover {
+    background: var(--bg-subtle);
+  }
+  .btn-ghost {
+    @apply btn;
+    color: var(--text-dim);
+  }
+  .btn-ghost:hover {
+    color: var(--text-primary);
+    background: var(--bg-subtle);
+  }
+  .btn-outline {
+    @apply btn border;
+    color: var(--text-primary);
+    border-color: var(--border-subtle-md);
+  }
+  .btn-outline:hover {
+    background: var(--bg-subtle);
+  }
+
+  .btn-sm { @apply px-3 py-1.5 text-sm; }
+  .btn-md { @apply px-4 py-2.5 text-sm; }
+  .btn-lg { @apply px-6 py-3.5 text-base; }
+
+  /* ── Inputs ── */
+  .input-base {
+    @apply w-full rounded-xl px-4 py-3 text-sm transition-colors
+           focus:outline-none focus:ring-2 focus:ring-neon/40 focus:border-neon/40;
+    background: var(--bg-input);
+    border: 1px solid var(--input-border);
+    color: var(--text-primary);
+  }
+  .input-base::placeholder {
+    color: var(--input-placeholder);
+  }
+
+  .input { @apply input-base; }
+
+  .label-base {
+    @apply text-sm font-medium mb-1.5 block;
+    color: var(--text-strong);
+  }
+
+  /* ── Badges ── */
+  .badge {
+    @apply inline-flex items-center gap-1 rounded-full px-2.5 py-0.5
+           text-xs font-medium border;
+  }
+  .badge-success { @apply badge bg-emerald-500/10 text-emerald-300 border-emerald-500/20; }
+  .badge-warn    { @apply badge bg-amber-500/10  text-amber-300  border-amber-500/20; }
+  .badge-danger  { @apply badge bg-rose-500/10   text-rose-300   border-rose-500/20; }
+  .badge-info    { @apply badge bg-cyan-500/10   text-cyan-300   border-cyan-500/20; }
+  .badge-neon    { @apply badge bg-neon/15       text-neon       border-neon/20; }
+  .badge-neutral {
+    @apply badge;
+    background: var(--bg-subtle);
+    color: var(--text-dim);
+    border-color: var(--border-subtle-md);
+  }
+
+  /* ── Sections ── */
+  .section       { @apply py-20 md:py-28; }
+  .section-tight { @apply py-14 md:py-20; }
+
+  /* ── Typography ── */
+  .h-display {
+    @apply font-display font-bold tracking-tight;
+    letter-spacing: -0.02em;
+  }
+
+  .text-gradient-neon {
+    background: linear-gradient(135deg, #C6FF3D 0%, #22D3EE 50%, #8B5CF6 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+
+  /* ── Effects ── */
+  .ring-neon {
+    box-shadow:
+      0 0 0 1px rgba(198, 255, 61, 0.4),
+      0 0 24px -4px rgba(198, 255, 61, 0.5);
+  }
+
+  .grid-bg {
+    background-image:
+      linear-gradient(rgba(255,255,255,0.04) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255,255,255,0.04) 1px, transparent 1px);
+    background-size: 48px 48px;
+  }
+
+  .table-row-hover {
+    @apply transition-colors;
+  }
+  .table-row-hover:hover {
+    background: var(--bg-subtle);
+  }
+}
+
+/* ─────────────────────────────────────────────
+   SEMANTIC UTILITIES
+───────────────────────────────────────────── */
+@layer utilities {
+  /* Text */
+  .text-strong  { color: var(--text-strong);  }
+  .text-dim     { color: var(--text-dim);     }
+  .text-body    { color: var(--text-body);    }
+  .text-label   { color: var(--text-label);   }
+  .text-muted   { color: var(--text-muted);   }
+  .text-faint   { color: var(--text-faint);   }
+
+  /* Backgrounds */
+  .bg-base        { background-color: var(--bg-base);       }
+  .bg-card        { background-color: var(--bg-card);       }
+  .bg-subtle      { background-color: var(--bg-subtle);     }
+  .bg-subtle-md   { background-color: var(--bg-subtle-md);  }
+  .bg-navbar      { background: var(--bg-navbar);           }
+
+  /* Borders */
+  .border-subtle    { border-color: var(--border-subtle);    }
+  .border-subtle-md { border-color: var(--border-subtle-md); }
+}
+
+/* ─────────────────────────────────────────────
+   FEATURED CARD (CTA + membership card)
+   Dark gradient island, adapts to light mode
+───────────────────────────────────────────── */
+.cta-card {
+  background: linear-gradient(135deg, #0B0D12 0%, #0B0D12 60%, rgb(198 255 61 / 0.08) 100%);
+  border: 1px solid rgb(198 255 61 / 0.28);
+}
+.cta-card .cta-blob {
+  opacity: 1;
+}
+html.light .cta-card {
+  background: var(--bg-card);
+  border: 1px solid rgba(77, 124, 15, 0.18);
+  box-shadow: 0 4px 24px -4px rgba(77, 124, 15, 0.10);
+}
+html.light .cta-card .cta-blob {
+  opacity: 0.12;
+}
+
+/* ─────────────────────────────────────────────
+   LIGHT MODE GLOBAL OVERRIDES
+   Only targets html.light — dark mode untouched
+───────────────────────────────────────────── */
+
+/* Neon text → dark readable lime */
+html.light .text-neon { color: #4a7c06; }
+
+/* Neon gradient text → dark gradient */
+html.light .text-gradient-neon {
+  background: linear-gradient(135deg, #4a7c06 0%, #0369a1 50%, #6d28d9 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+/* Grid pattern → dark lines */
+html.light .grid-bg {
+  background-image:
+    linear-gradient(rgba(0,0,0,0.055) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(0,0,0,0.055) 1px, transparent 1px);
+}
+
+/* Neon glow → muted green shadow */
+html.light .shadow-glow {
+  box-shadow: 0 0 30px -8px rgba(74, 124, 6, 0.30);
+}
+html.light .shadow-glow-soft {
+  box-shadow: 0 0 60px -20px rgba(74, 124, 6, 0.20);
+}
+
+/* Neon ring → dark lime ring */
+html.light .ring-neon {
+  box-shadow:
+    0 0 0 1px rgba(74, 124, 6, 0.40),
+    0 0 24px -4px rgba(74, 124, 6, 0.30);
+}
+
+/* Input focus ring → dark lime */
+html.light .input-base:focus {
+  --tw-ring-color: rgba(74, 124, 6, 0.30);
+  border-color: rgba(74, 124, 6, 0.55);
+}
+
+/* Badges — light text colors for readability */
+html.light .badge-success {
+  color: #065f46;
+  background-color: rgba(16,185,129,0.10);
+  border-color: rgba(16,185,129,0.22);
+}
+html.light .badge-warn {
+  color: #78350f;
+  background-color: rgba(245,158,11,0.10);
+  border-color: rgba(245,158,11,0.22);
+}
+html.light .badge-danger {
+  color: #881337;
+  background-color: rgba(244,63,94,0.10);
+  border-color: rgba(244,63,94,0.22);
+}
+html.light .badge-info {
+  color: #0e7490;
+  background-color: rgba(6,182,212,0.10);
+  border-color: rgba(6,182,212,0.22);
+}
+html.light .badge-neon {
+  color: #4a7c06;
+  background-color: rgba(74,124,6,0.10);
+  border-color: rgba(74,124,6,0.22);
+}
+
+/* hover:text-white → readable in light mode */
+html.light .hover\:text-white:hover { color: var(--text-primary); }
+
+/* Selection */
+html.light ::selection {
+  background: rgba(74, 124, 6, 0.15);
+  color: #0F172A;
+}
+
+/* Modal backdrop — always dim regardless of theme */
+html.light .dark-overlay {
+  background: rgb(15 23 42 / 0.55);
+}
+
+/* Print — hide app chrome so a report prints clean (browser "Save as PDF") */
+@media print {
+  .no-print { display: none !important; }
+  main { padding: 0 !important; }
+}

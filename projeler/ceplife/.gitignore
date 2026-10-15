@@ -1,0 +1,60 @@
+# Genel
+.DS_Store
+Thumbs.db
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+storage
+# Env dosyaları
+.env
+.env.local
+.env.prod
+.env.*.local
+# Node.js bağımlılıkları
+node_modules
+
+# Build çıktıları
+.next
+out
+exports/
+scripts/
+
+# Cache ve geçici dosyalar
+.cache
+.vscode
+.idea
+*.swp
+*.swo
+
+# Test / coverage
+coverage
+*.lcov
+
+# PM2 / PID dosyaları
+pids
+*.pid
+*.seed
+
+# OS özel
+*.orig
+*.tmp
+
+# MacOS
+**/.DS_Store
+.AppleDouble
+.LSOverride
+
+# VSCode ayarları (isteğe bağlı)
+.vscode/*
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
+
+.eslintcache
+printer-agent/
+.claude/
+.codex/

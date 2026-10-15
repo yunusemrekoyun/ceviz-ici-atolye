@@ -1,0 +1,13 @@
+export { default as HomePage } from "./HomePage.jsx";
+export { default as ProjectsPage } from "./ProjectsPage.jsx";
+export { default as ProjectDetailPage } from "./ProjectDetailPage.jsx";
+export { default as ServicePage } from "./ServicePage.jsx";
+export { default as ServiceDetailsPage } from "./ServiceDetailsPage.jsx";
+export { default as JournalPage } from "./JournalPage.jsx";
+export { default as JournalDetailPage } from "./JournalDetailPage.jsx";
+export { default as WhyUsPage } from "./WhyUsPage.jsx";
+export { default as AboutPage } from "./AboutPage.jsx";
+export { default as BlogPage } from "./BlogPage.jsx";
+export { default as BlogDetailPage } from "./BlogDetailPage.jsx";
+export { default as ContactPage } from "./ContactPage.jsx";
+export { default as KvkkPage } from "./KVKKPage.jsx";

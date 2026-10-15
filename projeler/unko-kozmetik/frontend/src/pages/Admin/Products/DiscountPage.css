@@ -1,0 +1,24 @@
+/* DiscountPage.css */
+.page-container {
+  width: 100%;
+  height: 100vh;  /* Sayfanın tamamını kaplamasını sağla */
+
+  overflow-x: auto; /* Yatay kayma ekledik */
+
+}
+
+.discount-table .ant-table-container {
+  min-width: 1000px; /* Tabloyu genişletiyoruz */
+  overflow-x: auto;
+}
+
+/* Mobilde daha küçük ekranlarda da düzgün çalışması için */
+@media (max-width: 768px) {
+  .discount-table .ant-table-container {
+    min-width: 600px; /* Mobilde biraz daha dar */
+  }
+  
+  .page-container {
+    overflow-x: auto;
+  }
+}

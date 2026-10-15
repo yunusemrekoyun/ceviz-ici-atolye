@@ -1,0 +1,53 @@
+.reviews-section {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.review-box {
+  background: #d9d3b8;
+  padding: 16px;
+  border-radius: 8px;
+  border-left: 4px solid #8c5b3f;
+}
+
+.add-review {
+  margin-top: 30px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.add-review textarea {
+  width: 100%;
+  padding: 10px;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+  resize: vertical;
+  font-size: 14px;
+}
+
+.review-form-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.review-form-footer select {
+  margin-left: 8px;
+  padding: 4px;
+}
+
+.review-form-footer button {
+  padding: 8px 16px;
+  background: #a6841f;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.review-form-footer button:disabled {
+  background: gray;
+  cursor: not-allowed;
+}

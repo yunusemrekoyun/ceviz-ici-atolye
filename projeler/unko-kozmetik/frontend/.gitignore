@@ -1,0 +1,49 @@
+# Node modules
+node_modules/
+
+# Build output
+dist/
+build/
+
+# Logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# Environment variables
+.env
+.env.*.local
+
+# System files (Mac / Windows)
+.DS_Store
+Thumbs.db
+
+# IDE configs (VSCode, JetBrains vs)
+.vscode/
+.idea/
+
+# Optional: local dev files
+*.local.js
+*.local.json
+
+# Cache
+.cache/
+*.cache
+tmp/
+temp/
+
+# Coverage (test)
+coverage/
+
+# Optional: yarn/pnpm/lock files if gereksizse birini seçersen
+# package-lock.json
+# yarn.lock
+# pnpm-lock.yaml
+
+# Ant Design / Tailwind gibi şeyler cache bırakıyorsa
+.ant-design-pro.cache/
+tailwind.config.js
+
+# MacOS icon files
+Icon?

@@ -1,0 +1,17 @@
+services:
+  kutahya-garden-otel:
+    build: .
+    env_file:
+      - .env
+    environment:
+      NODE_ENV: production
+      HOSTNAME: 0.0.0.0
+      PORT: 3000
+    ports:
+      - "${PORT:-3000}:3000"
+    volumes:
+      - uploads_data:/app/public/uploads
+    restart: unless-stopped
+
+volumes:
+  uploads_data:

@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="tr">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" href="/favicon.ico" sizes="any" />
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png" />
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+    <link rel="manifest" href="/manifest.webmanifest" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="application-name" content="Babil Yalitim ve Izolasyon" />
+    <meta name="theme-color" content="#ffffff" />
+    <meta
+      name="description"
+      content="Babil Yalitim, su yalitimi ve yapi koruma sistemlerinde dogru malzeme, dogru uygulama ve uzman iscilikle kalici cozumler sunar."
+    />
+    <meta name="robots" content="index,follow" />
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="Babil Yalitim ve Izolasyon" />
+    <meta
+      property="og:title"
+      content="Babil Yalitim ve Izolasyon | Su Yalitimi ve Yapi Koruma Sistemleri"
+    />
+    <meta
+      property="og:description"
+      content="Babil Yalitim, su yalitimi ve yapi koruma sistemlerinde dogru malzeme, dogru uygulama ve uzman iscilikle kalici cozumler sunar."
+    />
+    <meta property="og:image" content="/og-default.jpg" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta
+      name="twitter:title"
+      content="Babil Yalitim ve Izolasyon | Su Yalitimi ve Yapi Koruma Sistemleri"
+    />
+    <meta
+      name="twitter:description"
+      content="Babil Yalitim, su yalitimi ve yapi koruma sistemlerinde dogru malzeme, dogru uygulama ve uzman iscilikle kalici cozumler sunar."
+    />
+    <meta name="twitter:image" content="/og-default.jpg" />
+    <title>Babil Yalitim ve Izolasyon | Su Yalitimi ve Yapi Koruma Sistemleri</title>
+    <script>
+      /* Admin panelinin temasini React yuklenmeden once uygular.
+         Tailwind koyu varyantlari `:is(.dark *)` olarak derledigi icin `dark`
+         sinifinin <html> uzerinde olmasi gerekiyor; React'e birakilirsa ilk
+         boyama acik temayla yapiliyor ve metinler bir an okunmuyor.
+         Yalnizca /admin altinda calisir, herkese acik sayfalara dokunmaz. */
+      (function () {
+        try {
+          if (window.location.pathname.indexOf("/admin") !== 0) return;
+          var stored = window.localStorage.getItem("admin-theme");
+          var isDark =
+            stored === "dark" ||
+            stored === "light"
+              ? stored === "dark"
+              : window.matchMedia("(prefers-color-scheme: dark)").matches;
+          if (isDark) document.documentElement.classList.add("dark");
+          document.documentElement.setAttribute(
+            "data-admin-theme",
+            isDark ? "dark" : "light"
+          );
+        } catch (e) {
+          /* localStorage kapaliysa React tarafi devralir */
+        }
+      })();
+    </script>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/main.jsx"></script>
+  </body>
+</html>

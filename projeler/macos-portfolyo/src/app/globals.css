@@ -1,0 +1,4090 @@
+@import "tailwindcss";
+
+html,
+body {
+  width: 100dvw;
+  overflow: hidden;
+  height: 100dvh;
+  background-image: url("/images/wallpaper.png");
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center;
+}
+
+@theme {
+  --font-georama: var(--font-georama-next, "Georama"), sans-serif;
+  --font-roboto: var(--font-roboto-next, "Roboto Mono"), monospace;
+  --breakpoint-3xl: 1920px;
+}
+
+@utility flex-center {
+  @apply flex items-center justify-center;
+}
+
+@utility col-center {
+  @apply flex flex-col items-center justify-center;
+}
+
+@utility abs-center {
+  @apply absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2;
+}
+
+@layer base {
+  main {
+    @apply w-dvw h-dvh overflow-hidden;
+  }
+
+  nav {
+    @apply flex justify-between items-center bg-white/60 backdrop-blur-3xl select-none relative z-[8000];
+    @apply border-b border-white/30;
+    @apply h-11 px-4;
+
+    > div {
+      @apply flex items-center max-sm:w-full max-sm:justify-center gap-4;
+
+      &:last-child {
+        @apply max-sm:hidden;
+      }
+    }
+
+    .nav-logo {
+      @apply w-5 h-5 opacity-90;
+    }
+
+    .nav-brand {
+      @apply text-[13px] font-semibold text-black/90 tracking-tight;
+    }
+
+    ul {
+      @apply flex items-center gap-4 max-sm:hidden;
+
+      p {
+        @apply text-[13px] cursor-pointer hover:underline transition-all;
+      }
+    }
+
+    .nav-icon-btn {
+      @apply inline-flex items-center justify-center w-9 h-9 rounded-full transition-colors;
+      color: rgba(0, 0, 0, 0.88);
+    }
+
+    .nav-icon-btn:hover {
+      background: rgba(255, 255, 255, 0.55);
+    }
+
+    .nav-icon-btn:active {
+      background: rgba(255, 255, 255, 0.75);
+    }
+
+    .nav-icon-btn img {
+      @apply w-4 h-4;
+    }
+
+	    time {
+	      @apply text-[13px] font-semibold text-black;
+	    }
+
+	    .wifi-panel {
+	      @apply fixed z-[12000] overflow-hidden select-none;
+	      width: 320px;
+	      border-radius: 18px;
+	      background: rgba(255, 255, 255, 0.72);
+	      border: 1px solid rgba(255, 255, 255, 0.55);
+	      box-shadow:
+	        0 26px 90px rgba(0, 0, 0, 0.22),
+	        0 1px 0 rgba(255, 255, 255, 0.55) inset;
+	      backdrop-filter: blur(26px) saturate(180%);
+	      -webkit-backdrop-filter: blur(26px) saturate(180%);
+	      transform-origin: top center;
+	      animation: macos-popover-in 170ms ease-out;
+	    }
+
+	    .wifi-panel::before {
+	      content: "";
+	      position: absolute;
+	      inset: 0;
+	      pointer-events: none;
+	      background: linear-gradient(
+	        180deg,
+	        rgba(255, 255, 255, 0.65),
+	        rgba(255, 255, 255, 0.08)
+	      );
+	      opacity: 0.6;
+	    }
+
+	    .wifi-panel-inner {
+	      @apply relative p-3;
+	    }
+
+	    .wifi-panel-header {
+	      @apply flex items-center justify-between gap-3;
+	    }
+
+	    .wifi-panel-title {
+	      @apply flex items-center gap-3 min-w-0;
+	    }
+
+	    .wifi-panel-badge {
+	      @apply inline-flex items-center justify-center rounded-2xl flex-none;
+	      width: 36px;
+	      height: 36px;
+	      color: rgba(15, 23, 42, 0.78);
+	      background: rgba(118, 118, 128, 0.18);
+	      border: 1px solid rgba(60, 60, 67, 0.14);
+	    }
+
+	    .wifi-panel-badge.is-on {
+	      background: rgba(0, 122, 255, 0.14);
+	      border-color: rgba(0, 122, 255, 0.18);
+	      color: rgba(0, 122, 255, 0.9);
+	    }
+
+	    .wifi-panel-title-text {
+	      @apply min-w-0 leading-tight;
+	    }
+
+	    .wifi-panel-title-label {
+	      @apply text-[13px] font-semibold truncate;
+	      color: rgba(0, 0, 0, 0.9);
+	    }
+
+	    .wifi-panel-title-status {
+	      @apply text-[12px] truncate;
+	      color: rgba(60, 60, 67, 0.62);
+	    }
+
+	    .wifi-panel-switch {
+	      @apply relative flex-none;
+	      width: 44px;
+	      height: 26px;
+	      border-radius: 999px;
+	      padding: 2px;
+	      background: rgba(118, 118, 128, 0.22);
+	      border: 1px solid rgba(60, 60, 67, 0.18);
+	      transition:
+	        background 160ms ease,
+	        border-color 160ms ease;
+	    }
+
+	    .wifi-panel-switch:active {
+	      transform: scale(0.98);
+	    }
+
+	    .wifi-panel-switch.is-on {
+	      background: rgba(0, 122, 255, 0.92);
+	      border-color: rgba(0, 122, 255, 0.42);
+	    }
+
+	    .wifi-panel-switch-knob {
+	      @apply block;
+	      width: 20px;
+	      height: 20px;
+	      border-radius: 999px;
+	      background: rgba(255, 255, 255, 0.98);
+	      box-shadow:
+	        0 8px 18px rgba(0, 0, 0, 0.18),
+	        0 1px 0 rgba(255, 255, 255, 0.7) inset;
+	      transform: translateX(0);
+	      transition: transform 170ms ease;
+	      will-change: transform;
+	    }
+
+	    .wifi-panel-switch.is-on .wifi-panel-switch-knob {
+	      transform: translateX(18px);
+	    }
+
+	    .wifi-panel-group {
+	      @apply mt-3 rounded-2xl overflow-hidden;
+	      background: rgba(255, 255, 255, 0.54);
+	      border: 1px solid rgba(60, 60, 67, 0.12);
+	    }
+
+	    .wifi-panel-row {
+	      @apply w-full flex items-center justify-between gap-3 px-3 py-2.5;
+	    }
+
+	    .wifi-panel-row.is-connected {
+	      background: rgba(0, 122, 255, 0.08);
+	    }
+
+	    .wifi-panel-row.is-disabled {
+	      opacity: 0.55;
+	    }
+
+	    .wifi-panel-row-left {
+	      @apply flex items-center gap-2.5 min-w-0;
+	    }
+
+	    .wifi-panel-row-icon {
+	      @apply inline-flex items-center justify-center flex-none;
+	      width: 28px;
+	      height: 28px;
+	      border-radius: 10px;
+	      background: rgba(118, 118, 128, 0.14);
+	      color: rgba(0, 0, 0, 0.7);
+	    }
+
+	    .wifi-panel-row-text {
+	      @apply min-w-0 leading-tight;
+	    }
+
+	    .wifi-panel-row-name {
+	      @apply text-[13px] font-medium truncate;
+	      color: rgba(0, 0, 0, 0.9);
+	    }
+
+	    .wifi-panel-row-sub {
+	      @apply text-[12px] truncate;
+	      color: rgba(60, 60, 67, 0.6);
+	    }
+
+	    .wifi-panel-row-right {
+	      @apply flex items-center flex-none;
+	      color: rgba(0, 122, 255, 0.9);
+	    }
+
+    .profile-panel {
+      @apply fixed bg-white/90 backdrop-blur-xl border border-gray-200 rounded-2xl shadow-2xl p-4 z-[12000] overflow-hidden;
+
+      .profile-video {
+        @apply w-32 h-32 min-w-28 overflow-hidden rounded-2xl border border-gray-200 shadow-lg bg-gray-900/80;
+      }
+
+      .profile-chip {
+        @apply text-[11px] font-medium px-3 py-1 rounded-full bg-gray-100 text-gray-700 border border-gray-200;
+      }
+
+      .profile-cta {
+        @apply rounded-xl px-4 py-3 bg-gradient-to-r from-blue-600 to-indigo-600 shadow-lg;
+      }
+    }
+	}
+}
+
+@keyframes macos-popover-in {
+  from {
+    opacity: 0;
+    transform: translateY(-8px) scale(0.985);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  nav .wifi-panel {
+    animation: none;
+  }
+}
+
+@layer components {
+  .icon {
+    @apply p-1 hover:bg-gray-200 rounded hover:cursor-default;
+  }
+
+  /* macOS notifications (top-right banners) */
+  .macos-notifications {
+    @apply fixed right-4 w-[360px] max-w-[92vw] select-none;
+    top: calc(44px + 14px);
+    z-index: 11000;
+  }
+
+  .macos-notifications-stack {
+    @apply flex flex-col items-stretch;
+  }
+
+  .macos-notif-shell {
+    @apply w-full;
+    margin-bottom: 12px;
+  }
+
+  .macos-notif-card {
+    @apply relative w-full flex items-start gap-3 rounded-[18px] px-4 py-3 cursor-pointer;
+    background: rgba(255, 255, 255, 0.72);
+    border: 1px solid rgba(255, 255, 255, 0.52);
+    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.16), 0 2px 10px rgba(0, 0, 0, 0.06);
+    backdrop-filter: blur(22px) saturate(180%);
+    -webkit-backdrop-filter: blur(22px) saturate(180%);
+  }
+
+  .macos-notif-card:active {
+    transform: translateY(1px);
+  }
+
+  .macos-notif-close {
+    @apply absolute left-2.5 top-2.5 w-5 h-5 rounded-full flex items-center justify-center;
+    background: rgba(255, 255, 255, 0.86);
+    border: 1px solid rgba(15, 23, 42, 0.12);
+    color: rgba(15, 23, 42, 0.72);
+    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.12);
+    opacity: 0;
+    transform: scale(0.85);
+    pointer-events: none;
+  }
+
+  .macos-notif-icon {
+    @apply flex-none rounded-[14px] overflow-hidden;
+    width: 44px;
+    height: 44px;
+    background: rgba(255, 255, 255, 0.58);
+    border: 1px solid rgba(255, 255, 255, 0.55);
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.06);
+  }
+
+  .macos-notif-icon img {
+    @apply w-full h-full object-contain p-2;
+  }
+
+  .macos-notif-content {
+    @apply min-w-0 pt-0.5;
+  }
+
+  .macos-notif-title {
+    @apply text-[13px] font-semibold tracking-tight;
+    color: rgba(15, 23, 42, 0.92);
+  }
+
+  .macos-notif-message {
+    @apply mt-1 text-[12px] leading-snug;
+    color: rgba(15, 23, 42, 0.72);
+  }
+
+  .macos-notif-clear {
+    @apply w-full rounded-[18px] px-4 py-3 text-[13px] font-semibold text-left;
+    background: rgba(255, 255, 255, 0.62);
+    border: 1px solid rgba(255, 255, 255, 0.5);
+    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.14);
+    backdrop-filter: blur(22px) saturate(180%);
+    -webkit-backdrop-filter: blur(22px) saturate(180%);
+    color: rgba(15, 23, 42, 0.82);
+  }
+
+  .macos-notif-clear:hover {
+    background: rgba(255, 255, 255, 0.72);
+  }
+
+  #welcome {
+    @apply text-gray-200 flex flex-col justify-center items-center absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 select-none max-sm:h-screen max-sm:w-full max-sm:px-10;
+
+    .small-screen {
+      @apply sm:hidden m-7 bg-red-300/20 backdrop-blur-lg p-3 rounded-md absolute top-10;
+
+      p {
+        @apply flex-1 text-[16px] text-center font-roboto text-gray-400;
+      }
+    }
+  }
+
+  #dock {
+    @apply fixed bottom-5 left-1/2 -translate-x-1/2 z-[9000] select-none max-sm:hidden;
+
+    .dock-container {
+      @apply bg-white/20 backdrop-blur-md justify-between rounded-2xl p-1.5 flex items-end gap-1.5;
+    }
+
+    .tooltip {
+      @apply py-1 px-3 w-fit text-center text-xs rounded-md bg-blue-200 text-blue-900 shadow-2xl;
+    }
+
+    .dock-icon {
+      @apply size-14 3xl:size-20 cursor-pointer;
+
+      img {
+        @apply object-cover object-center;
+      }
+    }
+  }
+
+  #window-controls {
+    @apply flex gap-2;
+    position: relative;
+    z-index: 80;
+
+    .close {
+      @apply size-3.5 rounded-full bg-[#ff6157] cursor-pointer;
+    }
+
+    .minimize {
+      @apply size-3.5 rounded-full bg-[#ffc030];
+    }
+
+    .maximize {
+      @apply size-3.5 rounded-full bg-[#2acb42];
+    }
+  }
+
+  #window-header {
+    @apply flex items-center justify-between px-4 py-3 rounded-t-lg bg-gray-50 border-b border-gray-200 select-none text-sm text-gray-400;
+    cursor: grab;
+
+    &:active {
+      cursor: grabbing;
+    }
+  }
+
+  .os-window-resize-handle {
+    position: absolute;
+    z-index: 60;
+    background: transparent;
+    touch-action: none;
+  }
+
+  .os-window-resize-handle.is-n,
+  .os-window-resize-handle.is-s {
+    left: 12px;
+    right: 12px;
+    height: 8px;
+  }
+
+  .os-window-resize-handle.is-n {
+    top: 0;
+    cursor: ns-resize;
+  }
+
+  .os-window-resize-handle.is-s {
+    bottom: 0;
+    cursor: ns-resize;
+  }
+
+  .os-window-resize-handle.is-e,
+  .os-window-resize-handle.is-w {
+    top: 12px;
+    bottom: 12px;
+    width: 8px;
+  }
+
+  .os-window-resize-handle.is-e {
+    right: 0;
+    cursor: ew-resize;
+  }
+
+  .os-window-resize-handle.is-w {
+    left: 0;
+    cursor: ew-resize;
+  }
+
+  .os-window-resize-handle.is-ne,
+  .os-window-resize-handle.is-nw,
+  .os-window-resize-handle.is-se,
+  .os-window-resize-handle.is-sw {
+    width: 14px;
+    height: 14px;
+    z-index: 70;
+  }
+
+  .os-window-resize-handle.is-ne {
+    top: 0;
+    right: 0;
+    cursor: nesw-resize;
+  }
+
+  .os-window-resize-handle.is-nw {
+    top: 0;
+    left: 0;
+    cursor: nwse-resize;
+  }
+
+  .os-window-resize-handle.is-se {
+    bottom: 0;
+    right: 0;
+    cursor: nwse-resize;
+  }
+
+  .os-window-resize-handle.is-sw {
+    bottom: 0;
+    left: 0;
+    cursor: nesw-resize;
+  }
+
+  .os-window--scroll {
+    max-height: calc(
+      100dvh - var(--os-window-safe-top, 0px) -
+        var(--os-window-viewport-padding, 12px)
+    );
+    overflow-x: hidden !important;
+    overflow-y: auto !important;
+    overscroll-behavior: contain;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-gutter: stable;
+    scrollbar-width: none;
+  }
+
+  .os-window--scroll::-webkit-scrollbar {
+    width: 0;
+    height: 0;
+  }
+
+  .os-window--scroll #window-header {
+    position: sticky;
+    top: 0;
+    z-index: 50;
+  }
+
+  #safari {
+    @apply absolute top-24 left-1/2 -translate-x-1/2 bg-white shadow-2xl drop-shadow-2xl rounded-xl overflow-hidden;
+    @apply w-[1040px] max-w-[94vw] h-[78vh] max-h-[820px];
+
+    #window-header {
+      @apply justify-start gap-3;
+      background: rgba(249, 250, 251, 0.88);
+      border-bottom: 1px solid rgba(15, 23, 42, 0.08);
+      backdrop-filter: blur(18px) saturate(180%);
+      -webkit-backdrop-filter: blur(18px) saturate(180%);
+    }
+
+    .safari-toolbar-group {
+      @apply flex items-center gap-1;
+    }
+
+    .safari-toolbar-actions {
+      @apply ml-auto;
+    }
+
+    .safari-toolbar-btn {
+      @apply inline-flex items-center justify-center w-8 h-8 rounded-md;
+      cursor: default;
+      color: rgba(15, 23, 42, 0.8);
+    }
+
+    .safari-toolbar-btn:hover:not(:disabled) {
+      background: rgba(226, 232, 240, 0.7);
+    }
+
+    .safari-toolbar-btn:disabled {
+      opacity: 0.35;
+    }
+
+    .safari-addressbar {
+      @apply flex-1 flex items-center gap-2 px-3 py-2 rounded-xl;
+      background: rgba(255, 255, 255, 0.76);
+      border: 1px solid rgba(15, 23, 42, 0.12);
+      box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.65);
+    }
+
+    .safari-shield {
+      @apply opacity-70;
+    }
+
+    .safari-address-input {
+      @apply w-full bg-transparent outline-none text-sm;
+    }
+
+    .safari-body {
+      @apply bg-gray-100/70;
+    }
+
+    .safari-start {
+      @apply p-7 space-y-10;
+    }
+
+    .safari-blogs {
+      @apply p-7 space-y-5;
+    }
+
+    .safari-blogs-header {
+      @apply flex items-start justify-between gap-4;
+    }
+
+    .safari-blogs-titles {
+      @apply space-y-1;
+    }
+
+    .safari-blogs-subtitle {
+      @apply text-xs text-gray-500;
+    }
+
+    .safari-section {
+      @apply space-y-4;
+    }
+
+    .safari-section-header {
+      @apply flex items-center justify-between gap-4;
+    }
+
+    .safari-section-title {
+      @apply text-[13px] font-semibold text-gray-700 tracking-tight;
+    }
+
+    .safari-section-link {
+      @apply text-[12px] font-semibold text-blue-600 hover:underline;
+    }
+
+    .safari-section-link:disabled {
+      @apply text-slate-400;
+      cursor: not-allowed;
+    }
+
+    .safari-grid {
+      @apply grid gap-4;
+    }
+
+    .safari-grid--blogs,
+    .safari-grid--all {
+      @apply grid-cols-3 max-xl:grid-cols-2 max-sm:grid-cols-1;
+    }
+
+    .safari-grid--projects {
+      @apply grid-cols-2 max-sm:grid-cols-1;
+    }
+
+    .safari-card {
+      @apply block overflow-hidden rounded-2xl border border-white/50 shadow-lg;
+      background: rgba(255, 255, 255, 0.78);
+      backdrop-filter: blur(18px) saturate(180%);
+      -webkit-backdrop-filter: blur(18px) saturate(180%);
+      transition: transform 160ms ease, box-shadow 160ms ease;
+    }
+
+    .safari-card:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 18px 50px rgba(0, 0, 0, 0.14);
+    }
+
+    .safari-card--button {
+      @apply text-left w-full;
+      cursor: pointer;
+    }
+
+    .safari-card--button:focus-visible {
+      @apply outline-none ring-2 ring-slate-200;
+    }
+
+    .safari-card--compact .safari-card-thumb {
+      height: 88px;
+    }
+
+    .safari-card-thumb {
+      height: 110px;
+      background: rgba(148, 163, 184, 0.18);
+    }
+
+    .safari-card-thumb img {
+      @apply w-full h-full object-cover;
+    }
+
+    .safari-card-content {
+      @apply p-4;
+    }
+
+    .safari-card-date {
+      @apply text-xs text-gray-500;
+    }
+
+    .safari-card-title {
+      @apply mt-2 text-sm font-semibold text-gray-900 leading-snug;
+    }
+
+    .safari-card-summary {
+      @apply mt-2 text-xs text-gray-600 leading-relaxed;
+    }
+
+    .safari-empty {
+      @apply rounded-2xl border border-dashed border-gray-300 bg-white/55 px-5 py-6 text-center;
+    }
+
+    .safari-empty-title {
+      @apply text-sm font-semibold text-gray-800;
+    }
+
+    .safari-empty-subtitle {
+      @apply mt-1 text-xs text-gray-500;
+    }
+
+    .safari-detail {
+      @apply p-7;
+      background: radial-gradient(
+          circle at top,
+          rgba(255, 255, 255, 0.75),
+          rgba(248, 250, 252, 0.5)
+        ),
+        linear-gradient(180deg, rgba(226, 232, 240, 0.4), transparent 65%);
+    }
+
+    .safari-detail-article {
+      @apply mx-auto max-w-3xl rounded-[28px] border border-white/70 bg-white/85 p-6 shadow-xl;
+      backdrop-filter: blur(18px) saturate(180%);
+      -webkit-backdrop-filter: blur(18px) saturate(180%);
+    }
+
+    .safari-detail-header {
+      @apply flex flex-col gap-4 lg:flex-row lg:items-start lg:justify-between;
+    }
+
+    .safari-detail-titles {
+      @apply max-w-2xl;
+    }
+
+    .safari-detail-meta {
+      @apply flex items-center gap-2 text-xs uppercase tracking-[0.2em] text-slate-500;
+    }
+
+    .safari-detail-dot {
+      @apply text-slate-400;
+    }
+
+    .safari-detail-date {
+      @apply text-xs text-gray-500;
+    }
+
+    .safari-detail-title {
+      @apply mt-3 text-3xl font-semibold text-gray-900 leading-tight;
+    }
+
+    .safari-detail-summary {
+      @apply mt-3 text-base text-gray-600 leading-relaxed;
+    }
+
+    .safari-detail-actions {
+      @apply flex items-center gap-2;
+    }
+
+    .safari-detail-button {
+      @apply inline-flex items-center justify-center rounded-xl border border-slate-200 bg-white px-3 py-2 text-xs font-semibold text-slate-700;
+    }
+
+    .safari-detail-button.is-primary {
+      @apply bg-slate-900 text-white border-slate-900;
+    }
+
+    .safari-detail-button:disabled {
+      @apply cursor-not-allowed opacity-50;
+    }
+
+    .safari-detail-hero {
+      @apply mt-6 overflow-hidden rounded-2xl border border-white/60 bg-white;
+      aspect-ratio: 16 / 9;
+    }
+
+    .safari-detail-hero img {
+      @apply w-full h-full object-cover;
+    }
+
+    .safari-detail-content {
+      @apply mt-6 space-y-4 text-sm text-slate-700 leading-relaxed;
+    }
+
+    .safari-detail-paragraph {
+      @apply text-[15px] leading-7 text-slate-700;
+    }
+
+    .safari-detail-paragraph.is-lead {
+      @apply text-base text-slate-800;
+    }
+
+    .safari-detail-paragraph.is-lead::first-letter {
+      float: left;
+      font-size: 2.2rem;
+      line-height: 1;
+      font-weight: 600;
+      padding-right: 8px;
+      color: #0f172a;
+    }
+
+    .safari-detail-author {
+      @apply mt-4 flex items-center gap-3;
+    }
+
+    .safari-detail-author-avatar {
+      @apply size-11 rounded-full object-cover border border-white/70 shadow-sm;
+    }
+
+    .safari-detail-author-name {
+      @apply text-sm font-semibold text-slate-900;
+    }
+
+    .safari-detail-author-role {
+      @apply text-xs text-slate-500;
+    }
+
+    .safari-detail-related {
+      @apply mt-10 pt-6 border-t border-slate-200/70;
+    }
+
+    .safari-detail-related-header {
+      @apply flex flex-col gap-1 mb-4;
+    }
+
+    .safari-detail-related-title {
+      @apply text-sm font-semibold text-slate-900;
+    }
+
+    .safari-detail-related-subtitle {
+      @apply text-xs text-slate-500;
+    }
+
+    .safari-detail-related-grid {
+      @apply grid gap-4 grid-cols-2 max-lg:grid-cols-1;
+    }
+
+    .safari-projects {
+      @apply rounded-2xl border border-white/50 p-5;
+      background: rgba(255, 255, 255, 0.65);
+      backdrop-filter: blur(18px) saturate(180%);
+      -webkit-backdrop-filter: blur(18px) saturate(180%);
+      box-shadow: 0 12px 40px rgba(0, 0, 0, 0.08);
+    }
+
+    .safari-projects-soon {
+      @apply text-sm font-semibold text-gray-900;
+    }
+
+    .safari-projects-desc {
+      @apply mt-1 text-xs text-gray-600;
+    }
+
+    .safari-placeholder {
+      @apply rounded-2xl border border-dashed border-gray-300 bg-white/55 p-4;
+    }
+
+    .safari-placeholder-thumb {
+      @apply h-28 rounded-xl;
+      background: linear-gradient(
+        135deg,
+        rgba(226, 232, 240, 0.95),
+        rgba(241, 245, 249, 0.75)
+      );
+    }
+
+    .safari-placeholder-content {
+      @apply mt-3 space-y-1;
+    }
+
+    .safari-placeholder-title {
+      @apply text-sm font-semibold text-gray-800;
+    }
+
+    .safari-placeholder-subtitle {
+      @apply text-xs text-gray-500;
+    }
+  }
+
+  #terminal {
+    @apply w-xl absolute top-32 left-1/12 bg-white shadow-2xl drop-shadow-2xl rounded-xl overflow-hidden;
+
+    h2 {
+      @apply font-bold text-sm text-center w-full;
+    }
+
+    .techstack {
+      @apply text-sm font-roboto p-5 max-h-[70vh] overflow-y-auto space-y-4;
+
+      .label {
+        @apply flex items-center ms-10 mt-7;
+      }
+
+      .content {
+        @apply py-5 my-5 border-y border-dashed space-y-1;
+
+        li {
+          .check {
+            @apply text-[#00A154] w-5;
+          }
+
+          h3 {
+            @apply font-semibold text-[#00A154] w-32 ms-5;
+          }
+
+          ul {
+            @apply flex items-center gap-3;
+          }
+        }
+      }
+
+      .footnote {
+        @apply text-[#00A154] space-y-1;
+
+        p {
+          @apply flex items-center;
+
+          svg {
+            @apply w-5 me-5;
+          }
+        }
+      }
+
+      .prompt-input {
+        @apply w-full bg-black text-green-200 font-mono text-xs px-3 py-2 rounded border border-gray-800 focus:outline-none focus:ring-2 focus:ring-green-400;
+      }
+
+      .prompt-hint {
+        @apply text-xs text-gray-500;
+      }
+    }
+  }
+
+  #contact {
+    @apply max-w-5xl absolute top-60 left-5/12 overflow-hidden rounded-2xl shadow-2xl drop-shadow-2xl;
+    @apply bg-black/20 backdrop-blur-xl border border-white/15;
+
+    h2 {
+      @apply font-bold text-sm text-center w-full;
+    }
+
+    /* Layout (YATAY) */
+    .contact-body {
+      @apply overflow-hidden;
+    }
+
+    .contact-layout {
+      @apply grid gap-5 p-5;
+      grid-template-columns: 360px 1fr;
+      align-items: start;
+    }
+
+    /* LEFT (Hero) */
+    .contact-left {
+      @apply w-full;
+    }
+
+    .contact-hero {
+      @apply relative w-full overflow-hidden rounded-3xl;
+      @apply h-[420px];
+    }
+
+    .contact-hero-img {
+      @apply absolute inset-0 h-full w-full object-cover;
+      transform: scale(1.02);
+    }
+
+    .contact-hero-overlay {
+      @apply absolute inset-0;
+      background: radial-gradient(
+        1200px 500px at 50% 10%,
+        rgba(0, 0, 0, 0.1),
+        rgba(0, 0, 0, 0.55)
+      );
+    }
+
+    .contact-hero-content {
+      @apply absolute inset-x-0 bottom-6 px-6;
+    }
+
+    .contact-name {
+      @apply text-3xl font-extrabold text-white drop-shadow-sm;
+    }
+
+    .contact-chip {
+      @apply mt-4 flex items-center gap-4 rounded-2xl bg-white/10 border border-white/15 backdrop-blur-xl px-4 py-3;
+    }
+
+    .contact-chip-avatar {
+      @apply w-9 h-9 rounded-full object-cover;
+    }
+
+    .contact-chip-text {
+      @apply flex-1 leading-tight;
+    }
+
+    .contact-chip-title {
+      @apply text-white/90 text-sm font-semibold;
+    }
+
+    .contact-chip-subtitle {
+      @apply text-white/60 text-xs font-medium;
+    }
+
+    .contact-chip-arrow {
+      @apply text-white/50 text-2xl leading-none;
+    }
+
+    /* RIGHT (Cards) */
+    .contact-right {
+      @apply grid gap-4;
+    }
+
+    .contact-card {
+      @apply rounded-3xl bg-white/10 border border-white/15 backdrop-blur-xl p-4;
+    }
+
+    .contact-section-title {
+      @apply text-white/70 text-xs font-semibold tracking-wider mb-3;
+    }
+
+    .contact-row {
+      @apply flex flex-col gap-1 py-2;
+    }
+
+    .contact-label {
+      @apply text-white/60 text-sm font-medium;
+    }
+
+    .contact-value {
+      @apply text-white text-base font-semibold;
+    }
+
+    /* Social buttons */
+    .contact-actions-grid {
+      @apply grid grid-cols-2 gap-2;
+    }
+
+    .contact-action {
+      @apply flex items-center gap-3 rounded-2xl bg-white/10 border border-white/15 px-4 py-3 transition-transform duration-200;
+    }
+
+    .contact-action:hover {
+      @apply -translate-y-0.5;
+    }
+
+    .contact-action-icon {
+      @apply w-5 h-5 opacity-90;
+      filter: drop-shadow(0 4px 14px rgba(0, 0, 0, 0.25));
+    }
+
+    .contact-action-text {
+      @apply text-white/90 text-sm font-semibold;
+    }
+
+    /* Quick actions as horizontal pills (no vertical list) */
+    .contact-quick {
+      @apply p-4;
+    }
+
+    .contact-quick-row {
+      @apply flex flex-wrap gap-2;
+    }
+
+    .contact-quick-pill {
+      @apply inline-flex items-center justify-center rounded-full px-4 py-2 text-sm font-semibold;
+      @apply bg-white/10 border border-white/15 backdrop-blur-xl text-white/90;
+      @apply transition-transform duration-200;
+    }
+
+    .contact-quick-pill:hover {
+      @apply -translate-y-0.5;
+    }
+
+    .contact-quick-btn {
+      @apply cursor-pointer;
+    }
+  }
+
+  /* Responsive: ekran daralınca dikeye dönsün */
+  @media (max-width: 900px) {
+    #contact .contact-layout {
+      grid-template-columns: 1fr;
+    }
+
+    #contact .contact-hero {
+      @apply h-[300px];
+    }
+  }
+
+  #photos {
+    @apply absolute top-24 left-1/2 -translate-x-1/2 bg-white shadow-2xl drop-shadow-2xl rounded-xl overflow-hidden;
+    @apply w-[980px] max-w-[94vw] h-[78vh] max-h-[820px];
+    @apply flex flex-col;
+
+    .sidebar {
+      @apply w-[220px] flex-none bg-gray-50/80 border-r border-gray-200 flex flex-col p-4;
+      @apply overflow-y-auto;
+
+      h2 {
+        @apply text-xs font-medium text-gray-400 mb-1;
+      }
+
+      ul {
+        @apply space-y-1;
+
+        .active {
+          @apply bg-blue-100 text-blue-700;
+        }
+
+        .not-active {
+          @apply text-gray-700 hover:bg-gray-200;
+        }
+
+        li {
+          @apply flex space-y-1 items-center gap-2 px-3 py-2 rounded-md cursor-pointer transition-colors;
+
+          img {
+            @apply w-4;
+          }
+
+          p {
+            @apply text-sm font-medium;
+          }
+        }
+      }
+    }
+
+    .photos-body {
+      @apply flex flex-1 min-h-0 bg-white;
+    }
+
+    .gallery {
+      @apply flex-1 min-h-0 overflow-y-auto p-4;
+
+      ul {
+        @apply grid gap-3;
+        grid-template-columns: repeat(auto-fill, minmax(128px, 1fr));
+      }
+
+      li {
+        @apply w-full;
+      }
+
+      .photos-thumb {
+        @apply relative w-full overflow-hidden rounded-lg bg-slate-100;
+        aspect-ratio: 1 / 1;
+      }
+
+      .photos-thumb img {
+        @apply absolute inset-0 w-full h-full object-cover;
+      }
+
+      .photos-thumb-play {
+        @apply absolute inset-0 flex items-center justify-center text-white text-sm;
+        pointer-events: none;
+        text-shadow: 0 2px 10px rgba(0, 0, 0, 0.35);
+      }
+
+      .photos-thumb-play::before {
+        content: "";
+        @apply absolute inset-0 m-auto w-11 h-11 rounded-full;
+        background: rgba(0, 0, 0, 0.45);
+      }
+    }
+  }
+
+  #resume {
+    @apply absolute top-16 left-0 bg-white shadow-2xl drop-shadow-2xl rounded-xl;
+    overflow-x: hidden;
+    overflow-y: auto;
+    @apply w-[780px] max-w-[92vw] h-[80vh] max-h-[82vh];
+    @apply flex flex-col;
+
+    #window-header {
+      h2 {
+        @apply font-bold text-sm text-center flex-1;
+      }
+    }
+
+    .resume-body {
+      @apply bg-gray-50 flex-1 min-h-0;
+    }
+
+    .resume-frame {
+      @apply w-full h-full border-0 block;
+    }
+
+    .resume-pdf-viewer {
+      @apply px-4 py-4;
+    }
+
+    .resume-pdf-status {
+      @apply text-sm text-slate-600;
+    }
+
+    .react-pdf__Page {
+      @apply mx-auto mb-6 overflow-hidden rounded-xl bg-white shadow-xl;
+    }
+
+    .react-pdf__Page canvas {
+      @apply block w-full h-auto;
+    }
+  }
+
+  #finder {
+    @apply absolute w-3xl left-40 top-20 shadow-2xl drop-shadow-2xl overflow-hidden rounded-xl;
+
+    .sidebar {
+      @apply w-48 bg-gray-50 border-r border-gray-200 flex flex-col p-5 space-y-3 overflow-y-auto;
+
+      h3 {
+        @apply text-xs font-medium text-gray-400 mb-1;
+      }
+
+      ul {
+        @apply space-y-1;
+
+        .active {
+          @apply bg-blue-100 text-blue-700;
+        }
+
+        .not-active {
+          @apply text-gray-700 hover:bg-gray-200;
+        }
+
+        li {
+          @apply flex items-center gap-2 px-3 py-2 rounded-md cursor-pointer transition-colors;
+        }
+      }
+    }
+
+    .content {
+      @apply flex-1 min-h-0 min-w-0 p-8 bg-white max-w-2xl relative overflow-auto;
+      overscroll-behavior: contain;
+
+      li {
+        @apply absolute flex items-center flex-col gap-3 cursor-pointer;
+
+        img {
+          @apply object-contain object-center size-16 relative group-hover:scale-105;
+        }
+
+        p {
+          @apply text-sm text-center font-medium w-40;
+        }
+      }
+    }
+  }
+
+  #txtfile {
+    @apply w-md absolute top-36 right-32 bg-white shadow-2xl drop-shadow-2xl rounded-xl overflow-hidden;
+
+    h2 {
+      @apply font-bold text-sm text-center w-full;
+    }
+  }
+
+  #imgfile {
+    @apply w-xl absolute top-40 left-2/12 bg-white shadow-2xl drop-shadow-2xl rounded-xl overflow-hidden;
+
+    #window-header {
+      p {
+        @apply font-bold text-[#5f6266];
+      }
+    }
+
+    .preview {
+      @apply p-2 bg-gray-200 max-h-[70vh];
+
+      img {
+        @apply w-full h-fit object-contain object-center;
+      }
+    }
+  }
+
+  #videofile {
+    @apply w-xl absolute top-40 left-2/12 bg-white shadow-2xl drop-shadow-2xl rounded-xl overflow-hidden;
+    @apply max-w-[92vw];
+
+    #window-header {
+      p {
+        @apply font-bold text-[#5f6266];
+      }
+    }
+  }
+
+#videofile .videofile-body {
+  @apply bg-black p-4;
+}
+
+.videofile-empty {
+  @apply text-sm text-white/70;
+}
+
+  .mac-video-player {
+    @apply relative w-full rounded-xl overflow-hidden;
+    background: #000000;
+  }
+
+  .mac-video {
+    @apply w-full h-auto block;
+    max-height: 70vh;
+    outline: none;
+  }
+
+  .mac-video-player:fullscreen,
+  .mac-video-player:-webkit-full-screen {
+    width: 100%;
+    height: 100%;
+    border-radius: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #000000;
+  }
+
+  .mac-video-player:fullscreen .mac-video,
+  .mac-video-player:-webkit-full-screen .mac-video {
+    width: 100%;
+    height: 100%;
+    max-width: none;
+    max-height: none;
+    object-fit: contain;
+  }
+
+  .mac-video-bigplay {
+    @apply absolute inset-0 grid place-items-center;
+    background: radial-gradient(
+      circle,
+      rgba(0, 0, 0, 0.35) 0%,
+      rgba(0, 0, 0, 0.05) 55%,
+      rgba(0, 0, 0, 0) 70%
+    );
+  }
+
+  .mac-video-bigplay > svg {
+    @apply w-14 h-14 p-4 rounded-full;
+    color: rgba(255, 255, 255, 0.92);
+    background: rgba(0, 0, 0, 0.45);
+    border: 1px solid rgba(255, 255, 255, 0.16);
+    box-shadow: 0 14px 40px rgba(0, 0, 0, 0.35);
+  }
+
+  .mac-video-controls {
+    @apply absolute left-3 right-3 bottom-3 flex items-center gap-3 px-3 py-2 rounded-full;
+    background: rgba(18, 18, 20, 0.55);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    backdrop-filter: blur(16px) saturate(180%);
+    -webkit-backdrop-filter: blur(16px) saturate(180%);
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.35);
+    opacity: 0;
+    transform: translateY(10px);
+  }
+
+  .mac-video-btn {
+    @apply inline-flex items-center justify-center w-9 h-9 rounded-full;
+    color: rgba(255, 255, 255, 0.92);
+  }
+
+  .mac-video-btn:hover {
+    background: rgba(255, 255, 255, 0.12);
+  }
+
+  .mac-video-time {
+    @apply hidden md:flex items-center gap-1 text-[12px] font-medium;
+    color: rgba(255, 255, 255, 0.82);
+    min-width: 96px;
+  }
+
+  .mac-video-time-sep {
+    @apply px-1;
+    opacity: 0.55;
+  }
+
+  .mac-video-scrub {
+    @apply relative flex-1 min-w-0;
+    height: 20px;
+  }
+
+  .mac-video-scrub-track {
+    @apply absolute left-0 right-0 top-1/2 -translate-y-1/2 rounded-full overflow-hidden;
+    height: 6px;
+    background: rgba(255, 255, 255, 0.22);
+  }
+
+  .mac-video-scrub-fill {
+    @apply block h-full;
+    background: rgba(255, 255, 255, 0.82);
+  }
+
+  .mac-video-scrub input[type="range"] {
+    @apply absolute inset-0 w-full;
+    opacity: 0;
+    cursor: pointer;
+  }
+
+  .mac-video-volume {
+    @apply hidden sm:block;
+    width: 96px;
+  }
+
+  .mac-video-volume[type="range"] {
+    accent-color: rgba(255, 255, 255, 0.85);
+  }
+  #phone {
+    @apply absolute w-[480px] max-w-[95vw] h-[90vh] max-h-[900px] top-24 left-1/2 -translate-x-1/2 bg-transparent;
+    --phone-mirror-scale: 0.8;
+    --phone-mirror-w: 360px;
+  }
+
+  @media (max-height: 820px) {
+    #phone {
+      --phone-mirror-scale: 0.74;
+    }
+
+    #phone .phone-window-body {
+      padding: 12px 18px 16px;
+    }
+  }
+
+  @media (max-height: 740px) {
+    #phone {
+      --phone-mirror-scale: 0.7;
+    }
+
+    #phone .phone-window-body {
+      padding: 12px 16px 14px;
+    }
+  }
+
+  .phone-window-shell {
+    @apply w-full h-full flex flex-col;
+  }
+  .phone-window-body {
+    @apply flex-1 min-h-0 flex items-center justify-center px-6 pb-6 pt-4;
+  }
+
+  .phone-frame {
+    @apply rounded-[28px] overflow-hidden bg-black text-slate-900 border border-black/20 shadow-[0_20px_60px_rgba(0,0,0,0.22)] h-full flex flex-col;
+  }
+
+  .phone-window {
+    @apply w-full h-full;
+  }
+
+  .phone-window-device {
+    width: calc(var(--phone-mirror-w, 360px) * var(--phone-mirror-scale, 0.8));
+    height: calc(
+      var(--phone-mirror-w, 360px) * 19.5 / 9 * var(--phone-mirror-scale, 0.8)
+    );
+    flex: none;
+  }
+
+  .phone-window-device-inner {
+    width: var(--phone-mirror-w, 360px);
+    height: calc(var(--phone-mirror-w, 360px) * 19.5 / 9);
+    transform: scale(var(--phone-mirror-scale, 0.8));
+    transform-origin: top left;
+    will-change: transform;
+    flex: none;
+  }
+
+  .phone-mobile {
+    @apply w-full h-full;
+  }
+
+  .phone-frame.phone-mobile {
+    @apply rounded-none border-0 shadow-none;
+  }
+
+  .phone-window-header {
+    @apply bg-white text-slate-800 border-b border-slate-200;
+  }
+
+  .phone-inner {
+    @apply relative flex-1 min-h-0 flex flex-col overflow-hidden;
+    font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display",
+      "SF Pro Text", system-ui, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    isolation: isolate;
+    background: linear-gradient(
+        180deg,
+        rgba(0, 0, 0, 0.18) 0%,
+        rgba(0, 0, 0, 0) 42%,
+        rgba(0, 0, 0, 0.22) 100%
+      ),
+      url("/images/phone-background.jpg") center / cover no-repeat;
+  }
+
+  .phone-inner::before {
+    content: "";
+    position: absolute;
+    inset: -25%;
+    z-index: -2;
+    background: radial-gradient(
+        820px circle at 22% 18%,
+        rgba(0, 122, 255, 0.28),
+        transparent 62%
+      ),
+      radial-gradient(
+        780px circle at 82% 24%,
+        rgba(255, 45, 85, 0.18),
+        transparent 64%
+      ),
+      radial-gradient(
+        820px circle at 55% 88%,
+        rgba(88, 86, 214, 0.18),
+        transparent 66%
+      );
+    filter: blur(36px);
+    opacity: 0.35;
+    transform: translate3d(0, 0, 0);
+    pointer-events: none;
+  }
+
+  .phone-inner::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    background-image: url("data:image/svg+xml,%3Csvg%20xmlns%3D%27http%3A//www.w3.org/2000/svg%27%20width%3D%27220%27%20height%3D%27220%27%3E%3Cfilter%20id%3D%27n%27%3E%3CfeTurbulence%20type%3D%27fractalNoise%27%20baseFrequency%3D%27.8%27%20numOctaves%3D%274%27%20stitchTiles%3D%27stitch%27/%3E%3C/filter%3E%3Crect%20width%3D%27220%27%20height%3D%27220%27%20filter%3D%27url(%23n)%27%20opacity%3D%27.26%27/%3E%3C/svg%3E");
+    opacity: 0.11;
+    pointer-events: none;
+  }
+
+  .phone-status {
+    @apply flex items-center justify-between text-[13px] text-slate-900 relative px-5;
+    padding-top: calc(env(safe-area-inset-top, 0px) + 12px);
+    padding-bottom: 10px;
+  }
+
+  .phone-notch {
+    @apply absolute left-1/2 -translate-x-1/2 w-32 h-8 bg-black/70 rounded-full shadow-[0_6px_18px_rgba(0,0,0,0.35)];
+    top: calc(env(safe-area-inset-top, 0px) + 6px);
+  }
+
+  .phone-clock {
+    @apply font-semibold tracking-wide;
+  }
+
+  .phone-status-icons {
+    @apply flex items-center gap-2 ml-auto text-sm text-slate-800;
+  }
+
+  .phone-loading {
+    @apply flex-1 flex items-center justify-center;
+  }
+
+  .phone-loading-text {
+    @apply text-2xl font-semibold tracking-wide text-slate-300;
+  }
+
+  .phone-loading-letter {
+    @apply transition-colors duration-200;
+  }
+
+  .phone-stage {
+    @apply relative flex-1 min-h-0;
+    contain: layout paint;
+  }
+
+  .phone-slide-stage {
+    @apply relative flex-1 min-h-0 overflow-hidden;
+  }
+
+  .phone-slide-stage.is-transitioning {
+    pointer-events: none;
+  }
+
+  .phone-slide-panel {
+    @apply absolute inset-0 flex flex-col;
+  }
+
+  .phone-home {
+    @apply absolute inset-0 flex flex-col h-full gap-4 pt-2 px-5;
+    z-index: 0;
+    will-change: transform, opacity, filter;
+  }
+
+  .phone-grid {
+    @apply grid grid-cols-4 gap-x-5 gap-y-6 mt-3;
+    justify-items: center;
+  }
+
+  .phone-icon {
+    @apply col-center gap-1.5 text-[12px] font-normal text-white py-2 px-1 select-none;
+    text-shadow: 0 1px 6px rgba(0, 0, 0, 0.28);
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  .phone-icon-img {
+    @apply flex items-center justify-center;
+    width: 60px;
+    height: 60px;
+    border-radius: 16px;
+    transition: transform 120ms ease;
+    transform-origin: center;
+  }
+
+  .phone-icon:active .phone-icon-img {
+    transform: scale(0.96);
+  }
+
+  .phone-icon img {
+    @apply w-full h-full object-contain drop-shadow-[0_6px_14px_rgba(0,0,0,0.3)];
+  }
+
+  .phone-icon[data-app-id="safari"] img,
+  .phone-dock-icon[data-app-id="safari"] img {
+    transform: scale(1.1);
+    transform-origin: center;
+  }
+
+  .phone-dock-row {
+    @apply flex justify-center;
+    padding-bottom: calc(env(safe-area-inset-bottom, 0px) + 14px);
+  }
+
+  .phone-dock {
+    @apply rounded-[26px] px-5 py-2.5 flex items-center gap-4 shadow-[0_14px_40px_rgba(0,0,0,0.16)];
+    position: relative;
+    background: rgba(255, 255, 255, 0.24);
+    border: 1px solid rgba(255, 255, 255, 0.48);
+    backdrop-filter: blur(22px) saturate(180%);
+    -webkit-backdrop-filter: blur(22px) saturate(180%);
+    will-change: transform;
+  }
+
+  .phone-dock::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    pointer-events: none;
+    background: linear-gradient(
+      180deg,
+      rgba(255, 255, 255, 0.65),
+      rgba(255, 255, 255, 0)
+    );
+    opacity: 0.55;
+  }
+
+  .phone-dock-icon {
+    @apply bg-transparent flex items-center justify-center;
+    width: 60px;
+    height: 60px;
+    border-radius: 16px;
+  }
+
+  .phone-dock-icon img {
+    @apply w-full h-full object-contain drop-shadow-[0_4px_10px_rgba(0,0,0,0.25)];
+  }
+
+  .phone-app-wrapper {
+    @apply absolute inset-0 flex flex-col bg-white overflow-hidden;
+    border-radius: 0px;
+    box-shadow: 0 0 0 rgba(0, 0, 0, 0);
+    will-change: transform, opacity;
+    backface-visibility: hidden;
+    -webkit-backface-visibility: hidden;
+    transform-style: preserve-3d;
+    z-index: 2;
+  }
+
+  .phone-app-wrapper--call {
+    @apply bg-white text-slate-900;
+  }
+
+  .phone-app-bar {
+    @apply flex items-center justify-center text-slate-900;
+    height: 44px;
+    background: rgba(255, 255, 255, 0.78);
+    border-bottom: 1px solid rgba(15, 23, 42, 0.08);
+    backdrop-filter: blur(18px) saturate(180%);
+    -webkit-backdrop-filter: blur(18px) saturate(180%);
+  }
+
+  .phone-app-title {
+    @apply text-sm font-semibold text-center tracking-wide text-slate-900;
+  }
+
+  .phone-app {
+    @apply flex-1 flex flex-col gap-4 overflow-y-auto w-full h-full px-5 pb-6 pt-4;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .phone-subtitle {
+    @apply text-xs uppercase tracking-[0.2em] text-slate-500;
+  }
+
+  .phone-chips {
+    @apply flex flex-wrap gap-2;
+  }
+
+  .phone-chip {
+    @apply px-3 py-2 rounded-full bg-slate-100 text-sm text-slate-700 border border-slate-200;
+  }
+
+  .phone-chip-active {
+    @apply bg-blue-600 text-white border-blue-600;
+  }
+
+  .phone-cards {
+    @apply grid grid-cols-1 gap-3;
+  }
+
+  .phone-card {
+    @apply bg-white rounded-2xl p-3 border border-slate-200 space-y-2;
+  }
+
+  .phone-card-header {
+    @apply flex items-center gap-3;
+  }
+
+  .phone-card-header img {
+    @apply w-10 h-10 object-contain;
+  }
+
+  .phone-card h4 {
+    @apply text-sm font-semibold text-slate-900;
+  }
+
+  .phone-meta {
+    @apply text-xs text-slate-500;
+  }
+
+  .phone-desc {
+    @apply text-sm text-slate-700 leading-relaxed;
+  }
+
+  .phone-link {
+    @apply text-sm text-blue-600 underline;
+  }
+
+  .phone-photo-grid {
+    @apply grid grid-cols-3 gap-2;
+  }
+
+  .phone-photo {
+    @apply rounded-xl overflow-hidden bg-white border border-slate-200;
+  }
+
+  .phone-photo img {
+    @apply w-full h-full object-cover;
+  }
+
+  .phone-profile {
+    @apply col-center text-center gap-2;
+  }
+
+  .phone-profile img {
+    @apply w-20 h-20 rounded-full object-cover;
+  }
+
+  .phone-socials {
+    @apply grid grid-cols-2 gap-2;
+  }
+
+  .phone-socials a {
+    @apply flex items-center gap-2 rounded-xl px-3 py-2 text-sm text-slate-800 border border-slate-200;
+  }
+
+  .phone-socials img {
+    @apply w-5 h-5;
+  }
+
+  .phone-stack {
+    @apply space-y-3;
+  }
+
+  .phone-stack li {
+    @apply bg-white/70 rounded-xl p-3 border border-slate-200 space-y-1;
+  }
+
+  .phone-stack span {
+    @apply text-sm font-semibold text-slate-900;
+  }
+
+  .phone-stack p {
+    @apply text-sm text-slate-700;
+  }
+
+  .phone-center {
+    @apply items-center justify-center text-center;
+  }
+
+  .phone-button {
+    @apply inline-flex items-center justify-center px-4 py-2 rounded-full bg-slate-900 text-white border border-slate-900;
+  }
+
+  .phone-resume {
+    @apply flex flex-col w-full h-full bg-white text-slate-900;
+    min-height: 0;
+  }
+
+  .phone-resume-nav {
+    @apply flex items-center justify-between px-4;
+    height: 44px;
+    background: rgba(242, 242, 247, 0.86);
+    border-bottom: 1px solid rgba(60, 60, 67, 0.12);
+    backdrop-filter: blur(18px) saturate(180%);
+    -webkit-backdrop-filter: blur(18px) saturate(180%);
+  }
+
+  .phone-resume-title {
+    @apply text-[15px] font-semibold truncate;
+    color: rgba(0, 0, 0, 0.88);
+  }
+
+  .phone-resume-actions {
+    @apply flex items-center gap-1;
+  }
+
+  .phone-resume-action {
+    @apply inline-flex items-center justify-center w-9 h-9 rounded-full;
+    color: #007aff;
+  }
+
+  .phone-resume-action:active {
+    background: rgba(0, 122, 255, 0.12);
+  }
+
+  .phone-resume-body {
+    @apply flex-1 min-h-0;
+  }
+
+  .phone-resume-frame {
+    @apply w-full h-full;
+    border: 0;
+    background: white;
+  }
+
+  .phone-safari {
+    @apply flex flex-col w-full h-full text-slate-900;
+    background: #f2f2f7;
+  }
+
+  .phone-safari-top {
+    @apply px-4 flex items-center justify-center;
+    height: 54px;
+    background: rgba(255, 255, 255, 0.86);
+    border-bottom: 1px solid rgba(15, 23, 42, 0.08);
+    backdrop-filter: blur(18px) saturate(180%);
+    -webkit-backdrop-filter: blur(18px) saturate(180%);
+  }
+
+  .phone-safari-address {
+    @apply w-full flex items-center gap-2 rounded-full px-4 py-2 text-xs font-medium;
+    background: rgba(241, 245, 249, 0.9);
+    color: rgba(15, 23, 42, 0.78);
+    border: 1px solid rgba(148, 163, 184, 0.28);
+  }
+
+  .phone-safari-address-text {
+    @apply truncate;
+  }
+
+  .phone-safari-scroll {
+    @apply flex-1 min-h-0 overflow-y-auto px-4 pb-24 pt-4;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .phone-safari-section {
+    @apply space-y-3;
+  }
+
+  .phone-safari-section + .phone-safari-section {
+    @apply mt-6;
+  }
+
+  .phone-safari-section-header {
+    @apply flex items-center justify-between gap-3;
+  }
+
+  .phone-safari-section-title {
+    @apply text-[11px] uppercase tracking-[0.2em] text-slate-500 font-semibold;
+  }
+
+  .phone-safari-section-link {
+    @apply text-xs font-semibold text-blue-600;
+  }
+
+  .phone-safari-section-link:disabled {
+    @apply text-slate-400;
+    cursor: not-allowed;
+  }
+
+  .phone-safari-card-grid {
+    @apply grid grid-cols-2 gap-3;
+  }
+
+  .phone-safari-list-grid {
+    @apply grid gap-3;
+  }
+
+  .phone-safari-card {
+    @apply flex flex-col overflow-hidden rounded-2xl border border-white/70 bg-white text-left shadow-sm;
+  }
+
+  .phone-safari-card.is-list {
+    @apply border-slate-200;
+  }
+
+  .phone-safari-card-thumb {
+    height: 96px;
+    background: rgba(148, 163, 184, 0.2);
+  }
+
+  .phone-safari-card.is-list .phone-safari-card-thumb {
+    height: 120px;
+  }
+
+  .phone-safari-card-thumb img {
+    @apply w-full h-full object-cover;
+  }
+
+  .phone-safari-card-body {
+    @apply p-3 space-y-1;
+  }
+
+  .phone-safari-card-date {
+    @apply text-[11px] text-slate-500;
+  }
+
+  .phone-safari-card-title {
+    @apply text-sm font-semibold text-slate-900;
+  }
+
+  .phone-safari-card-summary {
+    @apply text-xs text-slate-600 leading-relaxed;
+  }
+
+  .phone-safari-projects {
+    @apply rounded-2xl border border-white/70 bg-white/80 p-4 space-y-2;
+    box-shadow: 0 12px 30px rgba(15, 23, 42, 0.08);
+  }
+
+  .phone-safari-projects-title {
+    @apply text-sm font-semibold text-slate-900;
+  }
+
+  .phone-safari-projects-desc {
+    @apply text-xs text-slate-600;
+  }
+
+  .phone-safari-placeholder-grid {
+    @apply grid grid-cols-2 gap-3 pt-2;
+  }
+
+  .phone-safari-placeholder {
+    @apply rounded-xl border border-dashed border-slate-200 bg-slate-50 p-3 space-y-2;
+  }
+
+  .phone-safari-placeholder-thumb {
+    @apply h-12 rounded-lg;
+    background: linear-gradient(
+      135deg,
+      rgba(226, 232, 240, 0.9),
+      rgba(248, 250, 252, 0.7)
+    );
+  }
+
+  .phone-safari-placeholder-title {
+    @apply text-xs font-semibold text-slate-800;
+  }
+
+  .phone-safari-placeholder-subtitle {
+    @apply text-[11px] text-slate-500;
+  }
+
+  .phone-safari-empty {
+    @apply rounded-2xl border border-dashed border-slate-200 bg-white/70 p-4 text-center;
+  }
+
+  .phone-safari-empty-title {
+    @apply text-sm font-semibold text-slate-900;
+  }
+
+  .phone-safari-empty-subtitle {
+    @apply mt-1 text-xs text-slate-500;
+  }
+
+  .phone-safari-list-header {
+    @apply flex items-center justify-between gap-3;
+  }
+
+  .phone-safari-list-title {
+    @apply text-sm font-semibold text-slate-900;
+  }
+
+  .phone-safari-back {
+    @apply inline-flex items-center gap-1 text-xs font-semibold text-blue-600;
+  }
+
+  .phone-safari-detail {
+    @apply space-y-4;
+  }
+
+  .phone-safari-detail-meta {
+    @apply flex items-center gap-2 text-[11px] uppercase tracking-[0.2em] text-slate-500;
+  }
+
+  .phone-safari-detail-title {
+    @apply text-xl font-semibold text-slate-900 leading-snug;
+  }
+
+  .phone-safari-detail-summary {
+    @apply text-sm text-slate-600 leading-relaxed;
+  }
+
+  .phone-safari-detail-author {
+    @apply flex items-center gap-3;
+  }
+
+  .phone-safari-author-avatar {
+    @apply size-10 rounded-full object-cover border border-white/70;
+  }
+
+  .phone-safari-author-name {
+    @apply text-sm font-semibold text-slate-900;
+  }
+
+  .phone-safari-author-role {
+    @apply text-xs text-slate-500;
+  }
+
+  .phone-safari-hero {
+    @apply overflow-hidden rounded-2xl border border-white/70 bg-white;
+    aspect-ratio: 16 / 9;
+  }
+
+  .phone-safari-hero img {
+    @apply w-full h-full object-cover;
+  }
+
+  .phone-safari-detail-content {
+    @apply space-y-3 text-sm text-slate-700 leading-relaxed;
+  }
+
+  .phone-safari-detail-paragraph {
+    @apply text-[14px] leading-6 text-slate-700;
+  }
+
+  .phone-safari-detail-paragraph.is-lead {
+    @apply text-[15px] text-slate-800;
+  }
+
+  .phone-safari-link {
+    @apply mt-2 inline-flex items-center justify-center w-full rounded-full bg-slate-900 px-4 py-2 text-sm font-semibold text-white;
+  }
+
+  .phone-safari-link:disabled {
+    @apply cursor-not-allowed opacity-60;
+  }
+
+  .phone-safari-toolbar {
+    @apply flex items-center justify-between px-6;
+    height: 54px;
+    background: rgba(255, 255, 255, 0.9);
+    border-top: 1px solid rgba(15, 23, 42, 0.08);
+    backdrop-filter: blur(18px) saturate(180%);
+    -webkit-backdrop-filter: blur(18px) saturate(180%);
+  }
+
+  .phone-safari-toolbar-btn {
+    @apply inline-flex items-center justify-center text-slate-700;
+  }
+
+  .mobile-shell {
+    @apply w-dvw h-dvh bg-slate-950 overflow-hidden;
+  }
+
+  .phone-gesture-area {
+    @apply w-full pt-3 flex items-center justify-center;
+    padding-bottom: calc(env(safe-area-inset-bottom, 0px) + 12px);
+    touch-action: none;
+    user-select: none;
+    -webkit-user-select: none;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  .phone-gesture-area.is-inactive {
+    pointer-events: none;
+    touch-action: auto;
+  }
+
+  .phone-home-indicator {
+    @apply w-24 h-1.5 rounded-full bg-black/25;
+  }
+
+  .phone-scrim {
+    @apply absolute inset-0 bg-black/25 opacity-0 pointer-events-none;
+    z-index: 1;
+    will-change: opacity;
+  }
+
+  .phone-search-pill {
+    @apply mx-auto w-36 h-9 rounded-full flex items-center justify-center gap-2 text-xs text-slate-700 shadow-[0_10px_28px_rgba(0,0,0,0.14)];
+    position: relative;
+    background: rgba(255, 255, 255, 0.26);
+    border: 1px solid rgba(255, 255, 255, 0.54);
+    backdrop-filter: blur(18px) saturate(180%);
+    -webkit-backdrop-filter: blur(18px) saturate(180%);
+  }
+
+  .phone-search-pill::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    pointer-events: none;
+    background: linear-gradient(
+      180deg,
+      rgba(255, 255, 255, 0.62),
+      rgba(255, 255, 255, 0)
+    );
+    opacity: 0.5;
+  }
+
+  .phone-bottom {
+    @apply mt-auto flex flex-col items-center gap-3 w-full;
+  }
+
+  /* iOS action sheet */
+  .phone-action-sheet {
+    @apply absolute inset-0 z-30 flex items-end justify-center;
+    -webkit-tap-highlight-color: transparent;
+    visibility: hidden;
+    pointer-events: none;
+    transition: visibility 0s linear 0.28s;
+  }
+
+  .phone-action-sheet.is-open {
+    visibility: visible;
+    pointer-events: auto;
+    transition: visibility 0s linear 0s;
+  }
+
+  .phone-action-sheet-backdrop {
+    @apply absolute inset-0 bg-black/35;
+    opacity: 0;
+    transition: opacity 0.22s ease;
+  }
+
+  .phone-action-sheet.is-open .phone-action-sheet-backdrop {
+    opacity: 1;
+  }
+
+  .phone-action-sheet-panel {
+    @apply relative w-full px-4;
+    padding-bottom: calc(env(safe-area-inset-bottom, 0px) + 14px);
+    transform: translate3d(0, 28px, 0);
+    opacity: 0.98;
+    transition: transform 0.28s cubic-bezier(0.2, 0.8, 0.2, 1),
+      opacity 0.28s ease;
+  }
+
+  .phone-action-sheet.is-open .phone-action-sheet-panel {
+    transform: translate3d(0, 0, 0);
+    opacity: 1;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .phone-action-sheet,
+    .phone-action-sheet-backdrop,
+    .phone-action-sheet-panel {
+      transition: none !important;
+    }
+  }
+
+  .phone-action-sheet-card {
+    @apply rounded-[14px] overflow-hidden;
+    background: rgba(255, 255, 255, 0.88);
+    border: 1px solid rgba(15, 23, 42, 0.12);
+    box-shadow: 0 18px 60px rgba(0, 0, 0, 0.22);
+    backdrop-filter: blur(18px) saturate(180%);
+    -webkit-backdrop-filter: blur(18px) saturate(180%);
+  }
+
+  .phone-action-sheet-header {
+    @apply px-4 py-3 text-center;
+    border-bottom: 1px solid rgba(60, 60, 67, 0.12);
+  }
+
+  .phone-action-sheet-title {
+    @apply text-[13px] font-semibold;
+    color: rgba(60, 60, 67, 0.9);
+  }
+
+  .phone-action-sheet-message {
+    @apply mt-1 text-[12px];
+    color: rgba(60, 60, 67, 0.6);
+  }
+
+  .phone-action-sheet-actions {
+    @apply flex flex-col;
+  }
+
+  .phone-action-sheet-action {
+    @apply w-full py-3 text-[17px] font-medium;
+    color: #007aff;
+  }
+
+  .phone-action-sheet-action:not(:last-child) {
+    border-bottom: 1px solid rgba(60, 60, 67, 0.12);
+  }
+
+  .phone-action-sheet-action:active {
+    background: rgba(118, 118, 128, 0.12);
+  }
+
+  .phone-action-sheet-action.is-destructive {
+    color: #ff3b30;
+  }
+
+  .phone-action-sheet-cancel {
+    @apply mt-3 w-full py-3 text-[17px] font-semibold rounded-[14px];
+    color: #007aff;
+    background: rgba(255, 255, 255, 0.88);
+    border: 1px solid rgba(15, 23, 42, 0.12);
+    backdrop-filter: blur(18px) saturate(180%);
+    -webkit-backdrop-filter: blur(18px) saturate(180%);
+  }
+
+  .phone-action-sheet-cancel:active {
+    background: rgba(255, 255, 255, 0.72);
+  }
+
+  /* Finder (Files-like) */
+  .phone-finder {
+    @apply relative p-0 gap-0 bg-[#f2f2f7] text-slate-900 overflow-hidden;
+  }
+
+  .phone-finder-nav {
+    @apply flex items-center justify-between px-4;
+    height: 44px;
+    background: rgba(242, 242, 247, 0.86);
+    border-bottom: 1px solid rgba(60, 60, 67, 0.12);
+    backdrop-filter: blur(18px) saturate(180%);
+    -webkit-backdrop-filter: blur(18px) saturate(180%);
+  }
+
+  .phone-finder-content {
+    @apply relative flex-1 overflow-hidden;
+  }
+
+  .phone-finder-content.is-transitioning {
+    pointer-events: none;
+  }
+
+  .phone-finder-content-panel {
+    @apply absolute inset-0;
+    background: #f2f2f7;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-gutter: stable;
+    scrollbar-width: none;
+  }
+
+  .phone-finder-content-panel::-webkit-scrollbar {
+    width: 0;
+    height: 0;
+  }
+
+  .phone-finder-content-panel.is-from {
+    z-index: 1;
+  }
+
+  .phone-finder-content-panel.is-to {
+    z-index: 2;
+  }
+
+  .phone-finder-content.is-back .phone-finder-content-panel.is-from {
+    z-index: 2;
+  }
+
+  .phone-finder-content.is-back .phone-finder-content-panel.is-to {
+    z-index: 1;
+  }
+
+  .phone-finder-preview {
+    @apply absolute inset-0 z-20 flex flex-col;
+    background: #ffffff;
+  }
+
+  .phone-finder-preview.is-image {
+    background: #000000;
+  }
+
+  .phone-finder-preview.is-video {
+    background: #000000;
+  }
+
+  .phone-finder-preview-nav {
+    @apply flex items-center justify-between px-4;
+    height: 44px;
+    background: rgba(242, 242, 247, 0.92);
+    border-bottom: 1px solid rgba(60, 60, 67, 0.12);
+    backdrop-filter: blur(18px) saturate(180%);
+    -webkit-backdrop-filter: blur(18px) saturate(180%);
+  }
+
+  .phone-finder-preview.is-image .phone-finder-preview-nav {
+    background: rgba(0, 0, 0, 0.35);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.12);
+  }
+
+  .phone-finder-preview.is-video .phone-finder-preview-nav {
+    background: rgba(0, 0, 0, 0.35);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.12);
+  }
+
+  .phone-finder-preview-done {
+    @apply text-[17px] font-medium;
+    color: #007aff;
+  }
+
+  .phone-finder-preview.is-image .phone-finder-preview-done {
+    color: #ffffff;
+  }
+
+  .phone-finder-preview.is-video .phone-finder-preview-done {
+    color: #ffffff;
+  }
+
+  .phone-finder-preview-title {
+    @apply text-[13px] font-semibold text-center truncate;
+    color: rgba(60, 60, 67, 0.9);
+    max-width: 52%;
+  }
+
+  .phone-finder-preview.is-image .phone-finder-preview-title {
+    color: rgba(255, 255, 255, 0.92);
+  }
+
+  .phone-finder-preview.is-video .phone-finder-preview-title {
+    color: rgba(255, 255, 255, 0.92);
+  }
+
+  .phone-finder-preview-actions {
+    @apply flex items-center justify-end gap-1;
+    min-width: 84px;
+  }
+
+  .phone-finder-preview-action {
+    @apply inline-flex items-center justify-center w-9 h-9 rounded-full;
+    color: #007aff;
+  }
+
+  .phone-finder-preview-action:active {
+    background: rgba(118, 118, 128, 0.12);
+  }
+
+  .phone-finder-preview.is-image .phone-finder-preview-action {
+    color: #ffffff;
+  }
+
+  .phone-finder-preview.is-image .phone-finder-preview-action:active {
+    background: rgba(255, 255, 255, 0.12);
+  }
+
+  .phone-finder-preview.is-video .phone-finder-preview-action {
+    color: #ffffff;
+  }
+
+  .phone-finder-preview.is-video .phone-finder-preview-action:active {
+    background: rgba(255, 255, 255, 0.12);
+  }
+
+  .phone-finder-preview-body {
+    @apply flex-1 min-h-0;
+  }
+
+  .phone-finder-preview-image {
+    @apply flex-1 min-h-0 flex items-center justify-center;
+  }
+
+  .phone-finder-preview-image img {
+    @apply w-full h-full object-contain;
+  }
+
+  .phone-finder-preview-video {
+    @apply flex-1 min-h-0 flex items-center justify-center;
+  }
+
+  .phone-finder-preview-video video {
+    @apply w-full h-full;
+    object-fit: contain;
+    border-radius: 0;
+    background: #000000;
+  }
+
+  .phone-finder-preview-pdf {
+    width: 100%;
+    height: 100%;
+    border: 0;
+    background: #ffffff;
+  }
+
+  .phone-finder-preview-text {
+    @apply h-full overflow-y-auto px-4 pt-4 pb-6;
+    -webkit-overflow-scrolling: touch;
+    background: #ffffff;
+  }
+
+  .phone-finder-preview-hero {
+    @apply w-full overflow-hidden rounded-2xl mb-4;
+    border: 1px solid rgba(60, 60, 67, 0.12);
+  }
+
+  .phone-finder-preview-hero img {
+    @apply w-full h-auto object-cover;
+  }
+
+  .phone-finder-preview-subtitle {
+    @apply text-[12px] font-semibold mb-3;
+    color: rgba(60, 60, 67, 0.6);
+  }
+
+  .phone-finder-preview-paragraphs {
+    @apply space-y-3 text-[15px] leading-relaxed;
+    color: rgba(17, 24, 39, 0.92);
+  }
+
+  .phone-finder-preview-empty {
+    @apply h-full flex items-center justify-center text-sm px-4 text-center;
+    color: rgba(60, 60, 67, 0.6);
+  }
+
+  .phone-finder-preview.is-image .phone-finder-preview-empty {
+    color: rgba(255, 255, 255, 0.8);
+  }
+
+  .phone-finder-preview.is-video .phone-finder-preview-empty {
+    color: rgba(255, 255, 255, 0.8);
+  }
+
+  .phone-finder-nav-left,
+  .phone-finder-nav-right {
+    @apply flex items-center min-w-[84px];
+  }
+
+  .phone-finder-nav-right {
+    @apply justify-end;
+  }
+
+  .phone-finder-nav-title {
+    @apply text-[17px] font-semibold text-slate-900 text-center truncate;
+    max-width: 60%;
+  }
+
+  .phone-finder-nav-btn {
+    @apply inline-flex items-center gap-1.5 text-[15px] font-medium;
+    color: #007aff;
+  }
+
+  .phone-finder-nav-btn span {
+    @apply leading-none;
+  }
+
+  .phone-finder-nav-action {
+    @apply inline-flex items-center justify-center w-9 h-9 rounded-full text-[18px] font-semibold;
+    color: #007aff;
+  }
+
+  .phone-finder-nav-action:active {
+    background: rgba(118, 118, 128, 0.12);
+  }
+
+  .phone-finder-nav-spacer {
+    @apply w-16;
+  }
+
+  .phone-finder-large-title {
+    @apply px-4 pt-3 pb-2 font-bold text-slate-900;
+    font-size: 34px;
+    line-height: 1.05;
+    letter-spacing: -0.02em;
+  }
+
+  .phone-finder-search {
+    @apply px-4 pb-3;
+  }
+
+  .phone-finder-search.is-compact {
+    @apply pt-3;
+  }
+
+  .phone-finder-searchbox {
+    @apply flex items-center gap-2 rounded-xl px-3;
+    height: 36px;
+    background: rgba(118, 118, 128, 0.12);
+    border: 1px solid rgba(60, 60, 67, 0.12);
+    color: rgba(60, 60, 67, 0.6);
+  }
+
+  .phone-finder-searchbox input {
+    @apply w-full bg-transparent outline-none text-[15px] text-slate-900;
+    caret-color: #007aff;
+  }
+
+  .phone-finder-searchbox input::placeholder {
+    color: rgba(60, 60, 67, 0.6);
+  }
+
+  .phone-finder-section {
+    @apply pb-4;
+  }
+
+  .phone-finder-section-title {
+    @apply px-4 pb-2 text-[13px] font-semibold;
+    color: rgba(60, 60, 67, 0.6);
+    letter-spacing: 0.01em;
+  }
+
+  .phone-finder-list {
+    @apply mx-4 rounded-2xl overflow-hidden bg-white;
+    border: 1px solid rgba(60, 60, 67, 0.12);
+    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.06);
+  }
+
+  .phone-finder-row {
+    @apply w-full flex items-center gap-3 px-4 py-3 text-left;
+    min-height: 48px;
+    position: relative;
+  }
+
+  .phone-finder-row:not(:last-child)::after {
+    content: "";
+    position: absolute;
+    left: 60px;
+    right: 0;
+    bottom: 0;
+    height: 1px;
+    background: rgba(60, 60, 67, 0.12);
+  }
+
+  .phone-finder-row:active {
+    background: rgba(118, 118, 128, 0.12);
+  }
+
+  .phone-finder-row-icon {
+    @apply w-8 h-8 rounded-xl flex items-center justify-center flex-none;
+    background: rgba(0, 122, 255, 0.12);
+    color: #007aff;
+  }
+
+  .phone-finder-row-icon.is-blue {
+    background: rgba(0, 122, 255, 0.12);
+    color: #007aff;
+  }
+
+  .phone-finder-row-icon.is-orange {
+    background: rgba(255, 149, 0, 0.16);
+    color: #ff9500;
+  }
+
+  .phone-finder-row-icon.is-green {
+    background: rgba(52, 199, 89, 0.16);
+    color: #34c759;
+  }
+
+  .phone-finder-row-icon.is-red {
+    background: rgba(255, 59, 48, 0.14);
+    color: #ff3b30;
+  }
+
+  .phone-finder-row-icon.is-purple {
+    background: rgba(175, 82, 222, 0.14);
+    color: #af52de;
+  }
+
+  .phone-finder-row-icon.is-gray {
+    background: rgba(142, 142, 147, 0.16);
+    color: #8e8e93;
+  }
+
+  .phone-finder-row-text {
+    @apply text-[16px] font-medium text-slate-900;
+  }
+
+  .phone-finder-row-main {
+    @apply flex flex-col min-w-0;
+  }
+
+  .phone-finder-row-title {
+    @apply text-[16px] font-medium text-slate-900 truncate;
+  }
+
+  .phone-finder-row-subtitle {
+    @apply text-[12px] truncate;
+    color: rgba(60, 60, 67, 0.6);
+  }
+
+  .phone-finder-row-chevron {
+    @apply ml-auto flex-none;
+    color: rgba(60, 60, 67, 0.3);
+  }
+
+  .phone-finder-row-chevron-spacer {
+    @apply ml-auto w-[18px] flex-none;
+  }
+
+  /* Photos */
+  .phone-photos {
+    @apply relative p-0 gap-0 bg-white overflow-hidden;
+  }
+
+  .phone-photos-nav {
+    @apply flex items-center justify-between px-4;
+    height: 44px;
+    background: rgba(255, 255, 255, 0.86);
+    border-bottom: 1px solid rgba(60, 60, 67, 0.12);
+    backdrop-filter: blur(18px) saturate(180%);
+    -webkit-backdrop-filter: blur(18px) saturate(180%);
+  }
+
+  .phone-photos-nav-title {
+    @apply text-[17px] font-semibold text-slate-900 text-center truncate;
+    max-width: 60%;
+  }
+
+  .phone-photos-nav-action {
+    @apply text-[17px] font-medium;
+    color: #007aff;
+  }
+
+  .phone-photos-nav-spacer {
+    @apply w-16;
+  }
+
+  .phone-photos-scroll {
+    @apply flex-1 overflow-y-auto;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .phone-photos-large-title {
+    @apply px-4 pt-3 pb-2 font-bold text-slate-900;
+    font-size: 34px;
+    line-height: 1.05;
+    letter-spacing: -0.02em;
+  }
+
+  .phone-photos-search {
+    @apply px-4 pb-3;
+  }
+
+  .phone-photos-search--standalone {
+    @apply pt-1;
+  }
+
+  .phone-photos-searchbox {
+    @apply flex items-center gap-2 rounded-xl px-3;
+    height: 36px;
+    background: rgba(118, 118, 128, 0.12);
+    border: 1px solid rgba(60, 60, 67, 0.12);
+    color: rgba(60, 60, 67, 0.6);
+  }
+
+  .phone-photos-searchbox input {
+    @apply w-full bg-transparent outline-none text-[15px] text-slate-900;
+    caret-color: #007aff;
+  }
+
+  .phone-photos-searchbox input::placeholder {
+    color: rgba(60, 60, 67, 0.6);
+  }
+
+  .phone-photos-grid {
+    @apply grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 2px;
+    background: #ffffff;
+    padding: 2px;
+  }
+
+  .phone-photos-grid--album {
+    padding-top: 0;
+  }
+
+  .phone-photos-thumb {
+    @apply relative overflow-hidden bg-slate-200;
+    aspect-ratio: 1 / 1;
+    contain: layout paint;
+    content-visibility: auto;
+    contain-intrinsic-size: 90px 90px;
+  }
+
+  .phone-photos-thumb img {
+    @apply absolute inset-0 w-full h-full object-cover;
+  }
+
+  .phone-photos-thumb-select {
+    @apply absolute top-1.5 right-1.5 w-6 h-6 rounded-full flex items-center justify-center;
+    background: rgba(0, 0, 0, 0.28);
+    border: 1px solid rgba(255, 255, 255, 0.82);
+    color: #ffffff;
+    pointer-events: none;
+  }
+
+  .phone-photos-thumb-select.is-selected {
+    background: #007aff;
+    border-color: #007aff;
+  }
+
+  .phone-photos-thumb-video {
+    @apply absolute bottom-1.5 right-1.5 w-6 h-6 rounded-full flex items-center justify-center text-[10px];
+    background: rgba(0, 0, 0, 0.32);
+    color: #ffffff;
+    pointer-events: none;
+  }
+
+  .phone-photos-tabbar {
+    @apply grid grid-cols-4;
+    height: 49px;
+    background: rgba(255, 255, 255, 0.86);
+    border-top: 1px solid rgba(60, 60, 67, 0.12);
+    backdrop-filter: blur(18px) saturate(180%);
+    -webkit-backdrop-filter: blur(18px) saturate(180%);
+  }
+
+  .phone-photos-tabbar-item {
+    @apply flex items-center justify-center text-[11px] font-medium;
+    color: rgba(60, 60, 67, 0.6);
+  }
+
+  .phone-photos-tabbar-item.is-active {
+    color: #007aff;
+  }
+
+  .phone-photos-tabbar-label {
+    @apply leading-none;
+  }
+
+  .phone-photos-albums-grid {
+    @apply px-4 pb-4 grid grid-cols-2 gap-4;
+  }
+
+  .phone-photos-album-card {
+    @apply text-left;
+  }
+
+  .phone-photos-album-cover {
+    @apply w-full overflow-hidden rounded-2xl bg-slate-200;
+    aspect-ratio: 1 / 1;
+    border: 1px solid rgba(60, 60, 67, 0.12);
+  }
+
+  .phone-photos-album-cover img {
+    @apply w-full h-full object-cover;
+  }
+
+  .phone-photos-album-name {
+    @apply mt-2 text-[15px] font-semibold text-slate-900 truncate;
+  }
+
+  .phone-photos-album-count {
+    @apply text-[13px];
+    color: rgba(60, 60, 67, 0.6);
+  }
+
+  .phone-photos-album-card.is-active .phone-photos-album-name {
+    color: #007aff;
+  }
+
+  .phone-photos-album-nav {
+    @apply flex items-center justify-between px-4;
+    height: 44px;
+    margin-top: 6px;
+    margin-bottom: 6px;
+  }
+
+  .phone-photos-back {
+    @apply text-[17px] font-medium truncate;
+    color: #007aff;
+    max-width: 33%;
+  }
+
+  .phone-photos-album-title {
+    @apply text-[17px] font-semibold text-slate-900 text-center truncate;
+    max-width: 54%;
+  }
+
+  .phone-photos-album-spacer {
+    @apply w-16;
+  }
+
+  .phone-photos-placeholder {
+    @apply px-4 pb-6 text-sm;
+    color: rgba(60, 60, 67, 0.6);
+  }
+
+  .phone-photos-viewer {
+    @apply absolute inset-0 z-30 flex flex-col;
+    background: transparent;
+  }
+
+  .phone-photos-viewer-backdrop {
+    @apply absolute inset-0;
+    background: #000000;
+  }
+
+  .phone-photos-viewer-nav {
+    @apply flex items-center justify-between px-4;
+    height: 44px;
+    position: relative;
+    z-index: 1;
+    background: rgba(0, 0, 0, 0.35);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.12);
+    backdrop-filter: blur(18px) saturate(180%);
+    -webkit-backdrop-filter: blur(18px) saturate(180%);
+  }
+
+  .phone-photos-viewer-done {
+    @apply text-[17px] font-medium;
+    color: #ffffff;
+  }
+
+  .phone-photos-viewer-actions {
+    @apply flex items-center justify-end gap-1;
+    min-width: 84px;
+  }
+
+  .phone-photos-viewer-action {
+    @apply inline-flex items-center justify-center w-9 h-9 rounded-full;
+    color: #ffffff;
+  }
+
+  .phone-photos-viewer-action:active {
+    background: rgba(255, 255, 255, 0.12);
+  }
+
+  .phone-photos-viewer-body {
+    @apply flex-1 min-h-0 flex items-center justify-center;
+    position: relative;
+    z-index: 1;
+    touch-action: none;
+    user-select: none;
+    -webkit-user-select: none;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  .phone-photos-viewer-body img {
+    @apply w-full h-full object-contain;
+  }
+
+  .phone-photos-viewer-body.is-video {
+    touch-action: auto;
+    user-select: auto;
+    -webkit-user-select: auto;
+  }
+
+  .phone-photos-viewer-body video {
+    @apply w-full h-full;
+    object-fit: contain;
+  }
+
+  /* Contact (Contacts card) */
+  .phone-contact {
+    @apply relative p-0 gap-0 bg-[#f2f2f7] text-slate-900 overflow-hidden;
+  }
+
+  .phone-contact-nav {
+    @apply flex items-center justify-between px-4;
+    height: 44px;
+    background: rgba(242, 242, 247, 0.86);
+    border-bottom: 1px solid rgba(60, 60, 67, 0.12);
+    backdrop-filter: blur(18px) saturate(180%);
+    -webkit-backdrop-filter: blur(18px) saturate(180%);
+  }
+
+  .phone-contact-nav-btn {
+    @apply inline-flex items-center gap-1.5 text-[15px] font-medium min-w-[84px];
+    color: #007aff;
+  }
+
+  .phone-contact-nav-title {
+    @apply text-[17px] font-semibold text-slate-900 text-center truncate;
+    max-width: 52%;
+  }
+
+  .phone-contact-nav-action {
+    @apply text-[15px] font-medium min-w-[84px] text-right;
+    color: #007aff;
+  }
+
+  .phone-contact-nav-spacer {
+    @apply min-w-[84px];
+  }
+
+  .phone-contact-content {
+    @apply flex-1 overflow-y-auto;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .phone-contact-hero {
+    @apply px-4 pt-5 pb-4 flex flex-col items-center text-center;
+    background: radial-gradient(
+        900px circle at 18% 18%,
+        rgba(0, 122, 255, 0.22),
+        transparent 58%
+      ),
+      radial-gradient(
+        780px circle at 92% 22%,
+        rgba(255, 45, 85, 0.16),
+        transparent 58%
+      ),
+      radial-gradient(
+        820px circle at 52% 96%,
+        rgba(52, 199, 89, 0.16),
+        transparent 62%
+      ),
+      linear-gradient(180deg, rgba(242, 242, 247, 0.2), rgba(242, 242, 247, 1));
+    border-bottom: 1px solid rgba(60, 60, 67, 0.12);
+  }
+
+  .phone-contact-avatar {
+    @apply rounded-full overflow-hidden;
+    width: 112px;
+    height: 112px;
+    border: 3px solid rgba(255, 255, 255, 0.9);
+    box-shadow: 0 18px 46px rgba(0, 0, 0, 0.14);
+    background: rgba(118, 118, 128, 0.12);
+  }
+
+  .phone-contact-memoji {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .phone-contact-name {
+    @apply mt-4 font-semibold text-slate-900;
+    font-size: 28px;
+    line-height: 1.1;
+    letter-spacing: -0.02em;
+  }
+
+  .phone-contact-tagline {
+    @apply mt-1 text-[13px];
+    color: rgba(60, 60, 67, 0.6);
+  }
+
+  .phone-contact-actions {
+    @apply grid grid-cols-4 gap-3 px-4 py-4;
+  }
+
+  .phone-contact-action {
+    @apply flex flex-col items-center justify-center gap-1 select-none;
+  }
+
+  .phone-contact-action-icon {
+    @apply w-11 h-11 rounded-full flex items-center justify-center;
+    background: rgba(0, 122, 255, 0.12);
+    color: #007aff;
+  }
+
+  .phone-contact-action:active .phone-contact-action-icon {
+    background: rgba(0, 122, 255, 0.18);
+  }
+
+  .phone-contact-action-label {
+    @apply text-[11px] font-medium;
+    color: #007aff;
+  }
+
+  .phone-contact-section {
+    @apply pb-4;
+  }
+
+  .phone-contact-section-title {
+    @apply px-4 pb-2 text-[13px] font-semibold;
+    color: rgba(60, 60, 67, 0.6);
+  }
+
+  .phone-contact-card {
+    @apply mx-4 rounded-2xl overflow-hidden bg-white;
+    border: 1px solid rgba(60, 60, 67, 0.12);
+    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.06);
+  }
+
+  .phone-contact-row {
+    @apply w-full flex items-center gap-3 px-4 py-3 text-left;
+    min-height: 48px;
+    position: relative;
+  }
+
+  .phone-contact-row:not(:last-child)::after {
+    content: "";
+    position: absolute;
+    left: 16px;
+    right: 0;
+    bottom: 0;
+    height: 1px;
+    background: rgba(60, 60, 67, 0.12);
+  }
+
+  .phone-contact-row:active {
+    background: rgba(118, 118, 128, 0.12);
+  }
+
+  .phone-contact-row-label {
+    @apply text-[13px] font-medium;
+    color: rgba(60, 60, 67, 0.6);
+    min-width: 64px;
+  }
+
+  .phone-contact-row-value {
+    @apply text-[16px] font-medium min-w-0;
+    color: #007aff;
+    overflow-wrap: anywhere;
+    word-break: break-word;
+  }
+
+  .phone-contact-row--link .phone-contact-row-value {
+    @apply truncate;
+  }
+
+  .phone-contact-row-leading {
+    @apply flex items-center flex-none;
+  }
+
+  .phone-contact-social-icon {
+    @apply w-8 h-8 rounded-xl flex items-center justify-center overflow-hidden;
+    border: 1px solid rgba(60, 60, 67, 0.12);
+  }
+
+  .phone-contact-social-icon img {
+    @apply w-4 h-4;
+  }
+
+  .phone-contact-list-avatar {
+    @apply w-8 h-8 rounded-full overflow-hidden flex items-center justify-center;
+    border: 1px solid rgba(60, 60, 67, 0.12);
+    background: rgba(118, 118, 128, 0.12);
+  }
+
+  .phone-contact-list-avatar img {
+    @apply w-full h-full object-cover;
+  }
+
+  .phone-contact-row-chevron {
+    @apply ml-auto flex-none;
+    color: rgba(60, 60, 67, 0.3);
+  }
+
+  /* Messages (iOS Messages-like) */
+  .phone-messages {
+    @apply relative p-0 gap-0 bg-white text-slate-900 overflow-hidden;
+  }
+
+  .phone-messages-list-nav {
+    @apply flex items-center justify-between px-4;
+    height: 44px;
+    background: rgba(255, 255, 255, 0.86);
+    border-bottom: 1px solid rgba(60, 60, 67, 0.12);
+    backdrop-filter: blur(18px) saturate(180%);
+    -webkit-backdrop-filter: blur(18px) saturate(180%);
+  }
+
+  .phone-messages-list-action {
+    @apply text-[15px] font-medium;
+    color: #007aff;
+  }
+
+  .phone-messages-list-compose {
+    @apply inline-flex items-center justify-center w-9 h-9 rounded-full;
+    color: #007aff;
+  }
+
+  .phone-messages-list-compose:active {
+    background: rgba(0, 122, 255, 0.12);
+  }
+
+  .phone-messages-list-scroll {
+    @apply flex-1 overflow-y-auto;
+    -webkit-overflow-scrolling: touch;
+    padding-bottom: calc(env(safe-area-inset-bottom, 0px) + 18px);
+  }
+
+  .phone-messages-large-title {
+    @apply px-4 pt-5 pb-3 font-semibold;
+    font-size: 34px;
+    line-height: 1.12;
+    letter-spacing: -0.03em;
+  }
+
+  .phone-messages-search {
+    @apply px-4 pb-3;
+  }
+
+  .phone-messages-searchbox {
+    @apply flex items-center gap-2 px-3;
+    height: 36px;
+    border-radius: 12px;
+    background: rgba(118, 118, 128, 0.12);
+    color: rgba(60, 60, 67, 0.6);
+  }
+
+  .phone-messages-searchbox input {
+    @apply w-full text-[15px] bg-transparent outline-none;
+    color: rgba(0, 0, 0, 0.92);
+  }
+
+  .phone-messages-threads {
+    @apply flex flex-col;
+  }
+
+  .phone-messages-thread {
+    @apply w-full flex items-center gap-3 px-4 py-3 text-left;
+    position: relative;
+  }
+
+  .phone-messages-thread:not(:last-child)::after {
+    content: "";
+    position: absolute;
+    left: 76px;
+    right: 0;
+    bottom: 0;
+    height: 1px;
+    background: rgba(60, 60, 67, 0.12);
+  }
+
+  .phone-messages-thread:active {
+    background: rgba(118, 118, 128, 0.12);
+  }
+
+  .phone-messages-thread-avatar {
+    @apply w-[52px] h-[52px] rounded-full overflow-hidden flex items-center justify-center flex-none;
+    background: rgba(118, 118, 128, 0.12);
+  }
+
+  .phone-messages-thread-avatar img {
+    @apply w-full h-full object-cover;
+  }
+
+  .phone-messages-thread-avatar.is-green {
+    background: rgba(52, 199, 89, 0.16);
+    color: #1f9e4b;
+    font-weight: 700;
+  }
+
+  .phone-messages-thread-main {
+    @apply flex-1 min-w-0;
+  }
+
+  .phone-messages-thread-top {
+    @apply flex items-center justify-between gap-3;
+  }
+
+  .phone-messages-thread-name {
+    @apply text-[17px] font-semibold truncate;
+    color: rgba(0, 0, 0, 0.92);
+  }
+
+  .phone-messages-thread-time {
+    @apply text-[13px] flex-none;
+    color: rgba(60, 60, 67, 0.6);
+  }
+
+  .phone-messages-thread-preview {
+    @apply text-[15px] truncate;
+    color: rgba(60, 60, 67, 0.6);
+  }
+
+  .phone-messages-thread--hint .phone-messages-thread-preview {
+    color: rgba(60, 60, 67, 0.72);
+  }
+
+  .phone-messages-chat-nav {
+    @apply flex items-center justify-between px-3;
+    height: 44px;
+    background: rgba(242, 242, 247, 0.86);
+    border-bottom: 1px solid rgba(60, 60, 67, 0.12);
+    backdrop-filter: blur(18px) saturate(180%);
+    -webkit-backdrop-filter: blur(18px) saturate(180%);
+  }
+
+  .phone-messages-chat-back {
+    @apply inline-flex items-center gap-1.5 text-[15px] font-medium min-w-[92px];
+    color: #007aff;
+  }
+
+  .phone-messages-chat-title {
+    @apply flex-1 text-center min-w-0 px-2;
+  }
+
+  .phone-messages-chat-name {
+    @apply text-[17px] font-semibold truncate;
+    color: rgba(0, 0, 0, 0.92);
+  }
+
+  .phone-messages-chat-avatar {
+    @apply inline-flex items-center justify-center w-11 h-11 rounded-full overflow-hidden flex-none;
+    color: #007aff;
+    background: rgba(118, 118, 128, 0.12);
+  }
+
+  .phone-messages-chat-avatar img {
+    @apply w-full h-full object-cover;
+    display: block;
+  }
+
+  .phone-messages-chat-avatar:active {
+    background: rgba(0, 122, 255, 0.12);
+  }
+
+  .phone-messages-chat-scroll {
+    @apply flex-1 overflow-y-auto flex flex-col gap-2 px-3 py-3;
+    -webkit-overflow-scrolling: touch;
+    background: #ffffff;
+  }
+
+  .phone-messages-bubble {
+    @apply px-3 py-2;
+    max-width: 82%;
+    border-radius: 20px;
+    font-size: 16px;
+    line-height: 1.32;
+    white-space: pre-wrap;
+    word-break: break-word;
+  }
+
+  .phone-messages-bubble.is-incoming {
+    @apply self-start;
+    background: #e5e5ea;
+    color: rgba(0, 0, 0, 0.92);
+  }
+
+  .phone-messages-bubble.is-outgoing {
+    @apply self-end;
+    background: #007aff;
+    color: #ffffff;
+  }
+
+  .phone-messages-inline-command {
+    @apply font-semibold;
+  }
+
+  .phone-messages-bubble.is-typing {
+    @apply w-[72px] flex items-center justify-center;
+  }
+
+  .phone-messages-typing-dots {
+    @apply flex items-center justify-center gap-1;
+  }
+
+  .phone-messages-typing-dots span {
+    width: 7px;
+    height: 7px;
+    border-radius: 999px;
+    background: rgba(60, 60, 67, 0.6);
+    animation: phoneTyping 1.1s infinite ease-in-out;
+  }
+
+  .phone-messages-typing-dots span:nth-child(2) {
+    animation-delay: 0.12s;
+  }
+
+  .phone-messages-typing-dots span:nth-child(3) {
+    animation-delay: 0.24s;
+  }
+
+  @keyframes phoneTyping {
+    0%,
+    80%,
+    100% {
+      transform: translateY(0);
+      opacity: 0.45;
+    }
+    40% {
+      transform: translateY(-3px);
+      opacity: 1;
+    }
+  }
+
+  .phone-messages-composer {
+    @apply flex items-center gap-2 px-3;
+    padding-top: 10px;
+    padding-bottom: calc(env(safe-area-inset-bottom, 0px) + 12px);
+    background: rgba(242, 242, 247, 0.86);
+    border-top: 1px solid rgba(60, 60, 67, 0.12);
+    backdrop-filter: blur(18px) saturate(180%);
+    -webkit-backdrop-filter: blur(18px) saturate(180%);
+  }
+
+  .phone-messages-composer-field {
+    @apply flex-1 flex items-center px-3;
+    min-height: 36px;
+    border-radius: 999px;
+    background: rgba(118, 118, 128, 0.12);
+  }
+
+  .phone-messages-composer-field input {
+    @apply w-full bg-transparent outline-none text-[16px];
+    color: rgba(0, 0, 0, 0.92);
+  }
+
+  .phone-messages-composer-send {
+    @apply inline-flex items-center justify-center w-9 h-9 rounded-full flex-none;
+    background: #007aff;
+    color: #ffffff;
+  }
+
+  .phone-messages-composer-send:active {
+    background: #1a86ff;
+  }
+
+  .phone-messages-composer-send.is-disabled,
+  .phone-messages-composer-send:disabled {
+    background: rgba(118, 118, 128, 0.24);
+    color: rgba(60, 60, 67, 0.35);
+  }
+
+  .phone-messages-bubble.is-card {
+    @apply p-0 bg-transparent;
+    max-width: 92%;
+  }
+
+  .phone-messages-card {
+    @apply overflow-hidden;
+    border-radius: 18px;
+    background: rgba(255, 255, 255, 0.98);
+    border: 1px solid rgba(60, 60, 67, 0.14);
+    box-shadow: 0 12px 32px rgba(0, 0, 0, 0.08);
+  }
+
+  .phone-messages-card-header {
+    @apply flex items-center gap-3 px-4 py-3;
+    border-bottom: 1px solid rgba(60, 60, 67, 0.12);
+  }
+
+  .phone-messages-card-avatar {
+    @apply w-11 h-11 rounded-2xl overflow-hidden flex-none;
+    background: rgba(118, 118, 128, 0.12);
+  }
+
+  .phone-messages-card-avatar img {
+    @apply w-full h-full object-cover;
+  }
+
+  .phone-messages-card-header-text {
+    @apply min-w-0;
+  }
+
+  .phone-messages-card-name {
+    @apply text-[17px] font-semibold truncate;
+    color: rgba(0, 0, 0, 0.92);
+  }
+
+  .phone-messages-card-title {
+    @apply text-[13px] truncate;
+    color: rgba(60, 60, 67, 0.6);
+  }
+
+  .phone-messages-card-links {
+    @apply flex flex-wrap gap-2 px-4 py-3;
+    border-bottom: 1px solid rgba(60, 60, 67, 0.12);
+  }
+
+  .phone-messages-card-link {
+    @apply inline-flex items-center justify-center px-3 py-1.5 rounded-full text-[13px] font-medium;
+    background: rgba(0, 122, 255, 0.12);
+    color: #007aff;
+  }
+
+  .phone-messages-card-link:active {
+    background: rgba(0, 122, 255, 0.18);
+  }
+
+  .phone-messages-card-section {
+    @apply px-4 py-3;
+  }
+
+  .phone-messages-card-section:not(:last-child) {
+    border-bottom: 1px solid rgba(60, 60, 67, 0.12);
+  }
+
+  .phone-messages-card-section-title {
+    @apply text-[11px] font-semibold;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: rgba(60, 60, 67, 0.6);
+  }
+
+  .phone-messages-card-rows {
+    @apply mt-2 space-y-2;
+  }
+
+  .phone-messages-card-row {
+    @apply w-full flex items-center justify-between gap-3;
+    font-size: 15px;
+    color: rgba(0, 0, 0, 0.9);
+  }
+
+  .phone-messages-card-row .value {
+    @apply text-right;
+    color: #007aff;
+    overflow-wrap: anywhere;
+    word-break: break-word;
+  }
+
+  .phone-messages-card-stack {
+    @apply mt-2 text-[13px] leading-relaxed;
+    color: rgba(60, 60, 67, 0.72);
+  }
+
+  /* About (Settings > General > About) */
+  .phone-about {
+    @apply relative p-0 gap-0 bg-[#f2f2f7] text-slate-900 overflow-hidden;
+  }
+
+  .phone-about-nav {
+    @apply flex items-center justify-between px-4;
+    height: 44px;
+    background: rgba(242, 242, 247, 0.86);
+    border-bottom: 1px solid rgba(60, 60, 67, 0.12);
+    backdrop-filter: blur(18px) saturate(180%);
+    -webkit-backdrop-filter: blur(18px) saturate(180%);
+  }
+
+  .phone-about-nav-btn {
+    @apply inline-flex items-center gap-1.5 text-[15px] font-medium min-w-[84px];
+    color: #007aff;
+  }
+
+  .phone-about-nav-btn:disabled {
+    opacity: 0.35;
+  }
+
+  .phone-about-nav-title {
+    @apply text-[17px] font-semibold text-slate-900 text-center truncate;
+    max-width: 56%;
+  }
+
+  .phone-about-nav-action {
+    @apply text-[17px] font-semibold min-w-[84px] text-right;
+    color: #007aff;
+  }
+
+  .phone-about-nav-action:disabled {
+    opacity: 0.35;
+  }
+
+  .phone-about-nav-spacer {
+    @apply min-w-[84px];
+  }
+
+  .phone-about-content {
+    @apply flex-1 overflow-y-auto;
+    padding-top: 10px;
+    padding-bottom: calc(env(safe-area-inset-bottom, 0px) + 18px);
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .phone-about-large-title {
+    @apply px-4 pt-5 pb-3 font-semibold;
+    font-size: 34px;
+    line-height: 1.12;
+    letter-spacing: -0.03em;
+  }
+
+  .phone-about-section {
+    @apply pb-4;
+  }
+
+  .phone-about-section-title {
+    @apply px-4 pb-2 text-[13px] font-semibold;
+    color: rgba(60, 60, 67, 0.6);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+
+  .phone-about-card {
+    @apply mx-4 overflow-hidden bg-white;
+    border: 1px solid rgba(60, 60, 67, 0.12);
+    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.04);
+    border-radius: 14px;
+  }
+
+  .phone-about-row {
+    @apply w-full flex items-center gap-3 px-4 py-3 text-left select-none;
+    min-height: 44px;
+    position: relative;
+  }
+
+  .phone-about-row:not(:last-child)::after {
+    content: "";
+    position: absolute;
+    left: 16px;
+    right: 0;
+    bottom: 0;
+    height: 1px;
+    background: rgba(60, 60, 67, 0.12);
+  }
+
+  .phone-about-row.is-link:active {
+    background: rgba(118, 118, 128, 0.12);
+  }
+
+  .phone-about-row-label {
+    @apply text-[17px] font-normal min-w-0;
+    color: rgba(0, 0, 0, 0.92);
+  }
+
+  .phone-about-row-value {
+    @apply text-[17px] font-normal text-right ml-auto min-w-0;
+    color: rgba(60, 60, 67, 0.6);
+    max-width: 62%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .phone-about-row-value--wrap {
+    max-width: 66%;
+    white-space: normal;
+    overflow: visible;
+    text-overflow: unset;
+    overflow-wrap: anywhere;
+    word-break: break-word;
+  }
+
+  .phone-about-row-value--chevron-only {
+    max-width: 1px;
+    width: 1px;
+    opacity: 0;
+  }
+
+  .phone-about-row-chevron {
+    @apply flex-none;
+    color: rgba(60, 60, 67, 0.3);
+  }
+
+  .phone-about-footnote {
+    @apply px-4 text-[13px] leading-relaxed;
+    color: rgba(60, 60, 67, 0.6);
+  }
+
+  .phone-about-footnote--active {
+    color: #007aff;
+  }
+
+  .phone-about-footnote-em {
+    @apply font-semibold;
+    color: rgba(0, 0, 0, 0.9);
+  }
+
+  .phone-about-input-row {
+    @apply flex items-center gap-3 px-4 py-3;
+    min-height: 44px;
+  }
+
+  .phone-about-input {
+    @apply w-full text-[17px] bg-transparent outline-none;
+    color: rgba(0, 0, 0, 0.92);
+  }
+
+  .phone-about-input-clear {
+    @apply flex-none;
+    color: rgba(60, 60, 67, 0.34);
+  }
+
+  .phone-about-input-clear:active {
+    color: rgba(60, 60, 67, 0.44);
+  }
+
+  /* Phone call */
+  .phone-call {
+    @apply flex flex-col items-center gap-5 text-slate-900 bg-white h-full w-full px-4 pb-6 pt-6;
+  }
+
+  .phone-call-body {
+    @apply flex-1 flex flex-col items-center gap-5 w-full justify-center;
+  }
+
+  .phone-call-display {
+    @apply w-full flex flex-col items-center gap-1 text-center;
+  }
+
+  .phone-call-display .number {
+    @apply text-2xl font-semibold tracking-wide text-slate-900;
+  }
+
+  .phone-call-display .add-number {
+    @apply text-blue-500 text-sm hover:underline;
+  }
+
+  .phone-call-grid {
+    @apply grid grid-cols-3 gap-y-3 gap-x-4 w-full px-2 max-w-[360px] mx-auto mt-1;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
+  .phone-call-key {
+    @apply rounded-full bg-slate-200 text-slate-900 shadow-[0_4px_10px_rgba(0,0,0,0.15)] flex flex-col items-center justify-center gap-1 text-lg font-semibold mx-auto;
+    width: clamp(62px, 17vw, 78px);
+    height: clamp(62px, 17vw, 78px);
+  }
+
+  .phone-call-key .digit {
+    @apply text-2xl font-semibold;
+  }
+
+  .phone-call-key .sub {
+    @apply text-[10px] tracking-widest text-slate-500;
+  }
+
+  .phone-call-actions {
+    @apply w-full flex items-center justify-center gap-4 flex-col mt-auto pb-2;
+  }
+
+  .phone-call-btn {
+    @apply w-16 h-16 rounded-full bg-green-500 text-white font-semibold shadow-[0_10px_24px_rgba(0,0,0,0.2)] flex items-center justify-center;
+  }
+
+  .phone-call-del {
+    @apply text-slate-500 text-sm px-2 py-1;
+  }
+
+  .phone-call-cta {
+    @apply flex items-center gap-8;
+  }
+
+  .phone-call-tabs {
+    @apply w-full flex items-center justify-around text-[11px] text-slate-500 pb-1;
+  }
+
+  .phone-call-tabs button.is-active {
+    @apply text-blue-600 font-semibold;
+  }
+
+  #home {
+    @apply relative z-0 max-sm:hidden;
+
+    ul {
+      li {
+        @apply absolute z-0 select-none flex items-center flex-col cursor-pointer;
+
+        img {
+          @apply group-hover:bg-gray-950/10 p-1 rounded-md;
+        }
+
+        p {
+          @apply text-sm text-white text-center px-1 rounded-md group-hover:bg-blue-500 transition-colors max-w-40;
+        }
+      }
+    }
+  }
+}
+
+@layer components {
+  .login-page {
+    @apply w-full h-full flex items-center justify-center px-4;
+  }
+
+  .login-card {
+    @apply w-full max-w-sm rounded-[28px] border border-white/50 bg-white/70 p-6 shadow-[0_18px_60px_rgba(0,0,0,0.2)];
+    backdrop-filter: blur(22px) saturate(180%);
+    -webkit-backdrop-filter: blur(22px) saturate(180%);
+  }
+
+  .login-title {
+    @apply text-lg font-semibold text-slate-900;
+  }
+
+  .login-subtitle {
+    @apply mt-1 text-xs text-slate-500;
+  }
+
+  .login-form {
+    @apply mt-6 flex flex-col gap-4;
+  }
+
+  .login-field {
+    @apply text-[11px] uppercase tracking-[0.18em] text-slate-500;
+  }
+
+  .login-field span {
+    @apply block;
+  }
+
+  .login-input {
+    @apply mt-2 w-full rounded-xl border border-slate-200/80 bg-white/80 px-3 py-2 text-sm text-slate-900 outline-none;
+    @apply focus:border-slate-400 focus:ring-2 focus:ring-slate-200;
+  }
+
+  .login-button {
+    @apply mt-2 inline-flex items-center justify-center rounded-xl bg-slate-900 px-4 py-2 text-sm font-semibold text-white transition;
+  }
+
+  .login-button:disabled {
+    @apply cursor-not-allowed opacity-60;
+  }
+
+  .login-error {
+    @apply mt-3 text-sm text-red-600;
+  }
+
+  .admin-shell {
+    @apply w-dvw h-dvh bg-slate-100 text-slate-900 overflow-hidden;
+  }
+
+  .admin-canvas {
+    @apply w-full h-full min-h-0 flex flex-col;
+  }
+
+  .admin-topbar {
+    @apply w-full flex flex-col gap-4 md:flex-row md:items-center md:justify-between px-6 py-4 border-b border-slate-200 bg-white;
+  }
+
+  .admin-topbar-brand {
+    @apply flex items-center gap-3;
+  }
+
+  .admin-topbar-actions {
+    @apply flex items-center gap-4 flex-wrap;
+  }
+
+  .admin-sync {
+    @apply flex items-center gap-2 flex-wrap;
+  }
+
+  .admin-sync-pill {
+    @apply inline-flex items-center rounded-full border border-slate-200 bg-slate-100 px-2.5 py-1 text-[11px] text-slate-600;
+  }
+
+  .admin-sync-pill.is-saving {
+    @apply bg-amber-50 text-amber-700 border-amber-200;
+  }
+
+  .admin-sync-pill.is-saved {
+    @apply bg-emerald-50 text-emerald-700 border-emerald-200;
+  }
+
+  .admin-sync-pill.is-error {
+    @apply bg-red-50 text-red-700 border-red-200;
+  }
+
+  .admin-sync-pill.is-idle {
+    @apply bg-slate-100 text-slate-600 border-slate-200;
+  }
+
+  .admin-logo {
+    @apply w-10 h-10 rounded-xl bg-slate-900 text-white font-semibold flex items-center justify-center text-xs tracking-widest;
+  }
+
+  .admin-brand-title {
+    @apply text-sm font-semibold text-slate-900;
+  }
+
+  .admin-brand-subtitle {
+    @apply text-xs text-slate-500;
+  }
+
+  .admin-user {
+    @apply flex items-center gap-3;
+  }
+
+  .admin-user-avatar {
+    @apply w-9 h-9 rounded-full bg-slate-900 text-white flex items-center justify-center text-xs font-semibold;
+  }
+
+  .admin-user-name {
+    @apply text-sm font-semibold text-slate-900;
+  }
+
+  .admin-user-meta {
+    @apply text-xs text-slate-500;
+  }
+
+  .admin-body {
+    @apply flex-1 min-h-0 flex flex-col lg:flex-row gap-4 px-6 py-6 overflow-y-auto lg:overflow-hidden;
+  }
+
+  .admin-sidebar {
+    @apply w-full lg:w-80 bg-white border border-slate-200 rounded-2xl p-4 flex flex-col min-h-0 overflow-hidden;
+  }
+
+  .admin-sidebar-header {
+    @apply flex items-start justify-between gap-3;
+  }
+
+  .admin-sidebar-title {
+    @apply text-base font-semibold text-slate-900;
+  }
+
+  .admin-sidebar-subtitle {
+    @apply text-xs text-slate-500;
+  }
+
+  .admin-sidebar-search {
+    @apply mt-3;
+  }
+
+  .admin-project-list {
+    @apply mt-3 flex flex-col gap-2 flex-1 min-h-0 overflow-y-auto pr-1;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .admin-sidebar-footer {
+    @apply mt-3 pt-3 border-t border-slate-200;
+  }
+
+  .admin-main {
+    @apply flex-1 min-h-0 overflow-hidden rounded-2xl border border-slate-200 bg-white flex flex-col;
+  }
+
+  .admin-main-header {
+    @apply flex items-center justify-between gap-3 flex-wrap px-5 py-4 border-b border-slate-200 bg-white;
+  }
+
+  .admin-main-title {
+    @apply flex items-center gap-3 min-w-0;
+  }
+
+  .admin-main-name {
+    @apply text-base font-semibold text-slate-900 truncate;
+  }
+
+  .admin-main-content {
+    @apply flex-1 min-h-0 overflow-y-auto bg-slate-50 p-5 flex flex-col gap-4;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .admin-main-empty {
+    @apply flex-1 min-h-0 flex flex-col items-center justify-center text-center px-8;
+  }
+
+  .admin-split {
+    @apply flex flex-col lg:flex-row gap-4;
+  }
+
+  .admin-project-row {
+    @apply w-full text-left border border-slate-200 rounded-xl px-3 py-2 text-sm transition;
+    @apply hover:bg-slate-50;
+    @apply flex items-start justify-between gap-3;
+  }
+
+  .admin-project-row.is-active {
+    @apply border-slate-900 bg-slate-50;
+  }
+
+  .admin-project-row:focus-visible {
+    @apply outline-none ring-2 ring-slate-200;
+  }
+
+  .admin-project-row-main {
+    @apply flex items-center gap-2 min-w-0;
+  }
+
+  .admin-project-row-meta {
+    @apply flex items-center gap-2 flex-none;
+  }
+
+  .admin-status-dot {
+    @apply w-2.5 h-2.5 rounded-full bg-slate-300;
+  }
+
+  .admin-status-dot.is-live {
+    @apply bg-emerald-500;
+  }
+
+  .admin-status-dot.is-draft {
+    @apply bg-amber-500;
+  }
+
+  .admin-project-title {
+    @apply text-sm font-medium text-slate-900 truncate;
+  }
+
+  .admin-project-meta {
+    @apply text-xs text-slate-500;
+  }
+
+  .admin-note {
+    @apply text-xs text-slate-500;
+  }
+
+  .admin-card {
+    @apply rounded-2xl border border-slate-200 bg-white p-4 shadow-sm;
+  }
+
+  .admin-card-header {
+    @apply flex items-start justify-between gap-3;
+  }
+
+  .admin-card-title {
+    @apply text-sm font-semibold text-slate-900;
+  }
+
+  .admin-card-subtitle {
+    @apply mt-1 text-xs text-slate-500;
+  }
+
+  .admin-card--files {
+    @apply lg:w-96;
+  }
+
+  .admin-card--editor {
+    @apply flex-1;
+  }
+
+  .admin-form-grid {
+    @apply mt-4 grid gap-4 md:grid-cols-2;
+  }
+
+  .admin-field {
+    @apply text-xs font-medium text-slate-700;
+  }
+
+  .admin-field > span {
+    @apply block;
+  }
+
+  .admin-field--span {
+    @apply md:col-span-2;
+  }
+
+  .admin-input,
+  .admin-textarea,
+  .admin-select {
+    @apply mt-2 w-full rounded-xl border border-slate-200 bg-white px-3 py-2 text-sm text-slate-900 outline-none;
+    @apply focus:border-slate-400 focus:ring-2 focus:ring-slate-200;
+  }
+
+  .admin-textarea {
+    min-height: 180px;
+    resize: vertical;
+  }
+
+  .admin-divider {
+    @apply my-4 h-px bg-slate-200;
+  }
+
+  .admin-badge {
+    @apply inline-flex items-center rounded-full px-2.5 py-1 text-[10px] font-semibold uppercase tracking-[0.2em];
+  }
+
+  .admin-badge.is-live {
+    @apply bg-emerald-100 text-emerald-700;
+  }
+
+  .admin-badge.is-draft {
+    @apply bg-amber-100 text-amber-700;
+  }
+
+  .admin-badge.is-archived {
+    @apply bg-slate-200 text-slate-600;
+  }
+
+  .admin-inline-actions {
+    @apply flex items-center gap-2 flex-wrap;
+  }
+
+  .admin-button {
+    @apply inline-flex items-center justify-center rounded-xl bg-slate-900 px-4 py-2 text-sm font-semibold text-white shadow-sm transition;
+  }
+
+  .admin-button.ghost {
+    @apply bg-white text-slate-700 border border-slate-200;
+  }
+
+  .admin-button.small {
+    @apply px-3 py-1.5 text-xs;
+  }
+
+  .admin-button.danger {
+    @apply bg-red-600 text-white;
+  }
+
+  .admin-button.ghost.danger {
+    @apply text-red-600 border-red-200 bg-red-50;
+  }
+
+  .admin-button:disabled {
+    @apply cursor-not-allowed opacity-60;
+  }
+
+  .admin-button:focus-visible {
+    @apply outline-none ring-2 ring-slate-200;
+  }
+
+  .admin-button.ghost:hover {
+    @apply bg-slate-50;
+  }
+
+  .admin-file-list {
+    @apply mt-3 flex flex-col gap-2;
+  }
+
+  .admin-file-row {
+    @apply flex items-center justify-between gap-4 rounded-xl border border-slate-200 px-3 py-2;
+    @apply cursor-pointer transition;
+  }
+
+  .admin-folder-row {
+    @apply cursor-default;
+  }
+
+  .admin-file-row:hover {
+    @apply bg-slate-50;
+  }
+
+  .admin-file-row:focus-visible {
+    @apply outline-none ring-2 ring-slate-200;
+  }
+
+  .admin-file-row.is-active {
+    @apply border-slate-900 bg-slate-50;
+  }
+
+  .admin-file-name {
+    @apply text-sm font-medium text-slate-900;
+  }
+
+  .admin-file-meta {
+    @apply text-xs text-slate-500;
+  }
+
+  .admin-file-actions-inline {
+    @apply flex items-center gap-2 flex-wrap;
+  }
+
+  .admin-position-picker {
+    @apply mt-2 space-y-2;
+  }
+
+  .admin-position-grid {
+    @apply grid grid-cols-3 gap-2;
+  }
+
+  .admin-position-cell {
+    @apply flex items-center justify-center rounded-lg border border-slate-200 bg-white text-[11px] text-slate-500;
+    aspect-ratio: 4 / 3;
+    transition: background 150ms ease, border-color 150ms ease, color 150ms ease;
+  }
+
+  .admin-position-cell:hover {
+    @apply bg-slate-50;
+  }
+
+  .admin-position-cell.is-active {
+    @apply border-slate-900 bg-slate-900 text-white;
+  }
+
+  .admin-position-actions {
+    @apply flex items-center gap-2 flex-wrap;
+  }
+
+  .admin-position-hint {
+    @apply text-[11px] text-slate-500;
+  }
+
+  .admin-pill {
+    @apply inline-flex items-center rounded-full border border-slate-200 bg-slate-100 px-2 py-1 text-[11px] text-slate-600;
+  }
+
+  .admin-toggle-list {
+    @apply mt-3 flex flex-col gap-2;
+  }
+
+  .admin-toggle-row {
+    @apply flex items-center justify-between gap-4 rounded-xl border border-slate-200 px-3 py-2;
+  }
+
+  .admin-toggle-label {
+    @apply text-sm font-medium text-slate-900;
+  }
+
+  .admin-toggle-desc {
+    @apply text-xs text-slate-500;
+  }
+
+  .admin-toggle {
+    @apply relative w-11 h-6 rounded-full bg-slate-200 transition;
+  }
+
+  .admin-toggle.is-on {
+    @apply bg-emerald-500;
+  }
+
+  .admin-toggle-knob {
+    @apply absolute top-1 left-1 h-4 w-4 rounded-full bg-white shadow;
+    transition: transform 150ms ease;
+  }
+
+  .admin-toggle.is-on .admin-toggle-knob {
+    transform: translateX(20px);
+  }
+
+  .admin-empty {
+    @apply mt-8 flex flex-col items-center gap-3 text-center text-slate-600 px-2;
+  }
+
+  .admin-empty-title {
+    @apply text-sm font-semibold text-slate-900;
+  }
+
+  .admin-empty-subtitle {
+    @apply text-xs text-slate-500 max-w-xs;
+  }
+
+  .admin-empty-inline {
+    @apply mt-3 text-sm text-slate-500;
+  }
+
+}
